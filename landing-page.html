@@ -1,0 +1,623 @@
+<title>Alta Mobi — Gestão de frota, pagamentos e motoristas em um só painel</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  /* ============ TOKENS ============ */
+  :root{
+    --bg:#F2F3EF;
+    --surface:#FFFFFF;
+    --surface-2:#E9EBE4;
+    --ink:#1A252D;
+    --muted:#5B6870;
+    --line:#D6D9D0;
+    --accent:#F5B71F;
+    --accent-ink:#1A252D;      /* text on accent */
+    --accent-soft:#FBEECB;
+    --pix:#2FA36B;
+    --pix-soft:#E2F2E9;
+    --panel:#121B21;           /* asphalt panel, same in both themes */
+    --panel-ink:#EDF1EE;
+    --panel-muted:#8FA0A8;
+    --panel-line:#26333B;
+    --shadow:0 18px 44px -18px rgba(18,27,33,.28);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#0E161B;
+      --surface:#141F26;
+      --surface-2:#1B2830;
+      --ink:#E9EDEA;
+      --muted:#93A2AA;
+      --line:#243139;
+      --accent:#FFC531;
+      --accent-ink:#14202A;
+      --accent-soft:#2B2A17;
+      --pix:#43BB82;
+      --pix-soft:#15291F;
+      --panel:#121B21;
+      --panel-ink:#EDF1EE;
+      --panel-muted:#8FA0A8;
+      --panel-line:#26333B;
+      --shadow:0 18px 44px -18px rgba(0,0,0,.6);
+    }
+  }
+  :root[data-theme="light"]{
+    --bg:#F2F3EF; --surface:#FFFFFF; --surface-2:#E9EBE4; --ink:#1A252D;
+    --muted:#5B6870; --line:#D6D9D0; --accent:#F5B71F; --accent-ink:#1A252D;
+    --accent-soft:#FBEECB; --pix:#2FA36B; --pix-soft:#E2F2E9;
+    --panel:#121B21; --panel-ink:#EDF1EE; --panel-muted:#8FA0A8; --panel-line:#26333B;
+    --shadow:0 18px 44px -18px rgba(18,27,33,.28);
+  }
+  :root[data-theme="dark"]{
+    --bg:#0E161B; --surface:#141F26; --surface-2:#1B2830; --ink:#E9EDEA;
+    --muted:#93A2AA; --line:#243139; --accent:#FFC531; --accent-ink:#14202A;
+    --accent-soft:#2B2A17; --pix:#43BB82; --pix-soft:#15291F;
+    --panel:#121B21; --panel-ink:#EDF1EE; --panel-muted:#8FA0A8; --panel-line:#26333B;
+    --shadow:0 18px 44px -18px rgba(0,0,0,.6);
+  }
+
+  /* ============ BASE ============ */
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font:400 16px/1.65 "Segoe UI",system-ui,-apple-system,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit}
+  img{max-width:100%}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+  .mono{font-family:ui-monospace,"Cascadia Mono",Consolas,monospace;font-variant-numeric:tabular-nums}
+
+  h1,h2,h3{margin:0;text-wrap:balance;letter-spacing:-.02em}
+  h1{font-size:clamp(2.4rem,5.4vw,3.9rem);line-height:1.04;font-weight:800}
+  h2{font-size:clamp(1.7rem,3.4vw,2.5rem);line-height:1.12;font-weight:800}
+  h3{font-size:1.12rem;font-weight:700;letter-spacing:-.01em}
+  p{margin:0}
+
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:.55em;
+    font-family:"Arial Narrow","Segoe UI",sans-serif;
+    font-size:.78rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--muted);
+  }
+  .eyebrow::before{
+    content:"";width:26px;height:3px;background:var(--accent);border-radius:2px;flex:none;
+  }
+
+  /* lane-marking divider */
+  .lane{
+    height:3px;border:0;margin:0;
+    background:repeating-linear-gradient(90deg,var(--accent) 0 34px,transparent 34px 58px);
+    opacity:.85;
+  }
+
+  .btn{
+    display:inline-flex;align-items:center;gap:.5em;
+    padding:.78em 1.5em;border-radius:8px;border:1.5px solid transparent;
+    font:600 .98rem/1 "Segoe UI",system-ui,sans-serif;
+    text-decoration:none;cursor:pointer;transition:transform .15s ease,box-shadow .15s ease;
+  }
+  .btn:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+  .btn-primary{background:var(--accent);color:var(--accent-ink)}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 24px -10px rgba(245,183,31,.7)}
+  .btn-ghost{border-color:var(--line);color:var(--ink);background:transparent}
+  .btn-ghost:hover{border-color:var(--ink)}
+
+  /* ============ NAV ============ */
+  header.nav{
+    position:sticky;top:0;z-index:40;
+    background:color-mix(in srgb,var(--bg) 88%,transparent);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{display:flex;align-items:center;gap:28px;height:66px}
+  .logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.15rem;letter-spacing:-.02em;text-decoration:none}
+  .logo-mark{
+    width:30px;height:30px;border-radius:7px;background:var(--panel);position:relative;flex:none;
+  }
+  .logo-mark::after{
+    content:"";position:absolute;left:6px;right:6px;top:13px;height:3px;
+    background:repeating-linear-gradient(90deg,var(--accent) 0 5px,transparent 5px 8px);
+  }
+  nav.links{display:flex;gap:22px;margin-left:auto}
+  nav.links a{text-decoration:none;font-size:.94rem;color:var(--muted)}
+  nav.links a:hover{color:var(--ink)}
+  .nav-cta{margin-left:8px}
+  @media (max-width:760px){ nav.links{display:none} }
+
+  /* ============ HERO ============ */
+  .hero{padding:76px 0 84px;position:relative;overflow:hidden}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
+  @media (max-width:920px){ .hero-grid{grid-template-columns:1fr;gap:44px} }
+  .hero-copy{display:flex;flex-direction:column;gap:22px;max-width:34em}
+  .hero-copy .sub{font-size:1.14rem;color:var(--muted);max-width:30em}
+  .hero-ctas{display:flex;gap:14px;flex-wrap:wrap;margin-top:6px}
+  .hero-note{font-size:.86rem;color:var(--muted)}
+  .hl{
+    background:linear-gradient(transparent 62%,var(--accent-soft) 62%);
+    padding:0 .06em;border-radius:2px;
+  }
+
+  /* operation panel mockup */
+  .panel{
+    background:var(--panel);color:var(--panel-ink);
+    border-radius:16px;box-shadow:var(--shadow);
+    padding:22px;display:flex;flex-direction:column;gap:16px;
+    border:1px solid var(--panel-line);
+  }
+  .panel-head{display:flex;align-items:center;gap:10px;font-size:.8rem;color:var(--panel-muted)}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--pix);flex:none}
+  .dot.pulse{animation:pulse 2.2s ease infinite}
+  @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(67,187,130,.5)}50%{box-shadow:0 0 0 6px rgba(67,187,130,0)}}
+  .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .kpi{background:rgba(255,255,255,.045);border:1px solid var(--panel-line);border-radius:10px;padding:12px 14px}
+  .kpi .label{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--panel-muted);font-family:"Arial Narrow","Segoe UI",sans-serif;font-weight:700}
+  .kpi .value{font-size:1.45rem;font-weight:800;letter-spacing:-.02em;margin-top:2px}
+  .kpi .value small{font-size:.72rem;font-weight:600;color:var(--pix);margin-left:.35em}
+  .feed{display:flex;flex-direction:column;gap:8px}
+  .feed-title{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--panel-muted);font-family:"Arial Narrow","Segoe UI",sans-serif;font-weight:700}
+  .feed-item{
+    display:flex;align-items:center;gap:12px;
+    background:rgba(255,255,255,.045);border:1px solid var(--panel-line);
+    border-radius:10px;padding:10px 14px;font-size:.88rem;
+  }
+  .feed-item .who{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .feed-item .amt{font-weight:700;color:var(--pix)}
+  .feed-item .tag{
+    font-size:.64rem;font-weight:700;letter-spacing:.1em;padding:.25em .6em;border-radius:99px;
+    background:var(--pix);color:#08150E;
+  }
+  .feed-item.enter{animation:slide-in .5s ease both}
+  @keyframes slide-in{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion:reduce){
+    .feed-item.enter{animation:none}
+    .dot.pulse{animation:none}
+    .reveal{opacity:1 !important;transform:none !important;transition:none !important}
+    html{scroll-behavior:auto}
+  }
+
+  /* ============ SECTIONS ============ */
+  section{padding:84px 0}
+  .section-head{display:flex;flex-direction:column;gap:14px;max-width:36em;margin-bottom:48px}
+  .section-head p{color:var(--muted);font-size:1.05rem}
+
+  /* social proof */
+  .proof{padding:34px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .proof-inner{display:flex;align-items:center;gap:34px;flex-wrap:wrap;justify-content:space-between}
+  .proof span.label{font-size:.8rem;color:var(--muted)}
+  .proof .brand{
+    font-family:"Arial Narrow","Segoe UI",sans-serif;font-weight:700;letter-spacing:.14em;
+    text-transform:uppercase;font-size:.92rem;color:var(--muted);opacity:.85;
+  }
+
+  /* pillars */
+  .pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  @media (max-width:920px){ .pillars{grid-template-columns:1fr} }
+  .card{
+    background:var(--surface);border:1px solid var(--line);border-radius:14px;
+    padding:28px;display:flex;flex-direction:column;gap:12px;
+  }
+  .card .icon{
+    width:44px;height:44px;border-radius:10px;background:var(--accent-soft);
+    display:grid;place-items:center;color:var(--accent-ink);margin-bottom:6px;
+  }
+  :root[data-theme="dark"] .card .icon, .card .icon{color:var(--ink)}
+  .card p{color:var(--muted);font-size:.96rem}
+  .card ul{margin:6px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+  .card li{display:flex;gap:.6em;font-size:.92rem;color:var(--muted)}
+  .card li::before{content:"";width:14px;height:3px;background:var(--accent);border-radius:2px;flex:none;margin-top:.62em}
+
+  /* how it works — real sequence, numbering earns its place */
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;counter-reset:step}
+  @media (max-width:920px){ .steps{grid-template-columns:1fr} }
+  .step{position:relative;padding:26px 26px 26px 26px;background:var(--surface);border:1px solid var(--line);border-radius:14px;display:flex;flex-direction:column;gap:10px}
+  .step::before{
+    counter-increment:step;content:counter(step,decimal-leading-zero);
+    font-family:ui-monospace,Consolas,monospace;font-size:.82rem;font-weight:700;
+    color:var(--accent-ink);background:var(--accent);border-radius:6px;
+    padding:.3em .55em;width:max-content;
+  }
+  .step p{color:var(--muted);font-size:.95rem}
+
+  /* metrics band */
+  .band{background:var(--panel);color:var(--panel-ink);border-radius:18px;padding:52px 48px;box-shadow:var(--shadow)}
+  @media (max-width:700px){ .band{padding:38px 26px} }
+  .band-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:28px}
+  @media (max-width:920px){ .band-grid{grid-template-columns:repeat(2,1fr)} }
+  .metric .num{font-size:clamp(1.9rem,3.5vw,2.7rem);font-weight:800;letter-spacing:-.03em}
+  .metric .num em{font-style:normal;color:var(--accent)}
+  .metric .cap{font-size:.88rem;color:var(--panel-muted);margin-top:4px}
+
+  /* pricing */
+  .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:stretch}
+  @media (max-width:920px){ .plans{grid-template-columns:1fr} }
+  .plan{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:30px;display:flex;flex-direction:column;gap:16px}
+  .plan.hot{border:2px solid var(--accent);position:relative}
+  .plan.hot::before{
+    content:"Mais escolhido";position:absolute;top:-13px;left:26px;
+    background:var(--accent);color:var(--accent-ink);font-size:.72rem;font-weight:700;
+    letter-spacing:.08em;text-transform:uppercase;padding:.3em .8em;border-radius:99px;
+  }
+  .plan .price{font-size:2.1rem;font-weight:800;letter-spacing:-.03em}
+  .plan .price small{font-size:.9rem;font-weight:500;color:var(--muted);letter-spacing:0}
+  .plan .for{color:var(--muted);font-size:.92rem;min-height:2.6em}
+  .plan ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:9px;flex:1}
+  .plan li{display:flex;gap:.6em;font-size:.92rem;color:var(--muted)}
+  .plan li::before{content:"";width:14px;height:3px;background:var(--accent);border-radius:2px;flex:none;margin-top:.62em}
+
+  /* testimonial */
+  .quote{
+    display:grid;grid-template-columns:auto 1fr;gap:26px;align-items:start;
+    background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:40px;
+  }
+  @media (max-width:700px){ .quote{grid-template-columns:1fr;padding:28px} }
+  .quote .mark{font-size:4rem;line-height:.6;color:var(--accent);font-family:Georgia,serif}
+  .quote blockquote{margin:0;font-size:1.28rem;line-height:1.5;letter-spacing:-.01em;font-weight:500}
+  .quote .who{margin-top:16px;font-size:.9rem;color:var(--muted)}
+  .quote .who strong{color:var(--ink)}
+
+  /* FAQ */
+  .faq{max-width:44em}
+  details{border-bottom:1px solid var(--line)}
+  summary{
+    cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;
+    gap:16px;padding:20px 4px;font-weight:600;font-size:1.02rem;
+  }
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:"+";font-size:1.4rem;color:var(--accent);font-weight:600;transition:transform .2s;flex:none}
+  details[open] summary::after{transform:rotate(45deg)}
+  details .a{padding:0 4px 22px;color:var(--muted);max-width:40em}
+
+  /* final CTA */
+  .cta-final{background:var(--panel);color:var(--panel-ink);text-align:center;padding:96px 24px;position:relative;overflow:hidden}
+  .cta-final::before{
+    content:"";position:absolute;left:0;right:0;top:50%;height:4px;
+    background:repeating-linear-gradient(90deg,var(--accent) 0 40px,transparent 40px 70px);
+    opacity:.14;transform:translateY(-50%);
+  }
+  .cta-final .inner{position:relative;display:flex;flex-direction:column;align-items:center;gap:22px;max-width:36em;margin:0 auto}
+  .cta-final h2{color:var(--panel-ink)}
+  .cta-final p{color:var(--panel-muted);font-size:1.08rem}
+
+  /* footer */
+  footer{padding:52px 0;font-size:.88rem;color:var(--muted)}
+  .foot-grid{display:flex;justify-content:space-between;gap:32px;flex-wrap:wrap}
+  .foot-grid nav{display:flex;gap:20px;flex-wrap:wrap}
+  .foot-grid a{text-decoration:none}
+  .foot-grid a:hover{color:var(--ink)}
+  .legal{margin-top:26px;padding-top:20px;border-top:1px solid var(--line);font-size:.8rem}
+
+  /* scroll reveal */
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
+  .reveal.in{opacity:1;transform:none}
+</style>
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="logo" href="#"><span class="logo-mark"></span>Alta&nbsp;Mobi</a>
+    <nav class="links" aria-label="Navegação principal">
+      <a href="#recursos">Recursos</a>
+      <a href="#como-funciona">Como funciona</a>
+      <a href="#planos">Planos</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <a class="btn btn-primary nav-cta" href="#cta">Começar grátis</a>
+  </div>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <span class="eyebrow">Plataforma de gestão de frotas</span>
+        <h1>Sua frota inteira sob controle. <span class="hl">O repasse cai na hora.</span></h1>
+        <p class="sub">A Alta Mobi automatiza a operação da sua locadora: gestão de veículos totalmente personalizável, cobranças e repasses via PIX instantâneo e um canal direto com cada motorista locado.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary" href="#cta">Criar conta grátis</a>
+          <a class="btn btn-ghost" href="#como-funciona">Ver como funciona</a>
+        </div>
+        <p class="hero-note">14 dias grátis · Sem cartão de crédito · Migração assistida da sua planilha</p>
+      </div>
+
+      <div class="panel" aria-label="Prévia do painel de operação">
+        <div class="panel-head">
+          <span class="dot pulse" aria-hidden="true"></span>
+          Operação ao vivo — Locadora Rodar Frotas
+          <span class="mono" style="margin-left:auto" id="clock">08:42</span>
+        </div>
+        <div class="kpis">
+          <div class="kpi">
+            <div class="label">Veículos ativos</div>
+            <div class="value mono">128<small>▲ 4</small></div>
+          </div>
+          <div class="kpi">
+            <div class="label">Recebido hoje</div>
+            <div class="value mono" id="kpi-total">R$ 9.640</div>
+          </div>
+          <div class="kpi">
+            <div class="label">Em atraso</div>
+            <div class="value mono">3<small style="color:var(--accent)">−2 hoje</small></div>
+          </div>
+        </div>
+        <div class="feed">
+          <div class="feed-title">Repasses PIX — agora</div>
+          <div id="feed-list">
+            <div class="feed-item"><span class="tag">PIX</span><span class="who">Carlos M. · Onix PLK-4D21</span><span class="amt mono">+ R$ 480</span></div>
+            <div class="feed-item"><span class="tag">PIX</span><span class="who">Juliana S. · HB20 RTC-7F55</span><span class="amt mono">+ R$ 520</span></div>
+            <div class="feed-item"><span class="tag">PIX</span><span class="who">Edson P. · Argo QWE-9A02</span><span class="amt mono">+ R$ 450</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOCIAL PROOF -->
+  <div class="proof">
+    <div class="wrap proof-inner">
+      <span class="label">Locadoras que rodam com a Alta Mobi</span>
+      <span class="brand">LocaMax</span>
+      <span class="brand">Rodar Frotas</span>
+      <span class="brand">VeloCar</span>
+      <span class="brand">Frota Sul</span>
+      <span class="brand">GiroCar</span>
+    </div>
+  </div>
+
+  <!-- PILLARS -->
+  <section id="recursos">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Recursos</span>
+        <h2>Três frentes que consomem seu dia. Uma plataforma que resolve as três.</h2>
+        <p>Gestão, dinheiro e comunicação — tudo no mesmo painel, do jeito que a sua operação funciona.</p>
+      </div>
+      <div class="pillars">
+        <article class="card reveal">
+          <div class="icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="5" rx="1.5"/><rect x="13" y="10" width="8" height="11" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/></svg>
+          </div>
+          <h3>Gestão totalmente personalizável</h3>
+          <p>Monte o painel em torno da sua operação — não o contrário. Campos, regras e alertas do seu jeito.</p>
+          <ul>
+            <li>Campos e status personalizados por veículo e contrato</li>
+            <li>Alertas de manutenção, multas e vencimento de documentos</li>
+            <li>Regras de locação por categoria, região ou motorista</li>
+            <li>Relatórios exportáveis em um clique</li>
+          </ul>
+        </article>
+        <article class="card reveal">
+          <div class="icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"/></svg>
+          </div>
+          <h3>Pagamentos instantâneos</h3>
+          <p>Cobrança recorrente e repasse via PIX, sem boleto atrasando o seu caixa.</p>
+          <ul>
+            <li>Cobrança semanal ou mensal gerada automaticamente</li>
+            <li>PIX cai na conta e concilia sozinho no contrato</li>
+            <li>Régua de inadimplência com lembretes automáticos</li>
+            <li>Extrato por veículo, motorista e período</li>
+          </ul>
+        </article>
+        <article class="card reveal">
+          <div class="icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-8 8H4l2-3a8 8 0 1 1 15-5z"/><path d="M8.5 12h.01M12 12h.01M15.5 12h.01"/></svg>
+          </div>
+          <h3>Comunicação sem ruído</h3>
+          <p>Cada motorista locado fala com a empresa dentro do app — nada se perde no WhatsApp pessoal.</p>
+          <ul>
+            <li>Chat integrado com histórico por contrato</li>
+            <li>Avisos em massa para toda a frota ou um grupo</li>
+            <li>Chamados de manutenção com foto e prioridade</li>
+            <li>Assistente automático para dúvidas frequentes</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <hr class="lane wrap" style="max-width:1120px">
+
+  <!-- HOW IT WORKS -->
+  <section id="como-funciona">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Como funciona</span>
+        <h2>Da planilha ao painel em três passos.</h2>
+        <p>A migração é assistida pelo nosso time — a maioria das locadoras opera pela Alta Mobi na primeira semana.</p>
+      </div>
+      <div class="steps">
+        <div class="step reveal">
+          <h3>Importe a frota</h3>
+          <p>Suba sua planilha ou conecte seu sistema atual. Veículos, contratos e motoristas entram de uma vez, já organizados.</p>
+        </div>
+        <div class="step reveal">
+          <h3>Configure regras e cobranças</h3>
+          <p>Defina valores, recorrência e regras de locação. A Alta Mobi gera as cobranças PIX e a régua de lembretes sozinha.</p>
+        </div>
+        <div class="step reveal">
+          <h3>Convide os motoristas</h3>
+          <p>Cada motorista recebe o app com contrato, pagamentos e canal direto com a empresa. Você acompanha tudo do painel.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- METRICS -->
+  <section style="padding-top:0">
+    <div class="wrap">
+      <div class="band reveal">
+        <div class="band-grid">
+          <div class="metric"><div class="num mono"><em>97%</em></div><div class="cap">dos repasses recebidos no prazo pelas locadoras na plataforma</div></div>
+          <div class="metric"><div class="num mono"><em>−38%</em></div><div class="cap">de inadimplência média após 3 meses com a régua automática</div></div>
+          <div class="metric"><div class="num mono"><em>6 h</em></div><div class="cap">por semana devolvidas à operação ao eliminar conciliação manual</div></div>
+          <div class="metric"><div class="num mono"><em>2 min</em></div><div class="cap">tempo médio de resposta a um chamado de motorista no app</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="planos" style="padding-top:0">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Planos</span>
+        <h2>Preço que acompanha o tamanho da sua frota.</h2>
+        <p>Todos os planos incluem pagamentos PIX, app do motorista e suporte em português. Sem taxa de implantação.</p>
+      </div>
+      <div class="plans">
+        <article class="plan reveal">
+          <h3>Início</h3>
+          <div class="price">R$ 149<small>/mês</small></div>
+          <p class="for">Para locadoras começando a organizar a operação.</p>
+          <ul>
+            <li>Até 15 veículos</li>
+            <li>Cobranças e repasses via PIX</li>
+            <li>App do motorista com chat</li>
+            <li>Relatórios essenciais</li>
+          </ul>
+          <a class="btn btn-ghost" href="#cta">Começar grátis</a>
+        </article>
+        <article class="plan hot reveal">
+          <h3>Frota</h3>
+          <div class="price">R$ 449<small>/mês</small></div>
+          <p class="for">Para operações em crescimento que precisam de automação de verdade.</p>
+          <ul>
+            <li>Até 80 veículos</li>
+            <li>Tudo do Início, mais:</li>
+            <li>Painéis e campos personalizados</li>
+            <li>Régua de inadimplência automática</li>
+            <li>Avisos em massa e chamados com prioridade</li>
+          </ul>
+          <a class="btn btn-primary" href="#cta">Começar grátis</a>
+        </article>
+        <article class="plan reveal">
+          <h3>Escala</h3>
+          <div class="price">Sob consulta</div>
+          <p class="for">Para frotas acima de 80 veículos ou múltiplas filiais.</p>
+          <ul>
+            <li>Veículos ilimitados</li>
+            <li>Multi-filial com permissões por equipe</li>
+            <li>API e integrações sob medida</li>
+            <li>Gerente de conta dedicado</li>
+          </ul>
+          <a class="btn btn-ghost" href="#cta">Falar com vendas</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIAL -->
+  <section style="padding-top:0">
+    <div class="wrap">
+      <div class="quote reveal">
+        <div class="mark" aria-hidden="true">“</div>
+        <div>
+          <blockquote>Antes eu fechava a semana conciliando comprovante de PIX no WhatsApp, um por um. Hoje o repasse cai, concilia sozinho e o motorista fala comigo pelo app. Dobrei a frota sem contratar ninguém para o administrativo.</blockquote>
+          <p class="who"><strong>Renata Albuquerque</strong> — sócia da Rodar Frotas, Recife · 128 veículos na plataforma</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" style="padding-top:0">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Perguntas frequentes</span>
+        <h2>O que as locadoras perguntam antes de migrar.</h2>
+      </div>
+      <div class="faq reveal">
+        <details>
+          <summary>Preciso trocar de banco para usar o PIX da Alta Mobi?</summary>
+          <div class="a">Não. Os repasses caem direto na conta PIX que a sua empresa já usa. A Alta Mobi gera as cobranças, acompanha os pagamentos e faz a conciliação automática no contrato de cada motorista.</div>
+        </details>
+        <details>
+          <summary>Como os motoristas acessam a plataforma?</summary>
+          <div class="a">Cada motorista locado recebe um convite para o app Alta Mobi Motorista, onde vê o contrato, os pagamentos pendentes, paga por PIX e fala com a empresa pelo chat — sem misturar com o WhatsApp pessoal de ninguém da equipe.</div>
+        </details>
+        <details>
+          <summary>Consigo adaptar o sistema à minha forma de trabalhar?</summary>
+          <div class="a">Sim — esse é o ponto central da plataforma. Campos, status, categorias de veículo, regras de locação, alertas e relatórios são configuráveis sem código. Se a sua operação cobra por semana com caução variável, o painel reflete exatamente isso.</div>
+        </details>
+        <details>
+          <summary>Quanto tempo leva a migração da minha planilha?</summary>
+          <div class="a">Com a migração assistida, a maior parte das locadoras importa frota, contratos e motoristas no primeiro dia e opera integralmente pela plataforma na primeira semana. Nosso time acompanha o processo sem custo adicional.</div>
+        </details>
+        <details>
+          <summary>E se eu passar do limite de veículos do meu plano?</summary>
+          <div class="a">Nada trava. Você recebe um aviso e pode subir de plano na hora, pagando apenas a diferença proporcional do mês. Frotas acima de 80 veículos entram no plano Escala, com condições sob medida.</div>
+        </details>
+        <details>
+          <summary>Meus dados ficam seguros?</summary>
+          <div class="a">Os dados trafegam criptografados e ficam hospedados no Brasil, em conformidade com a LGPD. Cada membro da sua equipe acessa apenas o que o papel dele permite, com registro de auditoria.</div>
+        </details>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- FINAL CTA -->
+<section class="cta-final" id="cta">
+  <div class="inner">
+    <span class="eyebrow" style="color:var(--panel-muted)">Comece hoje</span>
+    <h2>Coloque sua frota para rodar no automático.</h2>
+    <p>Crie sua conta em minutos, importe a frota e receba o primeiro PIX conciliado ainda esta semana. 14 dias grátis, sem cartão.</p>
+    <div style="display:flex;gap:14px;flex-wrap:wrap;justify-content:center">
+      <a class="btn btn-primary" href="#">Criar conta grátis</a>
+      <a class="btn" style="border:1.5px solid var(--panel-line);color:var(--panel-ink)" href="#">Agendar demonstração</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <a class="logo" href="#" style="font-size:1rem"><span class="logo-mark" style="width:26px;height:26px"></span>Alta&nbsp;Mobi</a>
+      <nav aria-label="Rodapé">
+        <a href="#recursos">Recursos</a>
+        <a href="#planos">Planos</a>
+        <a href="#faq">FAQ</a>
+        <a href="#">Termos de uso</a>
+        <a href="#">Privacidade</a>
+        <a href="#">contato@altamobi.com.br</a>
+      </nav>
+    </div>
+    <p class="legal">Alta Mobi Tecnologia Ltda. · CNPJ 12.345.678/0001-90 · Av. Paulista, 1000 — São Paulo/SP · Empresa fictícia criada para demonstração.</p>
+  </div>
+</footer>
+
+<script>
+  // scroll reveal
+  const io = new IntersectionObserver(entries => {
+    for (const e of entries) if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+  }, {threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // live PIX feed in the hero panel
+  const names = [
+    ['Marcos T. · Kwid BRA-2E19', 430],['Aline R. · Mobi FLX-5C77', 410],
+    ['Diego F. · Onix PLK-8B03', 480],['Patrícia L. · HB20 RTC-1D44', 520],
+    ['Rafael N. · Polo GDU-6H90', 560],['Camila V. · Argo QWE-3J31', 450]
+  ];
+  let total = 9640, i = 0;
+  const list = document.getElementById('feed-list');
+  const kpi = document.getElementById('kpi-total');
+  const fmt = v => 'R$ ' + v.toLocaleString('pt-BR');
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduced) setInterval(() => {
+    const [who, amt] = names[i++ % names.length];
+    const el = document.createElement('div');
+    el.className = 'feed-item enter';
+    el.innerHTML = '<span class="tag">PIX</span><span class="who"></span><span class="amt mono">+ ' + fmt(amt) + '</span>';
+    el.querySelector('.who').textContent = who;
+    list.prepend(el);
+    while (list.children.length > 3) list.lastElementChild.remove();
+    total += amt; kpi.textContent = fmt(total);
+  }, 3800);
+
+  // clock
+  const clock = document.getElementById('clock');
+  const tick = () => clock.textContent = new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+  tick(); setInterval(tick, 30000);
+</script>
