@@ -12,7 +12,6 @@ Landing page de vendas do **Alta Mobi**, aplicativo de gestão inteligente de fr
 ## Estrutura
 
 - [`index.html`](index.html) — a landing completa, 100% autocontida (HTML + CSS + JS em um único arquivo, sem dependências externas).
-- [`landing-page.html`](landing-page.html) — versão anterior, mantida como histórico.
 
 ## Como rodar
 
