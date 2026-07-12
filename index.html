@@ -82,11 +82,13 @@ header.nav.is-scrolled{
 header.nav:not(.is-scrolled){color:#fff}
 header.nav:not(.is-scrolled) .logo-mark{background:#fff}
 header.nav:not(.is-scrolled) .logo-mark::before{background:repeating-linear-gradient(90deg,var(--red) 0 6px,transparent 6px 10px)}
-header.nav:not(.is-scrolled) nav.links a{color:rgba(255,255,255,.85)}
-header.nav:not(.is-scrolled) nav.links a:hover{color:#fff}
-header.nav:not(.is-scrolled) .btn-primary{background:#fff;color:var(--red-dark)}
-header.nav:not(.is-scrolled) .btn-primary:hover{background:var(--gray-100);box-shadow:0 10px 26px -10px rgba(0,0,0,.35)}
+/* sobre a hero: só o logo, centralizado; links e CTA aparecem ao rolar */
+header.nav:not(.is-scrolled) .nav-inner{justify-content:center}
+header.nav:not(.is-scrolled) nav.links,
+header.nav:not(.is-scrolled) .nav-inner .btn{display:none}
 header.nav.is-scrolled nav.links a{color:var(--gray-700)}
+header.nav.is-scrolled nav.links,header.nav.is-scrolled .nav-inner .btn{animation:nav-in .35s ease both}
+@keyframes nav-in{from{opacity:0;transform:translateY(-6px)}}
 [id]{scroll-margin-top:96px}
 .nav-inner{display:flex;align-items:center;gap:26px;height:72px}
 .logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.18rem;text-decoration:none;letter-spacing:-.02em}
@@ -236,6 +238,19 @@ nav.links a:hover{color:var(--red)}
 
 /* mini KPIs */
 .mk{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.mk.mk4{grid-template-columns:repeat(4,1fr)}
+@media (max-width:560px){ .mk.mk4{grid-template-columns:repeat(2,1fr)} }
+
+/* mini gráficos (dashboard da demo, espelhando o app) */
+.mini2{display:grid;grid-template-columns:1fr 1.2fr;gap:8px}
+@media (max-width:560px){ .mini2{grid-template-columns:1fr} }
+.mpanel{background:var(--gray-100);border:1px solid var(--gray-300);border-radius:10px;padding:9px 11px;min-width:0}
+.mpanel .mh{font-size:.6rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--gray-500);margin-bottom:6px}
+.donut-wrap{display:flex;gap:10px;align-items:center}
+.dlegend{display:flex;flex-direction:column;gap:3px;font-size:.62rem;color:var(--gray-700);min-width:0}
+.dlegend i{width:8px;height:8px;border-radius:2.5px;display:inline-block;margin-right:5px;vertical-align:-.5px}
+.dlegend .dtotal{margin-top:3px;color:var(--gray-500)}
+.dlegend .dtotal b{color:var(--green)}
 .mk .k{background:var(--gray-100);border:1px solid var(--gray-300);border-radius:10px;padding:9px 11px}
 .mk .k .l{font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-500);font-weight:700}
 .mk .k .v{font-size:1.05rem;font-weight:800;margin-top:1px}
@@ -1169,16 +1184,58 @@ function qrSvg(size=118, n=25){
   const screens = {
     dashboard: `
       <div class="ptitle">Dashboard</div><div class="psub">Visão geral da operação — hoje</div>
-      <div class="mk">
-        <div class="k"><div class="l">Veículos</div><div class="v mono">24<small>▲ 2</small></div></div>
-        <div class="k"><div class="l">Recebido hoje</div><div class="v mono">R$ 3.250</div></div>
-        <div class="k"><div class="l">Em atraso</div><div class="v mono">1<small style="color:var(--amber)">alerta</small></div></div>
+      <div class="mk mk4">
+        <div class="k"><div class="l">Faturamento</div><div class="v mono">R$ 12,4k<small>▲</small></div></div>
+        <div class="k"><div class="l">A receber</div><div class="v mono">R$ 1.910</div></div>
+        <div class="k"><div class="l">Motoristas</div><div class="v mono">12</div></div>
+        <div class="k"><div class="l">Manutenções</div><div class="v mono">2</div></div>
       </div>
-      <table class="mt"><thead><tr><th>Últimos PIX</th><th>Valor</th><th>Status</th></tr></thead><tbody>
-        <tr><td>Juliana Soares · HB20</td><td class="mono">R$ 650,00</td><td><span class="pill ok">Pago</span></td></tr>
-        <tr><td>Edson Prado · Argo</td><td class="mono">R$ 600,00</td><td><span class="pill ok">Pago</span></td></tr>
-        <tr><td>Carlos Menezes · Onix</td><td class="mono">R$ 650,00</td><td><span class="pill pend">Pendente</span></td></tr>
-      </tbody></table>`,
+      <div class="mini2">
+        <div class="mpanel">
+          <div class="mh">Faturamento x Gastos</div>
+          <div class="donut-wrap">
+            <svg viewBox="0 0 80 80" width="72" height="72" role="img" aria-label="Gráfico faturamento x gastos">
+              <defs>
+                <linearGradient id="dg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#34D399"/><stop offset="1" stop-color="#16A34A"/></linearGradient>
+                <linearGradient id="dg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FBBF24"/><stop offset="1" stop-color="#D97706"/></linearGradient>
+                <linearGradient id="dg3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#A78BFA"/><stop offset="1" stop-color="#7C3AED"/></linearGradient>
+              </defs>
+              <g transform="rotate(-90 40 40)">
+                <circle cx="40" cy="40" r="30" fill="none" stroke="url(#dg1)" stroke-width="13" stroke-dasharray="117 188.5"/>
+                <circle cx="40" cy="40" r="30" fill="none" stroke="url(#dg2)" stroke-width="13" stroke-dasharray="41 188.5" stroke-dashoffset="-117"/>
+                <circle cx="40" cy="40" r="30" fill="none" stroke="url(#dg3)" stroke-width="13" stroke-dasharray="29.5 188.5" stroke-dashoffset="-158"/>
+              </g>
+            </svg>
+            <div class="dlegend">
+              <span><i style="background:#16A34A"></i>Faturamento</span>
+              <span><i style="background:#D97706"></i>Manutenção</span>
+              <span><i style="background:#7C3AED"></i>Seguro</span>
+              <span class="dtotal">Líquido <b class="mono">R$ 9,6k</b></span>
+            </div>
+          </div>
+        </div>
+        <div class="mpanel">
+          <div class="mh">Trajeto de recebimentos</div>
+          <svg viewBox="0 0 210 92" width="100%" role="img" aria-label="Gráfico de recebimentos ao longo do mês">
+            <defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#2563EB"/><stop offset="1" stop-color="#16A34A"/></linearGradient></defs>
+            <path d="M14 68 C 40 68, 48 42, 72 44 C 96 46, 104 58, 128 50 C 152 42, 160 26, 192 22" fill="none" stroke="url(#rg)" stroke-width="3.5" stroke-linecap="round"/>
+            <circle cx="14" cy="68" r="5" fill="#1E9E5A" stroke="#fff" stroke-width="2"/>
+            <circle cx="72" cy="44" r="3.4" fill="#fff" stroke="#2563EB" stroke-width="2"/>
+            <circle cx="128" cy="50" r="3.4" fill="#fff" stroke="#2563EB" stroke-width="2"/>
+            <circle cx="192" cy="22" r="9.5" fill="url(#rg)" stroke="#fff" stroke-width="2"/>
+            <g transform="translate(185.6,15.6) scale(.54)" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 13l1.5-4.5A2 2 0 0 1 8.4 7h7.2a2 2 0 0 1 1.9 1.5L19 13M5 13h14v4H5v-4Z"/>
+            </g>
+            <text x="72" y="32" text-anchor="middle" font-size="8.5" font-weight="700" fill="#4A545C">R$ 2,8k</text>
+            <text x="128" y="38" text-anchor="middle" font-size="8.5" font-weight="700" fill="#4A545C">R$ 2,1k</text>
+            <text x="192" y="9" text-anchor="middle" font-size="8.5" font-weight="700" fill="#16A34A">R$ 3,9k</text>
+            <text x="14" y="86" text-anchor="middle" font-size="7.5" fill="#6E7981">01/07</text>
+            <text x="72" y="86" text-anchor="middle" font-size="7.5" fill="#6E7981">08/07</text>
+            <text x="128" y="86" text-anchor="middle" font-size="7.5" fill="#6E7981">15/07</text>
+            <text x="192" y="86" text-anchor="middle" font-size="7.5" fill="#6E7981">hoje</text>
+          </svg>
+        </div>
+      </div>`,
     recebimentos: `
       <div class="ptitle">Recebimentos</div><div class="psub">Semana atual · cobranças geradas automaticamente</div>
       <table class="mt"><thead><tr><th>Motorista</th><th>Vencimento</th><th>Valor</th><th>Status</th></tr></thead><tbody>
