@@ -254,7 +254,8 @@ nav.links a:hover{color:var(--red)}
 /* mini cards de veículos (demo, espelhando a aba Veículos do app) */
 .vgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .vcard{background:var(--gray-100);border:1px solid var(--gray-300);border-radius:10px;overflow:hidden;min-width:0}
-.vthumb{position:relative;height:66px;background:linear-gradient(160deg,#DFE3E7,var(--gray-100));display:grid;place-items:center;color:var(--gray-500)}
+.vthumb{position:relative;height:74px;background:linear-gradient(160deg,#DFE3E7,var(--gray-100));display:grid;place-items:center;color:var(--gray-500);overflow:hidden}
+.vthumb img{max-height:68px;max-width:86%;width:auto;object-fit:contain;filter:drop-shadow(0 6px 10px rgba(27,32,38,.25))}
 .vthumb .pill{position:absolute;top:6px;right:6px}
 .vbody{padding:8px 10px 10px}
 .vplate{
@@ -566,8 +567,23 @@ tr.flash{animation:rowflash 1.4s ease}
 .msg.bot b{color:var(--red-dark)}
 
 /* ================= PRICING ================= */
-.plans{display:grid;grid-template-columns:repeat(2,minmax(0,420px));gap:26px;justify-content:center;align-items:stretch}
-@media (max-width:860px){ .plans{grid-template-columns:minmax(0,420px)} }
+.plans{display:grid;grid-template-columns:minmax(0,460px);gap:26px;justify-content:center;align-items:stretch}
+.plan-seg{
+  display:flex;background:var(--gray-100);border:1px solid var(--gray-300);
+  border-radius:99px;padding:3px;gap:3px;width:max-content;margin:2px 0 4px;
+}
+.plan-seg button{
+  border:0;background:transparent;font:700 .88rem "Segoe UI",system-ui,sans-serif;
+  padding:.5em 1.6em;border-radius:99px;cursor:pointer;color:var(--gray-500);
+  transition:background .2s,color .2s,box-shadow .2s;
+}
+.plan-seg button.active{background:var(--red);color:#fff;box-shadow:0 4px 12px rgba(224,33,46,.45)}
+.plan .price.bump{animation:price-bump .35s cubic-bezier(.2,1.4,.4,1)}
+@keyframes price-bump{50%{transform:scale(1.12)}}
+.pro-note{
+  text-align:center;color:var(--gray-700);font-size:.94rem;margin-top:22px;
+}
+.pro-note b{color:var(--red-dark)}
 .plan{
   position:relative;border-radius:18px;padding:34px 30px;background:var(--white);
   border:1px solid var(--gray-300);display:flex;flex-direction:column;gap:16px;
@@ -774,7 +790,7 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
 <section id="demo-cadastro">
   <div class="wrap demo-grid">
     <div class="demo-copy reveal">
-      <span class="live-tag"><span class="dot"></span>Funcionalidade real · rodando agora</span>
+      <span class="live-tag"><span class="dot"></span>Sistema real operando agora</span>
       <h2>Cadastre um motorista em menos de um minuto.</h2>
       <p>O que você está vendo ao lado não é um vídeo: é uma demonstração real do app operando ao vivo. Nome, CPF, Telefone, Anexo de contrato, Veículo locado — salvou, o motorista já aparece na frota com carro e contrato vinculado.</p>
       <ul>
@@ -833,7 +849,7 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
 <section class="sec-gray" id="demo-pix">
   <div class="wrap">
     <div class="section-head reveal">
-      <span class="live-tag"><span class="dot"></span>Funcionalidade real · rodando agora</span>
+      <span class="live-tag"><span class="dot"></span>Funcionalidade do aplicativo · veja a demonstração</span>
       <h2>Sistema de Cobrança Semanal dinâmico.</h2>
       <p>Acompanhe o ciclo completo acontecendo abaixo: o motorista abre o painel dele, paga o semanal por QR Code PIX — e o pagamento cai em "Recebimentos" no seu painel, com baixa automática, na hora.</p>
     </div>
@@ -939,7 +955,7 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
 <section id="demo-manut">
   <div class="wrap">
     <div class="section-head reveal">
-      <span class="live-tag"><span class="dot"></span>Funcionalidade real · rodando agora</span>
+      <span class="live-tag"><span class="dot"></span>Tudo dinâmico · veja a facilidade de utilizar o app</span>
       <h2>Manutenções Automáticas.</h2>
       <p>O motorista solicita a manutenção pelo app, você agenda e direciona para a oficina parceira cadastrada — e acompanha tudo até o serviço concluído, sem WhatsApp no meio. Veja o ciclo completo rodando abaixo.</p>
     </div>
@@ -1164,38 +1180,33 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
     <div class="section-head reveal" style="align-items:center;text-align:center;margin-left:auto;margin-right:auto">
       <span class="eyebrow" style="justify-content:center">Plano</span>
       <h2>Menos que uma diária de locação. Por mês.</h2>
-      <p>Um único plano mensal com tudo dentro: cobranças PIX, manutenções automáticas, Novu app e suporte via chat e WhatsApp. Acima de 60 veículos, só o valor acompanha o tamanho da operação.</p>
+      <p>Um único plano mensal com tudo dentro: Cobranças semanais (PIX), Manutenções automáticas, Gestão de frota personalizada, Gestão de Parceiros, Gestão de documentação, Dashboard pensada pro seu negócio operando de maneira real, Assistente Virtual para seus motoristas (Novu App), Suporte integrado e WhatsApp 24hrs.</p>
     </div>
     <div class="plans">
       <article class="plan annual reveal">
         <span class="shine"></span>
         <span class="flag">Plano único · sem fidelidade</span>
-        <span class="name">Mensal</span>
-        <div class="price"><span class="mono" data-price="25">R$ 25</span><small>/mês</small></div>
-        <p class="per">Para frotas de <strong>até 60 veículos</strong> — cancele quando quiser.</p>
+        <span class="name" id="plan-name">Mensal</span>
+        <div class="plan-seg" id="plan-seg" role="tablist" aria-label="Escolha entre plano Normal e PRO">
+          <button data-mode="normal" class="active" aria-pressed="true">Normal</button>
+          <button data-mode="pro" aria-pressed="false">PRO</button>
+        </div>
+        <div class="price" id="plan-price-box"><span class="mono" id="plan-price">R$ 25</span><small>/mês</small></div>
+        <p class="per" id="plan-per">Sem fidelidade no plano, cancele quando quiser.</p>
         <ul>
-          <li>Motoristas e veículos ilimitados dentro da faixa</li>
-          <li>Cobranças PIX com QR Code na sua chave</li>
-          <li>Manutenções automáticas com oficinas parceiras</li>
-          <li>Controle de contratos e documentos</li>
-          <li>App do motorista incluído</li>
-          <li>Novu app — assistente para você e para os seus motoristas</li>
-          <li>Suporte via chat e WhatsApp</li>
+          <li id="plan-li-faixa">Motoristas e veículos até 60. Acima disso, assine o PRO</li>
+          <li>Cobranças semanais (PIX) com QR Code na sua chave</li>
+          <li>Manutenções automatizadas com suas oficinas parceiras</li>
+          <li>Gestão de frota personalizada</li>
+          <li>Gestão de parceiros e de documentação</li>
+          <li>Dashboard pensada pro seu negócio, operando de maneira real</li>
+          <li>Novu App — assistente virtual para você e para os seus motoristas</li>
+          <li>Suporte integrado e WhatsApp 24hrs</li>
         </ul>
-        <a class="btn btn-primary" href="#cta">Assinar por R$ 25/mês</a>
-      </article>
-      <article class="plan reveal">
-        <span class="name">Frota 60+</span>
-        <div class="price"><span class="mono" data-price="50">R$ 50</span><small>/mês</small></div>
-        <p class="per">Para operações com <strong>mais de 60 veículos</strong>.</p>
-        <ul>
-          <li>Tudo do plano mensal, sem limite de faixa</li>
-          <li>Onboarding assistido da sua frota</li>
-          <li>Prioridade no suporte</li>
-        </ul>
-        <a class="btn btn-ghost" href="#cta">Assinar Frota 60+</a>
+        <a class="btn btn-primary" href="#cta" id="plan-cta">Assinar por R$ 25/mês</a>
       </article>
     </div>
+    <p class="pro-note reveal">Acima de 60 veículos é necessário o <b>Plano Mensal PRO</b> — o dobro da mensalidade, mesmas funcionalidades, sem limite de frota.</p>
     <p class="plans-note reveal">Sem taxa de implantação · Sem cobrança por veículo · Seus recebimentos PIX caem 100% na sua conta</p>
   </div>
 </section>
@@ -1427,28 +1438,28 @@ function qrSvg(size=118, n=25){
       <div class="vgrid">
         <div class="vcard">
           <div class="vthumb">
-            <svg width="72" height="40" viewBox="0 0 96 48" fill="none" aria-hidden="true"><path d="M10 34c0-3 2-9 7-11l6-8c1.5-2 4-3 6.5-3H58c3 0 6 1.5 8 4l5 7c7 1 15 4 15 11v3a2 2 0 0 1-2 2H12a2 2 0 0 1-2-2v-3z" fill="#E0212E"/><path d="M31 15h11v8H25l6-8zm16 0h11l6 8H47v-8z" fill="#fff" opacity=".85"/><circle cx="27" cy="39" r="6.5" fill="#23292F" stroke="#fff" stroke-width="2"/><circle cx="70" cy="39" r="6.5" fill="#23292F" stroke="#fff" stroke-width="2"/></svg>
+            <img src="assets/byd-dolphin-gs.png" alt="BYD Dolphin GS">
             <span class="pill ok">Locado</span>
           </div>
           <div class="vbody">
-            <span class="vplate">PLK-4D21</span>
-            <div class="vname">Chevrolet Onix 1.0</div>
-            <div class="vmeta"><span>2023</span><span>Branco</span><span>48.310 km</span></div>
-            <div class="vrow"><span>🛡 Seguro: <b>R$ 180/mês</b></span></div>
-            <div class="vrow"><span>👤 Carlos Menezes</span><span class="vprice mono">R$ 650<small>/sem</small></span></div>
+            <span class="vplate">TQZ-4E25</span>
+            <div class="vname">BYD Dolphin GS</div>
+            <div class="vmeta"><span>2025</span><span>Cinza</span><span>21.480 km</span></div>
+            <div class="vrow"><span>🛡 Seguro: <b>R$ 370/mês</b></span></div>
+            <div class="vrow"><span>👤 Carlos Menezes</span><span class="vprice mono">R$ 700<small>/sem</small></span></div>
           </div>
         </div>
         <div class="vcard">
           <div class="vthumb">
-            <svg width="72" height="40" viewBox="0 0 96 48" fill="none" aria-hidden="true"><path d="M10 34c0-3 2-9 7-11l6-8c1.5-2 4-3 6.5-3H58c3 0 6 1.5 8 4l5 7c7 1 15 4 15 11v3a2 2 0 0 1-2 2H12a2 2 0 0 1-2-2v-3z" fill="#4A545C"/><path d="M31 15h11v8H25l6-8zm16 0h11l6 8H47v-8z" fill="#fff" opacity=".85"/><circle cx="27" cy="39" r="6.5" fill="#23292F" stroke="#fff" stroke-width="2"/><circle cx="70" cy="39" r="6.5" fill="#23292F" stroke="#fff" stroke-width="2"/></svg>
+            <img src="assets/byd-dolphin-gs.png" alt="BYD Dolphin GS">
             <span class="pill ok">Locado</span>
           </div>
           <div class="vbody">
-            <span class="vplate">RTC-7F55</span>
-            <div class="vname">Hyundai HB20 Sense</div>
-            <div class="vmeta"><span>2022</span><span>Prata</span><span>61.902 km</span></div>
-            <div class="vrow"><span>🛡 Seguro: <b>R$ 165/mês</b></span></div>
-            <div class="vrow"><span>👤 Juliana Soares</span><span class="vprice mono">R$ 650<small>/sem</small></span></div>
+            <span class="vplate">TQZ-9B26</span>
+            <div class="vname">BYD Dolphin GS</div>
+            <div class="vmeta"><span>2026/27</span><span>Cinza</span><span>6.240 km</span></div>
+            <div class="vrow"><span>🛡 Seguro: <b>R$ 370/mês</b></span></div>
+            <div class="vrow"><span>👤 Juliana Soares</span><span class="vprice mono">R$ 750<small>/sem</small></span></div>
           </div>
         </div>
       </div>`,
@@ -1651,6 +1662,35 @@ function qrSvg(size=118, n=25){
     toast(tst, '<span class="ck">✓</span> Concluída — comprovante do motorista recebido');
     cur.home();
     await sleep(2400);
+  });
+})();
+
+/* ================= seletor Normal/PRO do plano ================= */
+(function(){
+  const seg = document.getElementById('plan-seg'); if (!seg) return;
+  const price = document.getElementById('plan-price');
+  const priceBox = document.getElementById('plan-price-box');
+  const name = document.getElementById('plan-name');
+  const cta = document.getElementById('plan-cta');
+  const per = document.getElementById('plan-per');
+  const faixa = document.getElementById('plan-li-faixa');
+  seg.addEventListener('click', (e) => {
+    const b = e.target.closest('button'); if (!b || b.classList.contains('active')) return;
+    seg.querySelectorAll('button').forEach(x => {
+      x.classList.toggle('active', x === b);
+      x.setAttribute('aria-pressed', x === b ? 'true' : 'false');
+    });
+    const pro = b.dataset.mode === 'pro';
+    price.textContent = pro ? 'R$ 50' : 'R$ 25';
+    name.textContent = pro ? 'Mensal PRO' : 'Mensal';
+    cta.textContent = pro ? 'Assinar PRO por R$ 50/mês' : 'Assinar por R$ 25/mês';
+    per.innerHTML = pro
+      ? 'Para frotas com <strong>mais de 60 veículos</strong> — sem fidelidade, cancele quando quiser.'
+      : 'Sem fidelidade no plano, cancele quando quiser.';
+    faixa.textContent = pro
+      ? 'Motoristas e veículos sem limite de frota'
+      : 'Motoristas e veículos até 60. Acima disso, assine o PRO';
+    priceBox.classList.remove('bump'); void priceBox.offsetWidth; priceBox.classList.add('bump');
   });
 })();
 
