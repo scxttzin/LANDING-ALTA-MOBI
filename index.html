@@ -560,11 +560,32 @@ tr.flash{animation:rowflash 1.4s ease}
   background:var(--gray-100);border:1px solid var(--gray-300);color:var(--gray-500);
   border-radius:99px;padding:.35em .8em;
 }
-.msgs{display:flex;flex-direction:column;gap:10px;padding-top:16px}
-.msg{max-width:88%;padding:.65em 1em;border-radius:14px;font-size:.86rem;line-height:1.5}
+.msgs{display:flex;flex-direction:column;gap:10px;padding-top:16px;min-height:288px;justify-content:flex-end}
+.msg{max-width:88%;padding:.65em 1em;border-radius:14px;font-size:.86rem;line-height:1.5;animation:scr-in .3s ease both}
 .msg.user{align-self:flex-end;background:var(--gray-900);color:#fff;border-bottom-right-radius:4px}
 .msg.bot{align-self:flex-start;background:var(--gray-100);border:1px solid var(--gray-300);border-bottom-left-radius:4px}
 .msg.bot b{color:var(--red-dark)}
+.msg.typing{display:flex;gap:4px;align-items:center;padding:.85em 1em}
+.msg.typing i{width:6px;height:6px;border-radius:50%;background:var(--gray-500);animation:tdot 1s ease infinite}
+.msg.typing i:nth-child(2){animation-delay:.15s}
+.msg.typing i:nth-child(3){animation-delay:.3s}
+@keyframes tdot{30%{transform:translateY(-4px);opacity:.55}}
+
+/* barra de digitação do chat (demo) */
+.chat-inputbar{display:flex;gap:8px;align-items:center;margin-top:14px;padding-top:12px;border-top:1px solid var(--gray-100)}
+.chat-input{
+  flex:1;border:1.5px solid var(--gray-300);border-radius:99px;padding:.55em 1.1em;
+  font-size:.85rem;min-height:2.5em;color:var(--ink);white-space:nowrap;overflow:hidden;
+  transition:border-color .2s,box-shadow .2s;
+}
+.chat-input:empty::before{content:"Escreva sua dúvida…";color:var(--gray-500)}
+.chat-input.focus{border-color:var(--red);box-shadow:0 0 0 3px var(--red-soft)}
+.chat-input .caret{display:inline-block;width:1.5px;height:1em;background:var(--red);vertical-align:-2px;animation:blink 1s steps(1) infinite;margin-left:1px}
+.chat-send{
+  width:38px;height:38px;border-radius:50%;background:var(--red);color:#fff;
+  display:grid;place-items:center;flex:none;border:0;transition:transform .15s ease;
+}
+.chat-send.pressed{transform:scale(.82)}
 
 /* ================= PRICING ================= */
 .plans{display:grid;grid-template-columns:minmax(0,460px);gap:26px;justify-content:center;align-items:stretch}
@@ -1148,14 +1169,13 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
     <div class="chatcard reveal" aria-label="Exemplo de conversa com o assistente virtual Novu app">
       <div class="chat-head">
         <span class="chat-ava" style="background:transparent"><img src="assets/novu-icon.png" alt="" style="width:100%;height:100%;border-radius:50%;object-fit:cover"></span>
-        <span class="t"><b>Novu app</b><small>● online agora</small></span>
+        <span class="t"><b>Novu app</b><small id="chat-status">● online agora</small></span>
         <span class="inapp">No app</span>
       </div>
-      <div class="msgs">
-        <div class="msg user reveal">Como cadastro minha chave PIX pra começar a cobrar?</div>
-        <div class="msg bot reveal" style="transition-delay:.25s">Ótimo primeiro passo! 🚀 Vá em <b>Configurações → Métodos de cobrança</b> e toque em <b>Nova chave PIX</b>. Pode ser CPF/CNPJ, e-mail, telefone ou chave aleatória.</div>
-        <div class="msg bot reveal" style="transition-delay:.5s">Cadastrou? Então já consigo gerar seu primeiro QR Code de cobrança. Quer que eu te mostre como criar a cobrança semanal?</div>
-        <div class="msg user reveal" style="transition-delay:.75s">Quero! 👏</div>
+      <div class="msgs" id="chat-msgs" aria-live="polite"></div>
+      <div class="chat-inputbar" aria-hidden="true">
+        <div class="chat-input" id="chat-input"></div>
+        <button class="chat-send" id="chat-send" tabindex="-1" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7z"/></svg></button>
       </div>
     </div>
   </div>
@@ -1662,6 +1682,62 @@ function qrSvg(size=118, n=25){
     toast(tst, '<span class="ck">✓</span> Concluída — comprovante do motorista recebido');
     cur.home();
     await sleep(2400);
+  });
+})();
+
+/* ================= DEMO CHAT NOVU APP ================= */
+(function(){
+  const card   = document.querySelector('.chatcard'); if (!card) return;
+  const msgs   = document.getElementById('chat-msgs');
+  const input  = document.getElementById('chat-input');
+  const send   = document.getElementById('chat-send');
+  const status = document.getElementById('chat-status');
+
+  const SCRIPT = [
+    ['user', 'Como cadastro minha chave PIX pra começar a cobrar?'],
+    ['bot',  'Ótimo primeiro passo! 🚀 Vá em <b>Configurações → Métodos de cobrança</b> e toque em <b>Nova chave PIX</b>. Pode ser CPF/CNPJ, e-mail, telefone ou chave aleatória.'],
+    ['bot',  'Cadastrou? Então já consigo gerar seu primeiro QR Code de cobrança. Quer que eu te mostre como criar a cobrança semanal?'],
+    ['user', 'Quero! 👏'],
+  ];
+
+  const addMsg = (cls, html) => {
+    const d = document.createElement('div');
+    d.className = 'msg ' + cls; d.innerHTML = html;
+    msgs.appendChild(d); return d;
+  };
+  const sendUser = async (text) => {
+    await typeInto(input, text, 28);
+    send.classList.add('pressed'); setTimeout(() => send.classList.remove('pressed'), 180);
+    await sleep(160);
+    input.innerHTML = '';
+    addMsg('user', text);
+  };
+  const botSay = async (html, thinking) => {
+    status.textContent = 'digitando…';
+    const t = addMsg('bot typing', '<i></i><i></i><i></i>');
+    await sleep(thinking);
+    t.remove(); status.textContent = '● online agora';
+    addMsg('bot', html);
+  };
+  const finalState = () => {
+    msgs.innerHTML = ''; input.innerHTML = '';
+    SCRIPT.forEach(([c, h]) => addMsg(c, h));
+  };
+
+  demoLoop(card, async (staticOnly) => {
+    if (staticOnly){ finalState(); return; }
+    msgs.innerHTML = ''; input.innerHTML = '';
+    status.textContent = '● online agora';
+    await sleep(700);
+
+    await sendUser(SCRIPT[0][1]);          // pessoa pergunta
+    await sleep(650);
+    await botSay(SCRIPT[1][1], 1700);      // Novu app responde
+    await sleep(950);
+    await botSay(SCRIPT[2][1], 1500);      // e emenda a oferta de ajuda
+    await sleep(850);
+    await sendUser(SCRIPT[3][1]);          // pessoa finaliza
+    await sleep(2800);
   });
 })();
 
