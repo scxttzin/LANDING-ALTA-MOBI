@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Alta Mobi — Gestão inteligente de frota para motoristas de app</title>
+<title>Novu — Gestão inteligente de frota para motoristas de app</title>
 <meta name="description" content="Centralize contratos, motoristas e veículos. Cobre por PIX com QR Code em segundos e receba na hora. Método validado por mais de 19 empresas parceiras.">
 <style>
 /* ================= TOKENS ================= */
@@ -80,8 +80,7 @@ header.nav.is-scrolled{
   border-bottom-color:var(--gray-300);box-shadow:0 12px 32px -20px rgba(27,32,38,.3);
 }
 header.nav:not(.is-scrolled){color:#fff}
-header.nav:not(.is-scrolled) .logo-mark{background:#fff}
-header.nav:not(.is-scrolled) .logo-mark::before{background:repeating-linear-gradient(90deg,var(--red) 0 6px,transparent 6px 10px)}
+header.nav:not(.is-scrolled) .logo-dot{color:#fff;opacity:.8}
 /* sobre a hero: só o logo, centralizado; links e CTA aparecem ao rolar */
 header.nav:not(.is-scrolled) .nav-inner{justify-content:center}
 header.nav:not(.is-scrolled) nav.links,
@@ -91,20 +90,10 @@ header.nav.is-scrolled nav.links,header.nav.is-scrolled .nav-inner .btn{animatio
 @keyframes nav-in{from{opacity:0;transform:translateY(-6px)}}
 [id]{scroll-margin-top:96px}
 .nav-inner{display:flex;align-items:center;gap:26px;height:72px}
-.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.18rem;text-decoration:none;letter-spacing:-.02em}
-.logo-mark{
-  width:32px;height:32px;border-radius:8px;background:var(--red);flex:none;position:relative;overflow:hidden;
-}
-.logo-mark::after{
-  content:"";position:absolute;inset:0;
-  background:
-    linear-gradient(0deg,transparent 0 0),
-    conic-gradient(from 210deg at 70% 30%, rgba(255,255,255,.35), transparent 120deg);
-}
-.logo-mark::before{
-  content:"";position:absolute;left:7px;right:7px;top:14px;height:3.5px;border-radius:2px;
-  background:repeating-linear-gradient(90deg,#fff 0 6px,transparent 6px 10px);
-}
+.logo{display:flex;align-items:center;font-weight:800;font-size:1.24rem;text-decoration:none;letter-spacing:-.01em}
+.logo-dot{color:var(--red)}
+.logo-mark{width:32px;height:32px;border-radius:9px;flex:none;overflow:hidden;display:block;margin-right:9px}
+.logo-mark img{width:100%;height:100%;display:block;object-fit:cover}
 nav.links{display:flex;gap:22px;margin-left:auto}
 nav.links a{text-decoration:none;font-size:.94rem;color:var(--gray-700)}
 nav.links a:hover{color:var(--red)}
@@ -216,19 +205,25 @@ nav.links a:hover{color:var(--red)}
 .frame-live .dot{width:7px;height:7px;border-radius:50%;background:#FF5A64;animation:blink 1.4s ease infinite}
 @keyframes blink{50%{opacity:.35}}
 
-.frame-body{display:grid;grid-template-columns:168px 1fr;min-height:390px}
-@media (max-width:560px){ .frame-body{grid-template-columns:54px 1fr} .fnav span.t{display:none} .fnav .nav-it{justify-content:center;padding:9px 0} }
+.frame-body{display:grid;grid-template-columns:60px 1fr;min-height:390px}
 .fnav{
-  background:var(--gray-900);color:#C9D1D7;padding:14px 10px;display:flex;flex-direction:column;gap:4px;
+  background:var(--gray-900);color:#C9D1D7;padding:12px 0;
+  display:flex;flex-direction:column;gap:8px;align-items:center;
 }
-.fnav .brand{display:flex;align-items:center;gap:8px;font-weight:800;color:#fff;font-size:.85rem;padding:4px 8px 14px}
-.fnav .brand .m{width:20px;height:20px;border-radius:5px;background:var(--red);flex:none}
+.fnav .brand{padding:2px 0 8px}
+.fnav .brand .m{width:27px;height:27px;border-radius:8px;background:var(--red);flex:none;display:block;overflow:hidden}
+.fnav .brand .m img{width:100%;height:100%;display:block;object-fit:cover}
+.fnav .brand .t{display:none}
 .fnav .nav-it{
-  display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:8px;
-  font-size:.8rem;transition:background .25s,color .25s;position:relative;
+  width:38px;height:38px;border-radius:12px;display:grid;place-items:center;
+  background:rgba(255,255,255,.07);transition:background .25s,color .25s,box-shadow .25s;
 }
-.fnav .nav-it svg{flex:none;opacity:.85}
-.fnav .nav-it.active{background:var(--red);color:#fff}
+.fnav .nav-it .t{display:none}
+.fnav .nav-it svg{flex:none;opacity:.9}
+.fnav .nav-it.active{
+  background:linear-gradient(135deg,var(--red),var(--red-dark));color:#fff;
+  box-shadow:0 6px 14px rgba(224,33,46,.45);
+}
 .fmain{padding:16px 18px;position:relative;overflow:hidden;background:var(--white)}
 .fmain .ptitle{font-weight:800;font-size:1.05rem;letter-spacing:-.01em}
 .fmain .psub{color:var(--gray-500);font-size:.78rem;margin-bottom:12px}
@@ -250,7 +245,50 @@ nav.links a:hover{color:var(--red)}
 .dlegend{display:flex;flex-direction:column;gap:3px;font-size:.62rem;color:var(--gray-700);min-width:0}
 .dlegend i{width:8px;height:8px;border-radius:2.5px;display:inline-block;margin-right:5px;vertical-align:-.5px}
 .dlegend .dtotal{margin-top:3px;color:var(--gray-500)}
-.dlegend .dtotal b{color:var(--green)}
+.dlegend .dtotal b{color:var(--red-dark)}
+
+/* mini cards de veículos (demo, espelhando a aba Veículos do app) */
+.vgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.vcard{background:var(--gray-100);border:1px solid var(--gray-300);border-radius:10px;overflow:hidden;min-width:0}
+.vthumb{position:relative;height:66px;background:linear-gradient(160deg,#DFE3E7,var(--gray-100));display:grid;place-items:center;color:var(--gray-500)}
+.vthumb .pill{position:absolute;top:6px;right:6px}
+.vbody{padding:8px 10px 10px}
+.vplate{
+  display:inline-block;font-size:.6rem;font-weight:800;letter-spacing:.08em;
+  border:1px solid var(--gray-300);background:#fff;border-radius:4px;padding:.12em .5em;
+  font-family:ui-monospace,Consolas,monospace;
+}
+.vname{font-weight:700;font-size:.8rem;margin-top:3px}
+.vmeta{font-size:.63rem;color:var(--gray-500);display:flex;gap:.7em;margin-top:1px}
+.vrow{display:flex;justify-content:space-between;align-items:baseline;gap:6px;margin-top:5px;font-size:.65rem;color:var(--gray-700);flex-wrap:wrap}
+.vrow .vprice{font-weight:800;font-size:.8rem;color:var(--ink)}
+.vrow .vprice small{font-weight:600;color:var(--gray-500);font-size:.62rem}
+
+/* card de solicitação de manutenção (painel da empresa, demo) */
+.mreq{
+  display:none;gap:9px;align-items:center;background:var(--amber-soft);
+  border:1px solid #EAD9AE;border-radius:10px;padding:8px 10px;margin-bottom:10px;
+  animation:scr-in .4s ease both;
+}
+.mreq.show{display:flex}
+.mreq .mreq-ico{width:30px;height:30px;border-radius:8px;background:#fff;display:grid;place-items:center;flex:none;font-size:.85rem}
+.mreq .mreq-meta{flex:1;min-width:0;font-size:.7rem;line-height:1.35}
+.mreq .mreq-meta small{color:var(--gray-500)}
+
+/* fluxo reverso (empresa → motorista) na demo de manutenções */
+.pix-flow.back .zap{animation:zap-r 1s cubic-bezier(.4,.1,.4,1) forwards}
+@keyframes zap-r{
+  0%{left:100%;transform:translate(-50%,-50%) scale(1)}
+  100%{left:0;transform:translate(-50%,-50%) scale(1)}
+}
+@media (max-width:880px){
+  .pix-flow.back .zap{animation-name:zap-rv !important}
+  @keyframes zap-rv{
+    0%{left:50%;top:100%;transform:translate(-50%,-50%) scale(1)}
+    100%{left:50%;top:0;transform:translate(-50%,-50%) scale(1)}
+  }
+}
+.zap.wrench{background:var(--red)}
 .mk .k{background:var(--gray-100);border:1px solid var(--gray-300);border-radius:10px;padding:9px 11px}
 .mk .k .l{font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-500);font-weight:700}
 .mk .k .v{font-size:1.05rem;font-weight:800;margin-top:1px}
@@ -495,7 +533,7 @@ tr.flash{animation:rowflash 1.4s ease}
 .vitem h3 em{font-style:normal;color:var(--red)}
 .vitem p{color:var(--gray-700);font-size:.92rem;margin-top:3px}
 
-/* chat Alta Mobi (assistente) */
+/* chat Novu (assistente) */
 .chatcard{
   background:var(--white);border:1px solid var(--gray-300);border-radius:18px;
   box-shadow:var(--shadow);padding:22px;max-width:430px;width:100%;justify-self:center;
@@ -632,28 +670,28 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
 
 <header class="nav">
   <div class="wrap nav-inner">
-    <a class="logo" href="#"><span class="logo-mark"></span>Alta&nbsp;Mobi</a>
+    <a class="logo" href="#"><span class="logo-mark"><img src="assets/novu-icon.png" alt="Novu"></span>novu<span class="logo-dot">.</span></a>
     <nav class="links" aria-label="Navegação principal">
       <a href="#dores">O problema</a>
       <a href="#demo-cadastro">Veja funcionando</a>
       <a href="#planos">Planos</a>
       <a href="#faq">FAQ</a>
     </nav>
-    <a class="btn btn-primary" style="margin-left:8px" href="#planos">Assinar por R$ 32/mês</a>
+    <a class="btn btn-primary" style="margin-left:8px" href="#planos">Assinar por R$ 25/mês</a>
   </div>
 </header>
 
 <main>
 <!-- ============ HERO (centralizada, estilo carmed) ============ -->
 <section class="hero" id="inicio">
-  <div class="hero-bgword" aria-hidden="true">Alta&nbsp;Mobi</div>
+  <div class="hero-bgword" aria-hidden="true">novu.</div>
   <div class="hero-inner">
     <span class="badge-19"><span class="n" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 16 6.5 9h11L19 16"/><rect x="3" y="15" width="18" height="4" rx="1.5"/><circle cx="7.5" cy="19" r="1.4"/><circle cx="16.5" cy="19" r="1.4"/></svg></span> Aplicativo feito por frotista para frotista.</span>
-    <h1>Sua frota rende. <span class="hl">Sua gestão trava.</span> A Alta Mobi resolve a segunda parte.</h1>
-    <p class="sub">Chega de perder horas administrando múltiplos contratos em planilhas e WhatsApp. O painel da Alta Mobi centraliza e automatiza o que hoje consome o seu dia.</p>
+    <h1>Sua frota rende. <span class="hl">Sua gestão trava.</span> A Novu resolve a segunda parte.</h1>
+    <p class="sub">Chega de perder horas administrando múltiplos contratos em planilhas e WhatsApp. O painel da Novu centraliza e automatiza o que hoje consome o seu dia.</p>
 
     <!-- palco: app ao centro + ícones em órbita -->
-    <div class="hero-stage" aria-label="Demonstração do painel Alta Mobi navegando entre abas">
+    <div class="hero-stage" aria-label="Demonstração do painel Novu navegando entre abas">
       <div class="orb back orb--1" aria-hidden="true"><div class="orb-card"><svg width="52" height="52" viewBox="0 0 24 24" fill="currentColor"><path d="M3 3h8v8H3V3zm2 2v4h4V5H5zm8-2h8v8h-8V3zm2 2v4h4V5h-4zM3 13h8v8H3v-8zm2 2v4h4v-4H5zm11-2h2v2h-2v-2zm2 2h2v2h-2v-2zm-2 2h2v2h-2v-2zm2 2h2v2h-2v-2zm2-6h2v2h-2v-2zm0 4h2v2h-2v-2zm-6 2h2v2h-2v-2z"/></svg></div></div>
       <div class="orb orb--2" aria-hidden="true"><div class="orb-card">PIX</div></div>
       <div class="orb orb--3" aria-hidden="true"><div class="orb-card"><span class="ckmark">✓</span> Pago</div></div>
@@ -664,11 +702,11 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
       <div class="hero-app">
         <div class="hero-app-float">
     <div class="frame" id="frame-hero">
-      <div class="frame-top"><span class="b"></span><span class="b"></span><span class="b"></span><span class="addr">app.altamobi.com.br</span></div>
+      <div class="frame-top"><span class="b"></span><span class="b"></span><span class="b"></span><span class="addr">app.novuapp.com.br</span></div>
       <span class="frame-live"><span class="dot"></span>Demo ao vivo</span>
       <div class="frame-body">
         <aside class="fnav" id="hero-nav">
-          <div class="brand"><span class="m"></span><span class="t">Alta Mobi</span></div>
+          <div class="brand"><span class="m"><img src="assets/novu-icon.png" alt="Novu"></span></div>
           <div class="nav-it active" data-tab="dashboard"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span class="t">Dashboard</span></div>
           <div class="nav-it" data-tab="recebimentos"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg><span class="t">Recebimentos</span></div>
           <div class="nav-it" data-tab="veiculos"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 16 6.5 9h11L19 16"/><rect x="3" y="15" width="18" height="4" rx="1.5"/><circle cx="7.5" cy="19" r="1.4"/><circle cx="16.5" cy="19" r="1.4"/></svg><span class="t">Veículos</span></div>
@@ -684,7 +722,7 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
     </div>
 
     <div class="hero-ctas">
-      <a class="btn-pill" href="#planos">Começar agora — R$ 32/mês</a>
+      <a class="btn-pill" href="#planos">Começar agora — R$ 25/mês</a>
       <a class="btn-pill ghost" href="#demo-cadastro">Ver o app funcionando ↓</a>
     </div>
     <p class="hero-note">Sem fidelidade no plano mensal · Configuração no mesmo dia · Suporte em português</p>
@@ -704,13 +742,13 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
         <span class="icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3h8l4 4v12a2 2 0 0 1-2 2h-6"/><path d="M16 3v4h4"/><rect x="2" y="9" width="9" height="12" rx="1.5" transform="rotate(-8 6.5 15)"/></svg></span>
         <h3>Contratos espalhados</h3>
         <p>Um contrato no Word, outro no e-mail, três na gaveta. Quando você precisa saber quem está com qual carro e desde quando, começa a caçada.</p>
-        <p class="fix">→ Na Alta Mobi, cada motorista, veículo e contrato vive no mesmo painel.</p>
+        <p class="fix">→ Na Novu, cada motorista, veículo e contrato vive no mesmo painel.</p>
       </article>
       <article class="pain reveal">
         <span class="icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 3h13v18l-2.2-1.5L12.6 21l-2.2-1.5L8.2 21 6 19.5 4 21V3z"/><path d="M8 8h5M8 12h5M8 16h3"/><path d="M20 7v10"/></svg></span>
         <h3>Cobrança no braço</h3>
         <p>Toda semana a mesma novela: gerar cobrança, mandar no WhatsApp, esperar o comprovante, conferir o extrato, marcar na planilha. Por motorista.</p>
-        <p class="fix">→ A Alta Mobi gera o PIX com QR Code na hora e baixa o pagamento sozinha.</p>
+        <p class="fix">→ A Novu gera o PIX com QR Code na hora e baixa o pagamento sozinha.</p>
       </article>
       <article class="pain reveal">
         <span class="icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3l18 18"/><path d="M10.5 5.2A10 10 0 0 1 12 5c5.5 0 9.5 4.7 10 7-.3.9-1.2 2.3-2.5 3.5M6.1 6.1C4 7.5 2.5 9.9 2 12c.5 2.3 4.5 7 10 7 1.7 0 3.2-.4 4.5-1.1"/><path d="M9.5 9.5a3.5 3.5 0 0 0 5 5"/></svg></span>
@@ -722,7 +760,7 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
         <span class="icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></span>
         <h3>Manutenção enrolada</h3>
         <p>Sempre na espera do motorista te notificar a próxima revisão e informar o custo.</p>
-        <p class="fix">→ Pela Alta Mobi, as manutenções são solicitadas e detalhadas direto na sua mão — tudo automatizado via sistema para não consumir seu tempo.</p>
+        <p class="fix">→ Pela Novu, as manutenções são solicitadas e detalhadas direto na sua mão — tudo automatizado via sistema para não consumir seu tempo.</p>
       </article>
     </div>
   </div>
@@ -742,11 +780,11 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
       </ul>
     </div>
     <div class="frame reveal" id="frame-cad" aria-label="Demonstração ao vivo do cadastro de motorista">
-      <div class="frame-top"><span class="b"></span><span class="b"></span><span class="b"></span><span class="addr">app.altamobi.com.br/motoristas</span></div>
+      <div class="frame-top"><span class="b"></span><span class="b"></span><span class="b"></span><span class="addr">app.novuapp.com.br/motoristas</span></div>
       <span class="frame-live"><span class="dot"></span>Demo ao vivo</span>
       <div class="frame-body">
         <aside class="fnav">
-          <div class="brand"><span class="m"></span><span class="t">Alta Mobi</span></div>
+          <div class="brand"><span class="m"><img src="assets/novu-icon.png" alt="Novu"></span></div>
           <div class="nav-it"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span class="t">Dashboard</span></div>
           <div class="nav-it"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg><span class="t">Recebimentos</span></div>
           <div class="nav-it"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 16 6.5 9h11L19 16"/><rect x="3" y="15" width="18" height="4" rx="1.5"/><circle cx="7.5" cy="19" r="1.4"/><circle cx="16.5" cy="19" r="1.4"/></svg><span class="t">Veículos</span></div>
@@ -792,7 +830,7 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
   <div class="wrap">
     <div class="section-head reveal">
       <span class="live-tag"><span class="dot"></span>Funcionalidade real · rodando agora</span>
-      <h2>Gere a cobrança, mostre o QR Code, receba o PIX. Sem sair da tela.</h2>
+      <h2>Sistema de Cobrança Semanal dinâmico.</h2>
       <p>Acompanhe o ciclo completo acontecendo abaixo: o motorista abre o painel dele, paga o semanal por QR Code PIX — e o pagamento cai em "Recebimentos" no seu painel, com baixa automática, na hora.</p>
     </div>
 
@@ -804,7 +842,7 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
           <span class="notch"></span>
           <div class="screen">
             <div class="papp-head">
-              <div class="small">Alta Mobi · Motorista</div>
+              <div class="small">Novu · Motorista</div>
               <div class="hi">Olá, Carlos 👋</div>
             </div>
             <!-- tela 1: cobrança da semana -->
@@ -824,7 +862,7 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
               <div class="papp-body" style="align-items:stretch">
                 <div style="font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gray-500);text-align:center">Pague com o app do seu banco</div>
                 <div class="qrbox" id="drv-qrbox"></div>
-                <div class="copia mono">00020126580014br.gov.bcb.pix0136a1b2c3d4-alta-mobi-demo5204000053039865404650.005802BR5910ALTA MOBI6009SAO PAULO62070503***6304A1F7</div>
+                <div class="copia mono">00020126580014br.gov.bcb.pix0136a1b2c3d4-novu-app-demo05204000053039865404650.005802BR5910NOVU6009SAO PAULO62070503***6304A1F7</div>
                 <div class="wait"><span class="sp"></span> Aguardando confirmação…</div>
               </div>
             </div>
@@ -850,11 +888,11 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
       <div class="stage-side">
         <span class="stage-label"><span class="sw"></span>Seu painel — frotista</span>
         <div class="frame" style="box-shadow:var(--shadow);width:100%">
-          <div class="frame-top"><span class="b"></span><span class="b"></span><span class="b"></span><span class="addr">app.altamobi.com.br/recebimentos</span></div>
+          <div class="frame-top"><span class="b"></span><span class="b"></span><span class="b"></span><span class="addr">app.novuapp.com.br/recebimentos</span></div>
           <span class="frame-live"><span class="dot"></span>Demo ao vivo</span>
           <div class="frame-body" style="min-height:352px">
             <aside class="fnav">
-              <div class="brand"><span class="m"></span><span class="t">Alta Mobi</span></div>
+              <div class="brand"><span class="m"><img src="assets/novu-icon.png" alt="Novu"></span></div>
               <div class="nav-it"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span class="t">Dashboard</span></div>
               <div class="nav-it active"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg><span class="t">Recebimentos</span></div>
               <div class="nav-it"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 16 6.5 9h11L19 16"/><rect x="3" y="15" width="18" height="4" rx="1.5"/><circle cx="7.5" cy="19" r="1.4"/><circle cx="16.5" cy="19" r="1.4"/></svg><span class="t">Veículos</span></div>
@@ -893,19 +931,155 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
   </div>
 </section>
 
+<!-- ============ DEMO 3: MANUTENÇÕES AUTOMÁTICAS ============ -->
+<section id="demo-manut">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="live-tag"><span class="dot"></span>Funcionalidade real · rodando agora</span>
+      <h2>Manutenções Automáticas.</h2>
+      <p>O motorista solicita a manutenção pelo app, você agenda e direciona para a oficina parceira cadastrada — e acompanha tudo até o serviço concluído, sem WhatsApp no meio. Veja o ciclo completo rodando abaixo.</p>
+    </div>
+
+    <div class="pix-stage reveal" id="frame-manut" aria-label="Demonstração ao vivo do fluxo de manutenção entre motorista e frotista">
+      <!-- painel do motorista -->
+      <div class="stage-side phone-side">
+        <span class="stage-label"><span class="sw"></span>Painel do motorista</span>
+        <div class="phone">
+          <span class="notch"></span>
+          <div class="screen">
+            <div class="papp-head">
+              <div class="small">NOVU · Motorista</div>
+              <div class="hi">Manutenção 🔧</div>
+            </div>
+            <div class="pscreen on" id="drv-m1">
+              <div class="papp-body">
+                <div class="week-card">
+                  <div class="l">Seu veículo</div>
+                  <div class="v" style="font-size:.95rem">Onix · PLK-4D21</div>
+                  <div class="d">48.310 km · Última revisão: mar/2026</div>
+                </div>
+                <button class="fbtn" id="drv-solicitar" style="width:100%;justify-content:center">🔧 Solicitar manutenção</button>
+                <div style="font-size:.7rem;color:var(--gray-500);text-align:center">A empresa recebe o pedido na hora, com fotos e km</div>
+              </div>
+            </div>
+            <div class="pscreen" id="drv-m2">
+              <div class="papp-body">
+                <div class="week-card">
+                  <div class="l">Minhas solicitações</div>
+                  <div class="v" style="font-size:.92rem">Revisão dos freios</div>
+                  <div class="d">Solicitada em seg, 13/07</div>
+                  <div class="d" style="margin-top:4px"><span class="pill pend">Aguardando a empresa</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="pscreen" id="drv-m3">
+              <div class="papp-body">
+                <div class="week-card">
+                  <div class="l">Minhas solicitações</div>
+                  <div class="v" style="font-size:.92rem">Revisão dos freios</div>
+                  <div class="d">Agendada para qui, 16/07 · R$ 380 · <span class="pill ok">Aceita</span></div>
+                  <div class="d" style="margin-top:5px;color:var(--red-dark);font-weight:700">📍 Oficina do Zé — Av. Brasil, 1200</div>
+                </div>
+                <button class="fbtn" id="drv-realizada" style="width:100%;justify-content:center;background:var(--green)">✓ Confirmar realizada</button>
+              </div>
+            </div>
+            <div class="pscreen" id="drv-m4">
+              <div class="paid-big">
+                <span class="cir">✓</span>
+                <b>Manutenção concluída</b>
+                <small>Registrada no histórico<br>do seu veículo</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- fluxo -->
+      <div class="pix-flow" id="manut-flow" aria-hidden="true">
+        <span class="lbl">Tudo pelo sistema</span>
+        <span class="zap wrench">🔧</span>
+      </div>
+
+      <!-- painel do frotista -->
+      <div class="stage-side">
+        <span class="stage-label"><span class="sw"></span>Seu painel — frotista</span>
+        <div class="frame" style="box-shadow:var(--shadow);width:100%">
+          <div class="frame-top"><span class="b"></span><span class="b"></span><span class="b"></span><span class="addr">app.novuapp.com.br/manutencoes</span></div>
+          <span class="frame-live"><span class="dot"></span>Demo ao vivo</span>
+          <div class="frame-body" style="min-height:352px">
+            <aside class="fnav">
+              <div class="brand"><span class="m"><img src="assets/novu-icon.png" alt="Novu"></span></div>
+              <div class="nav-it"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span class="t">Dashboard</span></div>
+              <div class="nav-it"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg><span class="t">Recebimentos</span></div>
+              <div class="nav-it active"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg><span class="t">Manutenções</span></div>
+              <div class="nav-it"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 16 6.5 9h11L19 16"/><rect x="3" y="15" width="18" height="4" rx="1.5"/><circle cx="7.5" cy="19" r="1.4"/><circle cx="16.5" cy="19" r="1.4"/></svg><span class="t">Veículos</span></div>
+              <div class="nav-it"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-6 8-6s8 2 8 6"/></svg><span class="t">Motoristas</span></div>
+            </aside>
+            <div class="fmain">
+              <div class="ptitle">Manutenções</div>
+              <div class="psub">Solicitações dos motoristas, agenda e histórico</div>
+              <div class="mk">
+                <div class="k"><div class="l">Solicitações</div><div class="v mono" id="mn-kpi-sol">0</div></div>
+                <div class="k"><div class="l">Agendadas</div><div class="v mono" id="mn-kpi-ag">1</div></div>
+                <div class="k"><div class="l">Concluídas</div><div class="v mono" id="mn-kpi-ok">8</div></div>
+              </div>
+              <div class="mreq" id="mn-req">
+                <span class="mreq-ico">🔔</span>
+                <span class="mreq-meta"><b>Revisão dos freios · PLK-4D21</b><br><small>Carlos Menezes · 48.310 km · fotos anexadas</small></span>
+                <button class="fbtn" id="mn-agendar" style="font-size:.68rem;padding:.45em .8em">Agendar</button>
+              </div>
+              <table class="mt fro-tbl">
+                <thead><tr><th>Manutenção</th><th>Veículo</th><th>Custo</th><th>Status</th></tr></thead>
+                <tbody>
+                  <tr id="mn-row" style="display:none"><td>Revisão dos freios</td><td class="mono">PLK-4D21</td><td class="mono">R$ 380,00</td><td><span class="pill pend" id="mn-status">Agendada</span></td></tr>
+                  <tr><td>Troca de óleo</td><td class="mono">QWE-9A02</td><td class="mono">R$ 260,00</td><td><span class="pill ok">Concluída</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <!-- modal de agendamento -->
+          <div class="fmodal" id="mn-modal">
+            <div class="box">
+              <h4>Agendar manutenção solicitada</h4>
+              <div class="ffield"><label>Motorista · Veículo</label><div class="inp">Carlos Menezes · Onix PLK-4D21</div></div>
+              <div class="fgrid2">
+                <div class="ffield"><label>Data do agendamento</label><div class="inp">qui, 16/07</div></div>
+                <div class="ffield"><label>Valor previsto</label><div class="inp">R$ 380,00</div></div>
+              </div>
+              <div class="ffield"><label>Parceiro (oficina / mecânico)</label><div class="inp">Oficina do Zé · Mecânica ▾</div></div>
+              <div style="font-size:.66rem;color:var(--gray-500);margin:-2px 0 8px">O motorista verá o nome e a localização do parceiro escolhido.</div>
+              <button class="fbtn" id="mn-confirm" style="width:100%;justify-content:center">✓ Confirmar agendamento</button>
+            </div>
+          </div>
+          <div class="ftoast" id="mn-toast"></div>
+        </div>
+      </div>
+
+      <div class="cursor" id="mn-cursor"><span class="ring"></span><svg width="20" height="20" viewBox="0 0 24 24"><path d="M5 3l14 8.5-6.2 1.4L9.5 19 5 3z" fill="#1B2026" stroke="#fff" stroke-width="1.5"/></svg></div>
+    </div>
+
+    <ul class="pix-points reveal">
+      <li>A solicitação chega na hora, com fotos e quilometragem do veículo</li>
+      <li>Você agenda, define o valor previsto e direciona para a oficina parceira cadastrada</li>
+      <li>O motorista recebe data e localização — e confirma o serviço realizado com comprovante</li>
+      <li>Histórico e custos por veículo sempre atualizados, sem consumir o seu tempo</li>
+    </ul>
+  </div>
+</section>
+
 <!-- ============ AUTORIDADE / MÉTODO VALIDADO ============ -->
 <section id="validado">
   <div class="wrap">
     <div class="section-head reveal">
       <span class="eyebrow">Método validado</span>
-      <h2>Não é promessa: é rotina em mais de 19 operações reais.</h2>
-      <p>Antes de chegar até você, o método Alta Mobi foi testado e aprovado no dia a dia de empresas parceiras que vivem de locação para motoristas de app.</p>
+      <h2>Nossos parceiros aprovam, por que você não?</h2>
+      <p>Antes de chegar em você, o aplicativo da Novu já estava operando no dia a dia e se tornando realidade para algumas empresas que vivem de locação para motoristas de app.</p>
     </div>
     <div class="valid-grid">
       <div class="valid-hero reveal">
         <div class="vnum mono"><span data-count="19" data-suffix="+">0</span></div>
         <div class="vlabel">empresas parceiras validaram o método</div>
-        <p>De frotistas com 5 carros a operações com mais de 100 veículos — cobrando, controlando e crescendo com a Alta Mobi todos os dias.</p>
+        <p>De frotistas com 3 carros até operações com mais de 40 veículos — cobrando, controlando e crescendo com a Novu todos os dias.</p>
         <div class="vlogos" aria-label="Empresas parceiras">
           <a class="flex" href="https://scxttzin.github.io/APP-FLEX-DRIVE/" target="_blank" rel="noopener">Flex Drive ↗</a><span>LocaMax</span><span>Rodar Frotas</span><span>VeloCar</span><span>Frota Sul</span><span>GiroCar</span><span>+ 13 outras</span>
         </div>
@@ -929,7 +1103,7 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
           <span class="ic" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M7 8c0-1.7 2.2-3 5-3s5 1.3 5 3-2.2 3-5 3-5 1.3-5 3 2.2 3 5 3 5-1.3 5-3"/></svg></span>
           <div>
             <h3><em>R$ 0</em> de taxa sobre seus recebimentos</h3>
-            <p>O PIX é gerado na sua chave e cai 100% na sua conta. A Alta Mobi não intermedeia — e não morde — o seu dinheiro.</p>
+            <p>O PIX é gerado na sua chave e cai 100% na sua conta. A Novu não intermedeia — e não morde — o seu dinheiro.</p>
           </div>
         </article>
       </div>
@@ -937,23 +1111,24 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
   </div>
 </section>
 
-<!-- ============ SUPORTE / CHAT ALTA MOBI ============ -->
+<!-- ============ SUPORTE / CHAT NOVU ============ -->
 <section class="sec-gray" id="suporte">
   <div class="wrap demo-grid">
     <div class="demo-copy reveal">
       <span class="eyebrow">Você nunca fica na mão</span>
-      <h2>Travou em algo? O Mobi app resolve na hora.</h2>
-      <p>Dentro do app existe o <strong>Mobi app</strong>: um assistente virtual que tira dúvidas e te ajuda a configurar a conta passo a passo — da chave PIX ao primeiro motorista cadastrado, a qualquer hora do dia.</p>
+      <h2>Travou em algo? O Novu app resolve na hora.</h2>
+      <p>Dentro do app existe o <strong>Novu app</strong>: um assistente virtual que tira dúvidas e te ajuda a configurar a conta passo a passo — da chave PIX ao primeiro motorista cadastrado. E ele não trabalha só para você: o Novu app também está presente no app dos seus motoristas, como um <strong>funcionário extra da sua empresa</strong>.</p>
       <ul>
-        <li><strong>Assistente virtual no app</strong> — responde na hora e guia a configuração da sua conta</li>
+        <li><strong>No seu painel</strong> — responde na hora e guia a configuração da sua conta</li>
+        <li><strong>No app do motorista</strong> — auxilia os motoristas cadastrados, responde as perguntas deles e ensina a usar o aplicativo, sem ocupar o seu telefone</li>
         <li><strong>Suporte humano via chat e WhatsApp</strong> — quando você preferir falar com a nossa equipe</li>
-        <li>Incluído nos dois planos, sem custo extra</li>
+        <li>Incluído no plano, sem custo extra</li>
       </ul>
     </div>
-    <div class="chatcard reveal" aria-label="Exemplo de conversa com o assistente virtual Mobi app">
+    <div class="chatcard reveal" aria-label="Exemplo de conversa com o assistente virtual Novu app">
       <div class="chat-head">
-        <span class="chat-ava">AM</span>
-        <span class="t"><b>Mobi app</b><small>● online agora</small></span>
+        <span class="chat-ava" style="background:transparent"><img src="assets/novu-icon.png" alt="" style="width:100%;height:100%;border-radius:50%;object-fit:cover"></span>
+        <span class="t"><b>Novu app</b><small>● online agora</small></span>
         <span class="inapp">No app</span>
       </div>
       <div class="msgs">
@@ -972,7 +1147,7 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
     <div class="quote reveal">
       <div class="mark" aria-hidden="true">“</div>
       <div>
-        <blockquote>Eu administrava 10 contratos e meus motoristas tudo pelo WhatsApp. Hoje abro a Alta Mobi, vejo quem pagou, quem está pendente, se meus motoristas querem fazer manutenção no veículo, aceito as solicitações — o resto do dia é meu. A gestão da frota que levava horas agora são minutos.</blockquote>
+        <blockquote>Eu administrava 10 contratos e meus motoristas tudo pelo WhatsApp. Hoje abro a Novu, vejo quem pagou, quem está pendente, se meus motoristas querem fazer manutenção no veículo, aceito as solicitações — o resto do dia é meu. A gestão da frota que levava horas agora são minutos.</blockquote>
         <p class="who"><strong>Wilson Sutero (Flex Drive)</strong> — frotista parceiro, +12 veículos locados para motoristas de app Uber e 99</p>
       </div>
     </div>
@@ -983,39 +1158,38 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
 <section id="planos">
   <div class="wrap">
     <div class="section-head reveal" style="align-items:center;text-align:center;margin-left:auto;margin-right:auto">
-      <span class="eyebrow" style="justify-content:center">Planos</span>
+      <span class="eyebrow" style="justify-content:center">Plano</span>
       <h2>Menos que uma diária de locação. Por mês.</h2>
-      <p>Um único plano com tudo dentro: motoristas e veículos ilimitados, cobranças PIX, assistente virtual e suporte via chat e WhatsApp. Você só escolhe como quer pagar.</p>
+      <p>Um único plano mensal com tudo dentro: cobranças PIX, manutenções automáticas, Novu app e suporte via chat e WhatsApp. Acima de 60 veículos, só o valor acompanha o tamanho da operação.</p>
     </div>
     <div class="plans">
-      <article class="plan reveal">
-        <span class="name">Mensal</span>
-        <div class="price"><span class="mono" data-price="32">R$ 32</span><small>/mês</small></div>
-        <p class="per">Flexibilidade total — cancele quando quiser.</p>
-        <ul>
-          <li>Motoristas e veículos ilimitados</li>
-          <li>Cobranças PIX com QR Code na sua chave</li>
-          <li>Controle de contratos, manutenções e documentos</li>
-          <li>App do motorista incluído</li>
-          <li>Mobi app — assistente virtual que tira dúvidas e configura a conta com você</li>
-          <li>Suporte via chat e WhatsApp</li>
-        </ul>
-        <a class="btn btn-ghost" href="#cta">Assinar plano mensal</a>
-      </article>
       <article class="plan annual reveal">
         <span class="shine"></span>
-        <span class="flag">Melhor valor · economize 48%</span>
-        <span class="name">Anual</span>
-        <div class="price"><span class="mono" data-price="200">R$ 200</span><small>/ano</small></div>
-        <p class="per">Equivale a <strong class="mono">R$ 16,67/mês</strong> — quase metade do preço do mensal.</p>
-        <span class="save-chip">Você economiza R$ 184 no ano</span>
+        <span class="flag">Plano único · sem fidelidade</span>
+        <span class="name">Mensal</span>
+        <div class="price"><span class="mono" data-price="25">R$ 25</span><small>/mês</small></div>
+        <p class="per">Para frotas de <strong>até 60 veículos</strong> — cancele quando quiser.</p>
         <ul>
-          <li>Tudo do plano mensal, incluindo chat + WhatsApp</li>
-          <li>Preço travado por 12 meses</li>
+          <li>Motoristas e veículos ilimitados dentro da faixa</li>
+          <li>Cobranças PIX com QR Code na sua chave</li>
+          <li>Manutenções automáticas com oficinas parceiras</li>
+          <li>Controle de contratos e documentos</li>
+          <li>App do motorista incluído</li>
+          <li>Novu app — assistente para você e para os seus motoristas</li>
+          <li>Suporte via chat e WhatsApp</li>
+        </ul>
+        <a class="btn btn-primary" href="#cta">Assinar por R$ 25/mês</a>
+      </article>
+      <article class="plan reveal">
+        <span class="name">Frota 60+</span>
+        <div class="price"><span class="mono" data-price="50">R$ 50</span><small>/mês</small></div>
+        <p class="per">Para operações com <strong>mais de 60 veículos</strong>.</p>
+        <ul>
+          <li>Tudo do plano mensal, sem limite de faixa</li>
           <li>Onboarding assistido da sua frota</li>
           <li>Prioridade no suporte</li>
         </ul>
-        <a class="btn btn-primary" href="#cta">Assinar plano anual</a>
+        <a class="btn btn-ghost" href="#cta">Assinar Frota 60+</a>
       </article>
     </div>
     <p class="plans-note reveal">Sem taxa de implantação · Sem cobrança por veículo · Seus recebimentos PIX caem 100% na sua conta</p>
@@ -1031,20 +1205,20 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
     </div>
     <div class="faq reveal">
       <details>
-        <summary>O PIX passa pela Alta Mobi? Vocês ficam com alguma taxa?</summary>
+        <summary>O PIX passa pela Novu? Vocês ficam com alguma taxa?</summary>
         <div class="a">Não. O QR Code é gerado com a <strong>sua</strong> chave PIX — o pagamento cai direto na conta da sua empresa, sem intermediário e sem taxa sobre recebimentos. A plataforma cuida da cobrança, do acompanhamento e da baixa.</div>
       </details>
       <details>
         <summary>Quantos motoristas e veículos posso cadastrar?</summary>
-        <div class="a">Quantos você tiver. Os dois planos incluem motoristas, veículos e contratos ilimitados — o preço não muda quando a sua frota cresce.</div>
+        <div class="a">Quantos você tiver. O plano inclui motoristas, veículos e contratos sem limite — e o valor só muda quando a frota passa de 60 veículos (de R$ 25 para R$ 50 por mês).</div>
       </details>
       <details>
         <summary>É difícil de configurar? Preciso de ajuda técnica?</summary>
-        <div class="a">Não. Você cria a conta, cadastra a chave PIX da empresa e começa a incluir motoristas e veículos — como você viu nas demonstrações desta página, cada cadastro leva menos de um minuto. E o <strong>Mobi app</strong>, o assistente virtual dentro do app, te guia em cada passo da configuração. No plano anual, nosso time ainda acompanha a migração da sua frota.</div>
+        <div class="a">Não. Você cria a conta, cadastra a chave PIX da empresa e começa a incluir motoristas e veículos — como você viu nas demonstrações desta página, cada cadastro leva menos de um minuto. E o <strong>Novu app</strong>, o assistente virtual dentro do app, te guia em cada passo da configuração. E se precisar, nosso time acompanha a migração da sua frota.</div>
       </details>
       <details>
         <summary>Como funciona o suporte?</summary>
-        <div class="a">Em três camadas, incluídas nos dois planos: o <strong>Mobi app</strong> (assistente virtual que responde na hora e ajuda a configurar a conta), o <strong>chat com a nossa equipe</strong> dentro da plataforma e o <strong>WhatsApp</strong> para quem prefere resolver por lá.</div>
+        <div class="a">Em três camadas, incluídas no plano: o <strong>Novu app</strong> (assistente virtual que responde na hora e ajuda a configurar a conta), o <strong>chat com a nossa equipe</strong> dentro da plataforma e o <strong>WhatsApp</strong> para quem prefere resolver por lá.</div>
       </details>
       <details>
         <summary>O motorista também usa o app?</summary>
@@ -1052,7 +1226,7 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
       </details>
       <details>
         <summary>Posso cancelar quando quiser?</summary>
-        <div class="a">No plano mensal, sim — sem multa e sem fidelidade. No anual, você garante o preço promocional por 12 meses; se decidir sair, seus dados ficam disponíveis para exportação.</div>
+        <div class="a">Sim — o plano é mensal, sem multa e sem fidelidade. Se decidir sair, seus dados ficam disponíveis para exportação.</div>
       </details>
       <details>
         <summary>Meus dados e os dos motoristas ficam seguros?</summary>
@@ -1066,12 +1240,12 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
 <!-- ============ CTA FINAL ============ -->
 <section class="cta-final" id="cta">
   <div class="inner">
-    <span class="urgency">⏳ Condição de lançamento — R$ 32/mês garantido para quem assinar este mês</span>
-    <h2>Toda semana sem a Alta Mobi é mais uma semana cobrando no braço.</h2>
-    <p>Você viu o app funcionando nesta página: cadastro em segundos, QR Code PIX na hora, baixa automática — e o Mobi app te acompanhando na configuração. Por <strong style="color:#fff">R$ 32/mês</strong> — ou <strong style="color:#fff">R$ 200/ano</strong>, que sai por R$ 16,67 mensais — sua operação inteira cabe em um painel. O preço de lançamento vale para as assinaturas deste mês; depois, ele acompanha a tabela cheia.</p>
+    <span class="urgency">⏳ Condição de lançamento — R$ 25/mês garantido para quem assinar este mês</span>
+    <h2>Toda semana sem a Novu é mais uma semana cobrando no braço.</h2>
+    <p>Você viu o app funcionando nesta página: cadastro em segundos, QR Code PIX na hora, manutenções automáticas — e o Novu app trabalhando para você e para os seus motoristas. Por <strong style="color:#fff">R$ 25/mês</strong> — R$ 50/mês apenas para frotas acima de 60 veículos — sua operação inteira cabe em um painel. O preço de lançamento vale para as assinaturas deste mês; depois, ele acompanha a tabela cheia.</p>
     <div style="display:flex;gap:14px;flex-wrap:wrap;justify-content:center">
-      <a class="btn btn-primary" href="#planos">Garantir R$ 32/mês agora</a>
-      <a class="btn" style="border:1.5px solid #3A434B;color:#fff" href="mailto:contato@altamobi.com.br">Falar com a equipe</a>
+      <a class="btn btn-primary" href="#planos">Garantir R$ 25/mês agora</a>
+      <a class="btn" style="border:1.5px solid #3A434B;color:#fff" href="mailto:contato@novuapp.com.br">Falar com a equipe</a>
     </div>
     <p style="font-size:.85rem;color:#7E8A93">19+ empresas parceiras · Sem taxa de implantação · Cancele o mensal quando quiser</p>
   </div>
@@ -1080,7 +1254,7 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
 <footer>
   <div class="wrap">
     <div class="foot-grid">
-      <a class="logo" href="#" style="font-size:1rem"><span class="logo-mark" style="width:26px;height:26px"></span>Alta&nbsp;Mobi</a>
+      <a class="logo" href="#" style="font-size:1rem"><span class="logo-mark" style="width:26px;height:26px"><img src="assets/novu-icon.png" alt="Novu"></span>novu<span class="logo-dot">.</span></a>
       <nav aria-label="Rodapé">
         <a href="#dores">O problema</a>
         <a href="#demo-cadastro">Demonstração</a>
@@ -1088,10 +1262,10 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
         <a href="#faq">FAQ</a>
         <a href="#">Termos de uso</a>
         <a href="#">Privacidade</a>
-        <a href="mailto:contato@altamobi.com.br">contato@altamobi.com.br</a>
+        <a href="mailto:contato@novuapp.com.br">contato@novuapp.com.br</a>
       </nav>
     </div>
-    <p class="legal">Alta Mobi Tecnologia · Gestão inteligente de frotas para motoristas de aplicativo · Feito no Brasil. Os pagamentos PIX são liquidados diretamente na conta bancária do assinante; a Alta Mobi não intermedeia valores.</p>
+    <p class="legal">Novu Tecnologia · Gestão inteligente de frotas para motoristas de aplicativo · Feito no Brasil. Os pagamentos PIX são liquidados diretamente na conta bancária do assinante; a Novu não intermedeia valores.</p>
   </div>
 </footer>
 
@@ -1196,9 +1370,9 @@ function qrSvg(size=118, n=25){
           <div class="donut-wrap">
             <svg viewBox="0 0 80 80" width="72" height="72" role="img" aria-label="Gráfico faturamento x gastos">
               <defs>
-                <linearGradient id="dg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#34D399"/><stop offset="1" stop-color="#16A34A"/></linearGradient>
-                <linearGradient id="dg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FBBF24"/><stop offset="1" stop-color="#D97706"/></linearGradient>
-                <linearGradient id="dg3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#A78BFA"/><stop offset="1" stop-color="#7C3AED"/></linearGradient>
+                <linearGradient id="dg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF5A64"/><stop offset="1" stop-color="#B5121F"/></linearGradient>
+                <linearGradient id="dg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4A545C"/><stop offset="1" stop-color="#23292F"/></linearGradient>
+                <linearGradient id="dg3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#D7DCE0"/><stop offset="1" stop-color="#9AA3AA"/></linearGradient>
               </defs>
               <g transform="rotate(-90 40 40)">
                 <circle cx="40" cy="40" r="30" fill="none" stroke="url(#dg1)" stroke-width="13" stroke-dasharray="117 188.5"/>
@@ -1207,9 +1381,9 @@ function qrSvg(size=118, n=25){
               </g>
             </svg>
             <div class="dlegend">
-              <span><i style="background:#16A34A"></i>Faturamento</span>
-              <span><i style="background:#D97706"></i>Manutenção</span>
-              <span><i style="background:#7C3AED"></i>Seguro</span>
+              <span><i style="background:#E0212E"></i>Faturamento</span>
+              <span><i style="background:#33393F"></i>Manutenção</span>
+              <span><i style="background:#B6BEC4"></i>Seguro</span>
               <span class="dtotal">Líquido <b class="mono">R$ 9,6k</b></span>
             </div>
           </div>
@@ -1217,18 +1391,18 @@ function qrSvg(size=118, n=25){
         <div class="mpanel">
           <div class="mh">Trajeto de recebimentos</div>
           <svg viewBox="0 0 210 92" width="100%" role="img" aria-label="Gráfico de recebimentos ao longo do mês">
-            <defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#2563EB"/><stop offset="1" stop-color="#16A34A"/></linearGradient></defs>
+            <defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#6E7981"/><stop offset="1" stop-color="#E0212E"/></linearGradient></defs>
             <path d="M14 68 C 40 68, 48 42, 72 44 C 96 46, 104 58, 128 50 C 152 42, 160 26, 192 22" fill="none" stroke="url(#rg)" stroke-width="3.5" stroke-linecap="round"/>
-            <circle cx="14" cy="68" r="5" fill="#1E9E5A" stroke="#fff" stroke-width="2"/>
-            <circle cx="72" cy="44" r="3.4" fill="#fff" stroke="#2563EB" stroke-width="2"/>
-            <circle cx="128" cy="50" r="3.4" fill="#fff" stroke="#2563EB" stroke-width="2"/>
+            <circle cx="14" cy="68" r="5" fill="#23292F" stroke="#fff" stroke-width="2"/>
+            <circle cx="72" cy="44" r="3.4" fill="#fff" stroke="#6E7981" stroke-width="2"/>
+            <circle cx="128" cy="50" r="3.4" fill="#fff" stroke="#B5121F" stroke-width="2"/>
             <circle cx="192" cy="22" r="9.5" fill="url(#rg)" stroke="#fff" stroke-width="2"/>
             <g transform="translate(185.6,15.6) scale(.54)" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
               <path d="M5 13l1.5-4.5A2 2 0 0 1 8.4 7h7.2a2 2 0 0 1 1.9 1.5L19 13M5 13h14v4H5v-4Z"/>
             </g>
             <text x="72" y="32" text-anchor="middle" font-size="8.5" font-weight="700" fill="#4A545C">R$ 2,8k</text>
             <text x="128" y="38" text-anchor="middle" font-size="8.5" font-weight="700" fill="#4A545C">R$ 2,1k</text>
-            <text x="192" y="9" text-anchor="middle" font-size="8.5" font-weight="700" fill="#16A34A">R$ 3,9k</text>
+            <text x="192" y="9" text-anchor="middle" font-size="8.5" font-weight="700" fill="#E0212E">R$ 3,9k</text>
             <text x="14" y="86" text-anchor="middle" font-size="7.5" fill="#6E7981">01/07</text>
             <text x="72" y="86" text-anchor="middle" font-size="7.5" fill="#6E7981">08/07</text>
             <text x="128" y="86" text-anchor="middle" font-size="7.5" fill="#6E7981">15/07</text>
@@ -1245,13 +1419,35 @@ function qrSvg(size=118, n=25){
         <tr><td>Rafael Nunes</td><td>sex, 03/07</td><td class="mono">R$ 560,00</td><td><span class="pill red">Em atraso</span></td></tr>
       </tbody></table>`,
     veiculos: `
-      <div class="ptitle">Veículos</div><div class="psub">Frota · valor semanal e manutenção</div>
-      <table class="mt"><thead><tr><th>Veículo</th><th>Placa</th><th>KM</th><th>Semana</th></tr></thead><tbody>
-        <tr><td>Onix 1.0</td><td class="mono">PLK-4D21</td><td class="mono">48.310</td><td class="mono">R$ 650</td></tr>
-        <tr><td>HB20 Sense</td><td class="mono">RTC-7F55</td><td class="mono">61.902</td><td class="mono">R$ 650</td></tr>
-        <tr><td>Argo Drive</td><td class="mono">QWE-9A02</td><td class="mono">37.554</td><td class="mono">R$ 600</td></tr>
-        <tr><td>Polo TSI</td><td class="mono">GDU-6H90</td><td class="mono">22.108</td><td class="mono">R$ 720</td></tr>
-      </tbody></table>`,
+      <div class="ptitle">Veículos</div><div class="psub">Frota · Todos (2) · Locados (2) · Disponíveis (0)</div>
+      <div class="vgrid">
+        <div class="vcard">
+          <div class="vthumb">
+            <svg width="72" height="40" viewBox="0 0 96 48" fill="none" aria-hidden="true"><path d="M10 34c0-3 2-9 7-11l6-8c1.5-2 4-3 6.5-3H58c3 0 6 1.5 8 4l5 7c7 1 15 4 15 11v3a2 2 0 0 1-2 2H12a2 2 0 0 1-2-2v-3z" fill="#E0212E"/><path d="M31 15h11v8H25l6-8zm16 0h11l6 8H47v-8z" fill="#fff" opacity=".85"/><circle cx="27" cy="39" r="6.5" fill="#23292F" stroke="#fff" stroke-width="2"/><circle cx="70" cy="39" r="6.5" fill="#23292F" stroke="#fff" stroke-width="2"/></svg>
+            <span class="pill ok">Locado</span>
+          </div>
+          <div class="vbody">
+            <span class="vplate">PLK-4D21</span>
+            <div class="vname">Chevrolet Onix 1.0</div>
+            <div class="vmeta"><span>2023</span><span>Branco</span><span>48.310 km</span></div>
+            <div class="vrow"><span>🛡 Seguro: <b>R$ 180/mês</b></span></div>
+            <div class="vrow"><span>👤 Carlos Menezes</span><span class="vprice mono">R$ 650<small>/sem</small></span></div>
+          </div>
+        </div>
+        <div class="vcard">
+          <div class="vthumb">
+            <svg width="72" height="40" viewBox="0 0 96 48" fill="none" aria-hidden="true"><path d="M10 34c0-3 2-9 7-11l6-8c1.5-2 4-3 6.5-3H58c3 0 6 1.5 8 4l5 7c7 1 15 4 15 11v3a2 2 0 0 1-2 2H12a2 2 0 0 1-2-2v-3z" fill="#4A545C"/><path d="M31 15h11v8H25l6-8zm16 0h11l6 8H47v-8z" fill="#fff" opacity=".85"/><circle cx="27" cy="39" r="6.5" fill="#23292F" stroke="#fff" stroke-width="2"/><circle cx="70" cy="39" r="6.5" fill="#23292F" stroke="#fff" stroke-width="2"/></svg>
+            <span class="pill ok">Locado</span>
+          </div>
+          <div class="vbody">
+            <span class="vplate">RTC-7F55</span>
+            <div class="vname">Hyundai HB20 Sense</div>
+            <div class="vmeta"><span>2022</span><span>Prata</span><span>61.902 km</span></div>
+            <div class="vrow"><span>🛡 Seguro: <b>R$ 165/mês</b></span></div>
+            <div class="vrow"><span>👤 Juliana Soares</span><span class="vprice mono">R$ 650<small>/sem</small></span></div>
+          </div>
+        </div>
+      </div>`,
     motoristas: `
       <div class="ptitle">Motoristas</div><div class="psub">Contratos ativos</div>
       <table class="mt"><thead><tr><th>Nome</th><th>Veículo</th><th>Desde</th><th>Status</th></tr></thead><tbody>
@@ -1371,6 +1567,86 @@ function qrSvg(size=118, n=25){
     toast(tst, '<span class="ck">✓</span> PIX de R$ 650,00 recebido — baixa automática');
     cur.home();
     await sleep(2200);
+  });
+})();
+
+/* ================= DEMO MANUTENÇÕES: motorista solicita → empresa agenda → concluída ================= */
+(function(){
+  const stage  = document.getElementById('frame-manut');
+  const flow   = document.getElementById('manut-flow');
+  const tst    = document.getElementById('mn-toast');
+  const cur    = makeCursor(stage, document.getElementById('mn-cursor'));
+  const btnSol = document.getElementById('drv-solicitar');
+  const btnReal= document.getElementById('drv-realizada');
+  const btnAg  = document.getElementById('mn-agendar');
+  const btnConf= document.getElementById('mn-confirm');
+  const req    = document.getElementById('mn-req');
+  const modal  = document.getElementById('mn-modal');
+  const row    = document.getElementById('mn-row');
+  const status = document.getElementById('mn-status');
+  const kSol   = document.getElementById('mn-kpi-sol');
+  const kAg    = document.getElementById('mn-kpi-ag');
+  const kOk    = document.getElementById('mn-kpi-ok');
+
+  const screens = ['drv-m1','drv-m2','drv-m3','drv-m4'].map(id => document.getElementById(id));
+  const show = (id) => screens.forEach(s => s.classList.toggle('on', s.id === id));
+  const flowGo = (dir) => { flow.classList.remove('go','back'); void flow.offsetWidth; flow.classList.add(dir); };
+  const flash = () => { row.classList.remove('flash'); void row.offsetWidth; row.classList.add('flash'); };
+
+  const finalState = () => {
+    show('drv-m4'); req.classList.remove('show'); row.style.display = '';
+    status.textContent = 'Concluída'; status.className = 'pill ok';
+    kSol.textContent = '0'; kAg.textContent = '1'; kOk.textContent = '9';
+  };
+  const reset = () => {
+    show('drv-m1'); flow.classList.remove('go','back'); modal.classList.remove('show');
+    req.classList.remove('show'); row.style.display = 'none';
+    status.textContent = 'Agendada'; status.className = 'pill pend';
+    kSol.textContent = '0'; kAg.textContent = '1'; kOk.textContent = '8';
+  };
+
+  demoLoop(stage, async (staticOnly) => {
+    if (staticOnly){ finalState(); return; }
+    reset();
+    await sleep(500);
+
+    // 1. motorista solicita a manutenção
+    await cur.moveTo(btnSol); await cur.click(btnSol);
+    show('drv-m2');
+    flowGo('go'); await sleep(1000);
+
+    // 2. solicitação chega na empresa
+    req.classList.add('show'); kSol.textContent = '1';
+    toast(tst, '<span class="ck">🔔</span> Nova solicitação de manutenção');
+    await sleep(1600);
+
+    // 3. empresa agenda e direciona para o parceiro
+    await cur.moveTo(btnAg); await cur.click(btnAg);
+    modal.classList.add('show');
+    await sleep(2000);
+    await cur.moveTo(btnConf); await cur.click(btnConf);
+    modal.classList.remove('show');
+    req.classList.remove('show'); kSol.textContent = '0'; kAg.textContent = '2';
+    row.style.display = ''; flash();
+    toast(tst, '<span class="ck">✓</span> Agendada — o motorista foi avisado');
+    flowGo('back'); await sleep(1000);
+
+    // 4. motorista recebe agendamento + oficina parceira
+    show('drv-m3');
+    await sleep(2200);
+
+    // 5. motorista confirma a realização
+    await cur.moveTo(btnReal); await cur.click(btnReal);
+    show('drv-m4');
+    flowGo('go'); await sleep(1000);
+
+    // 6. concluída no painel da empresa
+    status.textContent = 'Concluída'; status.className = 'pill ok';
+    kAg.textContent = '1'; kOk.textContent = '9';
+    flash();
+    toast(tst, '<span class="ck">✓</span> Concluída — comprovante do motorista recebido');
+    cur.home();
+    await sleep(2400);
   });
 })();
 
