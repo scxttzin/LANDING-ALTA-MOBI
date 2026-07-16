@@ -597,7 +597,7 @@ tr.flash{animation:rowflash 1.4s ease}
 /* barra de digitação do chat (demo) */
 .chat-inputbar{display:flex;gap:8px;align-items:center;margin-top:14px;padding-top:12px;border-top:1px solid var(--gray-100)}
 .chat-input{
-  flex:1;border:1.5px solid var(--gray-300);border-radius:99px;padding:.55em 1.1em;
+  flex:1;min-width:0;border:1.5px solid var(--gray-300);border-radius:99px;padding:.55em 1.1em;
   font-size:.85rem;min-height:2.5em;color:var(--ink);white-space:nowrap;overflow:hidden;
   transition:border-color .2s,box-shadow .2s;
 }
@@ -1381,7 +1381,11 @@ async function typeInto(el, text, speed=34){
   el.classList.add('focus');
   el.innerHTML = '<span class="txt"></span><span class="caret"></span>';
   const t = el.querySelector('.txt');
-  for (const ch of text){ t.textContent += ch; await sleep(speed); }
+  for (const ch of text){
+    t.textContent += ch;
+    el.scrollLeft = el.scrollWidth;   // texto desliza como num input real; caret sempre visível
+    await sleep(speed);
+  }
   await sleep(160);
   el.classList.remove('focus');
   el.querySelector('.caret').remove();
