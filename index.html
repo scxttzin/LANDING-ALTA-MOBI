@@ -373,7 +373,7 @@ nav.links a:hover{color:var(--red)}
 }
 @media (max-width:880px){
   .pix-stage{grid-template-columns:1fr;justify-items:center;gap:10px}
-  .pix-flow{width:4px !important;height:64px;background:repeating-linear-gradient(180deg,var(--gray-300) 0 8px,transparent 8px 14px) !important}
+  .pix-flow{width:4px !important;height:64px !important;background:repeating-linear-gradient(180deg,var(--gray-300) 0 8px,transparent 8px 14px) !important}
   .pix-flow .lbl{display:none}
   .pix-flow.go .zap{animation-name:zap-v !important}
 }
@@ -455,8 +455,30 @@ nav.links a:hover{color:var(--red)}
 }
 tr.flash{animation:rowflash 1.4s ease}
 @keyframes rowflash{0%{background:var(--green-soft)}100%{background:transparent}}
-@media (max-width:560px){
+@media (max-width:600px){
   .fro-tbl th:nth-child(2),.fro-tbl td:nth-child(2){display:none}
+  .cad-tbl th:nth-child(2),.cad-tbl td:nth-child(2){display:none}
+  #demo-manut .mt th:nth-child(3),#demo-manut .mt td:nth-child(3){display:none}
+  /* frames compactos: nada cortado nas demos em telas pequenas */
+  .frame{font-size:12px}
+  .fmain{padding:12px 10px}
+  .mt{font-size:.72rem}
+  .mt th{padding:5px 4px}
+  .mt td{padding:6px 4px}
+  .mt td:first-child{max-width:96px;overflow:hidden;text-overflow:ellipsis}
+  .pill{font-size:.56rem;padding:.2em .55em}
+  .mk{gap:6px}
+  .mk .k{padding:7px 8px}
+  .mk .k .v{font-size:.88rem}
+  .mk .k .l{font-size:.56rem}
+  .vgrid{grid-template-columns:1fr}
+  .vthumb{height:88px}
+  .vthumb img{max-height:80px}
+  .mreq .mreq-meta{font-size:.64rem}
+  .live-tag{
+    width:auto;max-width:100%;white-space:normal;line-height:1.5;
+    border-radius:14px;text-align:left;padding:.5em 1.1em;
+  }
 }
 
 /* pontos de venda abaixo do palco */
@@ -835,7 +857,7 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
           <div class="ptitle">Motoristas</div>
           <div class="psub">Frota ativa e contratos</div>
           <button class="fbtn" id="cad-btn">+ Novo motorista</button>
-          <table class="mt" style="margin-top:12px">
+          <table class="mt cad-tbl" style="margin-top:12px">
             <thead><tr><th>Nome</th><th>Veículo</th><th>Status</th></tr></thead>
             <tbody id="cad-rows">
               <tr><td>Juliana Soares</td><td>HB20 · RTC-7F55</td><td><span class="pill ok">Ativo</span></td></tr>
