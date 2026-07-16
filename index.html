@@ -624,6 +624,24 @@ tr.flash{animation:rowflash 1.4s ease}
 .plan-seg button.active{background:var(--red);color:#fff;box-shadow:0 4px 12px rgba(224,33,46,.45)}
 .plan .price.bump{animation:price-bump .35s cubic-bezier(.2,1.4,.4,1)}
 @keyframes price-bump{50%{transform:scale(1.12)}}
+
+/* modo PRO: card vermelho, informações brancas */
+.plan.annual.pro-active::after{background:linear-gradient(160deg,var(--red),var(--red-dark))}
+.plan.pro-active{color:#fff}
+.plan.pro-active .name{color:rgba(255,255,255,.85)}
+.plan.pro-active .price{color:#fff}
+.plan.pro-active .price small{color:rgba(255,255,255,.75)}
+.plan.pro-active .per{color:rgba(255,255,255,.9)}
+.plan.pro-active .per strong{color:#fff}
+.plan.pro-active li{color:rgba(255,255,255,.92)}
+.plan.pro-active li::before{color:#fff}
+.plan.annual.pro-active .flag{background:#fff;color:var(--red-dark);box-shadow:0 8px 18px -8px rgba(0,0,0,.4)}
+.plan.pro-active .plan-seg{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.38)}
+.plan.pro-active .plan-seg button{color:rgba(255,255,255,.85)}
+.plan.pro-active .plan-seg button.active{background:#fff;color:var(--red-dark);box-shadow:0 4px 12px rgba(0,0,0,.3)}
+.plan.pro-active .btn-primary{background:#fff;color:var(--red-dark)}
+.plan.pro-active .btn-primary:hover{background:var(--gray-100);box-shadow:0 12px 26px -10px rgba(0,0,0,.4)}
+.plan .name,.plan .price,.plan .per,.plan li{transition:color .3s ease}
 .pro-note{
   text-align:center;color:var(--gray-700);font-size:.94rem;margin-top:22px;
 }
@@ -1792,6 +1810,7 @@ function qrSvg(size=118, n=25){
       x.setAttribute('aria-pressed', x === b ? 'true' : 'false');
     });
     const pro = b.dataset.mode === 'pro';
+    seg.closest('.plan').classList.toggle('pro-active', pro);
     price.textContent = pro ? 'R$ 50' : 'R$ 25';
     name.textContent = pro ? 'Mensal PRO' : 'Mensal';
     cta.textContent = pro ? 'Assinar PRO por R$ 50/mês' : 'Assinar por R$ 25/mês';
