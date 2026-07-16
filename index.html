@@ -345,7 +345,8 @@ nav.links a:hover{color:var(--red)}
 /* fake cursor */
 .cursor{
   position:absolute;left:0;top:0;z-index:9;width:20px;height:20px;pointer-events:none;
-  transition:transform .65s cubic-bezier(.3,.7,.3,1);transform:translate(30px,30px);
+  transition:transform .65s cubic-bezier(.3,.7,.3,1),opacity .3s ease;
+  transform:translate(30px,30px);
   filter:drop-shadow(0 2px 3px rgba(0,0,0,.35));
 }
 .cursor svg{display:block}
@@ -1370,6 +1371,8 @@ function makeCursor(frame, cur){
       if (el && el.classList.contains('fbtn')){ el.classList.add('pressed'); setTimeout(()=>el.classList.remove('pressed'),180); }
       await sleep(320);
     },
+    hide(){ cur.style.opacity = '0'; },
+    show(){ cur.style.opacity = '1'; },
     home(){ cur.style.transform = 'translate(30px,30px)'; }
   };
 }
@@ -1555,9 +1558,11 @@ function qrSvg(size=118, n=25){
     if (staticOnly) { finalRow(); return; }
     ['nome','cpf','tel','contrato','carro'].forEach(k => F(k).textContent = '');
 
+    cur.show();
     await cur.moveTo(btn); await cur.click(btn);
     modal.classList.add('show');
     await sleep(450);
+    cur.hide();                      // some enquanto os dados são digitados
 
     await typeInto(F('nome'),  'Carlos Menezes');
     await typeInto(F('cpf'),   '412.658.930-77');
@@ -1565,6 +1570,8 @@ function qrSvg(size=118, n=25){
     await typeInto(F('contrato'),'📎 contrato-carlos.pdf');
     await typeInto(F('carro'), 'Onix · PLK-4D21');
 
+    cur.show();                      // volta para confirmar o cadastro
+    await sleep(300);
     await cur.moveTo(save); await cur.click(save);
     modal.classList.remove('show');
     await sleep(300);
@@ -1606,10 +1613,12 @@ function qrSvg(size=118, n=25){
   demoLoop(stage, async (staticOnly) => {
     if (staticOnly){ show('drv-paid'); received(); return; }
     reset();
+    cur.show();
     await sleep(500);
 
     // motorista abre a cobrança e paga
     await cur.moveTo(payBtn); await cur.click(payBtn);
+    cur.hide();                              // some enquanto a confirmação é enviada
     show('drv-qr');
     await sleep(2400);                       // banco confirmando
 
