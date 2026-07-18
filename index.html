@@ -1858,11 +1858,6 @@ function qrSvg(size=118, n=25){
         <div class="mh">Notificações <span class="mnotif-badge">2</span></div>
         <div class="mnotif-item"><span class="mi">💰</span> Semanal de Carlos Menezes vence hoje</div>
         <div class="mnotif-item"><span class="mi">🔧</span> Manutenção agendada qui, 16/07 — Oficina do Zé</div>
-      </div>
-      <div class="fbar">
-        <div class="fbar-h">Status da frota · 100% de ocupação</div>
-        <div class="fbar-track"><div class="fbar-fill" style="width:100%"></div></div>
-        <div class="fbar-row"><span>🚗 Locados <b>2</b></span><span>🅿 Disponíveis <b>0</b></span><span>Total <b>2</b></span></div>
       </div>`,
     recebimentos: `
       <div class="ptitle">Pagamentos</div><div class="psub">Pagamentos dos motoristas</div>
@@ -1922,8 +1917,13 @@ function qrSvg(size=118, n=25){
 
   function show(tab){
     tabs.forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
-    // sizer (Dashboard, invisível) mantém a altura fixa; a tela ativa fica por cima na mesma célula
-    main.innerHTML = `<div class="fscreen fsizer" aria-hidden="true">${screens.dashboard}</div><div class="fscreen fslive">${screens[tab]}</div>`;
+    // todas as telas ocupam a mesma célula (grid); as inativas ficam invisíveis como "sizers".
+    // assim o frame tem sempre a altura da tela mais alta e não pula ao trocar de aba.
+    main.innerHTML = Object.keys(screens).map(k =>
+      k === tab
+        ? `<div class="fscreen fslive">${screens[k]}</div>`
+        : `<div class="fscreen fsizer" aria-hidden="true">${screens[k]}</div>`
+    ).join('');
   }
   show('dashboard');
 
