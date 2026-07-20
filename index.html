@@ -121,6 +121,11 @@ nav.links a:hover{color:var(--red)}
 .hl{color:#fff;background:linear-gradient(transparent 60%,rgba(255,255,255,.28) 60%);border-radius:3px;padding:0 .08em}
 .hero-ctas{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-top:10px}
 .hero-note{font-size:.86rem;color:rgba(255,255,255,.72)}
+.hero-group{
+  display:inline-flex;align-items:center;gap:.4em;margin-top:-6px;
+  font-size:.82rem;color:rgba(255,255,255,.75);letter-spacing:.02em;
+}
+.hero-group strong{color:#fff;font-weight:800;letter-spacing:.03em}
 .badge-19{
   display:inline-flex;align-items:center;gap:.6em;width:max-content;
   background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);border-radius:99px;
@@ -832,6 +837,14 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
 .foot-grid a{text-decoration:none}
 .foot-grid a:hover{color:var(--red)}
 .legal{margin-top:26px;padding-top:20px;border-top:1px solid var(--gray-300);font-size:.8rem}
+/* selo "empresa do grupo Flex Drive" no rodapé */
+.foot-group{display:flex;align-items:center;gap:16px;margin-top:26px;padding-top:22px;border-top:1px solid var(--gray-300)}
+.foot-group .fg-logo{height:56px;width:auto;flex:none}
+.foot-group .fg-txt{display:flex;flex-direction:column;line-height:1.45;min-width:0}
+.foot-group .fg-txt strong{color:var(--ink);font-size:.94rem;font-weight:800}
+.foot-group .fg-txt span{font-size:.82rem;color:var(--gray-500)}
+.foot-group + .legal{border-top:0;margin-top:18px;padding-top:0}
+@media (max-width:520px){ .foot-group{gap:12px} .foot-group .fg-logo{height:46px} }
 
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}
@@ -900,6 +913,7 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
       <a class="btn-pill ghost" href="#demo-cadastro">Ver o app funcionando ↓</a>
     </div>
     <p class="hero-note">Sem fidelidade no plano mensal · Configuração no mesmo dia · Suporte em português</p>
+    <p class="hero-group">Uma empresa do grupo <strong>Flex&nbsp;Drive</strong></p>
   </div>
 </section>
 
@@ -1621,8 +1635,8 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
 /* ===== CHECKOUT NOVU — automação da venda =====
    Configure aqui o seu projeto Supabase (o MESMO do APP-NOVU).
    Enquanto estiver vazio, o botão mostra um aviso amigável.   */
-const NOVU_SUPABASE_URL = '';        // ex.: 'https://xxxx.supabase.co'
-const NOVU_SUPABASE_ANON = '';       // chave anon public
+const NOVU_SUPABASE_URL = 'https://yuobvqyuopjuozcdyfnt.supabase.co';
+const NOVU_SUPABASE_ANON = 'sb_publishable__h1mOMkG4Ir5Fe5mMTTX2g_esJUAEIJ';
 
 (() => {
   const ov = document.getElementById('nvck');
@@ -1702,6 +1716,13 @@ const NOVU_SUPABASE_ANON = '';       // chave anon public
         <a href="#">Privacidade</a>
         <a href="mailto:contato@flexdrivebsb.com">contato@flexdrivebsb.com</a>
       </nav>
+    </div>
+    <div class="foot-group">
+      <img class="fg-logo" src="assets/grupo-flex-drive.png" alt="Grupo Flex Drive" loading="lazy">
+      <div class="fg-txt">
+        <strong>Uma empresa do grupo Flex Drive</strong>
+        <span>A locadora que validou a plataforma na operação real, todos os dias.</span>
+      </div>
     </div>
     <p class="legal">Novu Tecnologia · Gestão inteligente de frotas para motoristas de aplicativo · Feito no Brasil. Os pagamentos PIX são liquidados diretamente na conta bancária do assinante; a Novu não intermedeia valores.</p>
   </div>
