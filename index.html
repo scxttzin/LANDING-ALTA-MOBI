@@ -1792,8 +1792,9 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
 const NOVU_SUPABASE_URL = 'https://yuobvqyuopjuozcdyfnt.supabase.co';
 const NOVU_SUPABASE_ANON = 'sb_publishable__h1mOMkG4Ir5Fe5mMTTX2g_esJUAEIJ';
 /* Chave PÚBLICA do Mercado Pago — tokeniza o cartão no navegador (o número
-   nunca vai para o nosso servidor). Enquanto vazia, o cartão mostra aviso. */
-const NOVU_MP_PUBLIC_KEY = '';
+   nunca vai para o nosso servidor). Pode ser exposta no front, é pública.
+   O ACCESS TOKEN (secreto) NÃO entra aqui — ele fica só na edge function. */
+const NOVU_MP_PUBLIC_KEY = 'APP_USR-f8f00351-371b-4d5d-a592-aaac1cdcb1ed';
 
 (() => {
   const $ = (id) => document.getElementById(id);
