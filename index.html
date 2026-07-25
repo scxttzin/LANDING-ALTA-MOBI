@@ -5,6 +5,33 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Novu — Gestão inteligente de frota para motoristas de app</title>
 <meta name="description" content="Centralize contratos, motoristas e veículos. Cobre por PIX com QR Code em segundos e receba na hora. Método validado por mais de 19 empresas parceiras.">
+
+<!-- ============ SEO ============ -->
+<!-- canonical: a página também é servida em novu-landing.pages.dev; sem isto
+     o Google trataria as duas como conteúdo duplicado e dividiria a relevância -->
+<link rel="canonical" href="https://novu.flexdrivebsb.com/">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+<meta name="author" content="Novu">
+<meta name="theme-color" content="#E11D2E">
+<link rel="icon" href="assets/novu-icon.png" type="image/png">
+<link rel="apple-touch-icon" href="assets/novu-icon.png">
+
+<!-- pré-visualização ao compartilhar (WhatsApp, Instagram, LinkedIn, Facebook) -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Novu">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:url" content="https://novu.flexdrivebsb.com/">
+<meta property="og:title" content="Novu — sua frota inteira em um só painel">
+<meta property="og:description" content="Cobrança semanal por Pix, contratos, motoristas e manutenção em um só lugar. A partir de R$ 19/mês, sem taxa por cobrança.">
+<meta property="og:image" content="https://novu.flexdrivebsb.com/assets/og-novu.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Novu — gestão de frotas para locadoras, a partir de R$ 19 por mês">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Novu — sua frota inteira em um só painel">
+<meta name="twitter:description" content="Cobrança semanal por Pix, contratos, motoristas e manutenção em um só lugar. A partir de R$ 19/mês.">
+<meta name="twitter:image" content="https://novu.flexdrivebsb.com/assets/og-novu.png">
+
 <style>
 /* ================= TOKENS ================= */
 :root{
@@ -2566,6 +2593,116 @@ function qrSvg(size=118, n=25){
   },{threshold:.6});
   els.forEach(el => obs.observe(el));
 })();
+</script>
+<!-- ============ DADOS ESTRUTURADOS (Google) ============
+     Descreve o produto, a empresa e o FAQ para o Google entender a página.
+     O FAQ aqui repete as perguntas visíveis na seção "Dúvidas" — precisa ser
+     idêntico ao que está na tela, senão o Google desconsidera. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://novu.flexdrivebsb.com/#organizacao",
+      "name": "Novu",
+      "url": "https://novu.flexdrivebsb.com/",
+      "logo": "https://novu.flexdrivebsb.com/assets/novu-icon.png",
+      "image": "https://novu.flexdrivebsb.com/assets/og-novu.png",
+      "email": "contato@flexdrivebsb.com",
+      "areaServed": "BR",
+      "sameAs": ["https://www.instagram.com/appnovu/"],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "telephone": "+55-61-99943-6453",
+        "email": "contato@flexdrivebsb.com",
+        "availableLanguage": ["Portuguese"]
+      }
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://novu.flexdrivebsb.com/#app",
+      "name": "Novu",
+      "applicationCategory": "BusinessApplication",
+      "applicationSubCategory": "Gestão de frotas",
+      "operatingSystem": "Web, Android, iOS",
+      "url": "https://novu.flexdrivebsb.com/",
+      "inLanguage": "pt-BR",
+      "publisher": { "@id": "https://novu.flexdrivebsb.com/#organizacao" },
+      "description": "Plataforma de gestão de frotas para locadoras que alugam carros para motoristas de aplicativo: cobrança semanal por Pix, contratos, motoristas, veículos, caução e manutenção em um só painel.",
+      "featureList": [
+        "Cobrança semanal automática por Pix com QR Code",
+        "Contratos e documentos dos veículos organizados",
+        "App próprio para cada motorista",
+        "Controle de manutenção e oficinas parceiras",
+        "Controle de caução",
+        "Painel financeiro da frota"
+      ],
+      "offers": [
+        {
+          "@type": "Offer",
+          "name": "Assinatura Padrão",
+          "price": "19.00",
+          "priceCurrency": "BRL",
+          "category": "subscription",
+          "url": "https://novu.flexdrivebsb.com/#planos",
+          "availability": "https://schema.org/InStock"
+        },
+        {
+          "@type": "Offer",
+          "name": "Assinatura PRO (acima de 60 veículos)",
+          "price": "45.00",
+          "priceCurrency": "BRL",
+          "category": "subscription",
+          "url": "https://novu.flexdrivebsb.com/#planos",
+          "availability": "https://schema.org/InStock"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://novu.flexdrivebsb.com/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "O PIX passa pela Novu? Vocês ficam com alguma taxa?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Não. O QR Code é gerado com a sua chave PIX — o pagamento cai direto na conta da sua empresa, sem intermediário e sem taxa sobre recebimentos. A plataforma cuida da cobrança, do controle e da confirmação." }
+        },
+        {
+          "@type": "Question",
+          "name": "Quantos motoristas e veículos posso cadastrar?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Quantos você tiver. O plano inclui motoristas, veículos e contratos sem limite — e o valor só muda quando a frota passa de 60 veículos, da Assinatura Padrão de R$ 19 para a PRO de R$ 45 por mês." }
+        },
+        {
+          "@type": "Question",
+          "name": "É difícil de configurar? Preciso de ajuda técnica?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Não. Você cria a conta, cadastra a chave PIX da empresa e começa a incluir motoristas e veículos — cada cadastro leva menos de um minuto. O Novu Chat, assistente virtual dentro do app, guia você em cada passo da configuração." }
+        },
+        {
+          "@type": "Question",
+          "name": "Como funciona o suporte?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Em três camadas, incluídas no plano: o Novu Chat (assistente virtual que responde na hora e ajuda a configurar a conta), o chat com a nossa equipe dentro da plataforma e o WhatsApp para quem prefere resolver por lá." }
+        },
+        {
+          "@type": "Question",
+          "name": "O motorista também usa o app?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Sim. Cada motorista locado tem acesso ao próprio painel, onde vê o contrato, as semanas pagas e pendentes, paga por QR Code e fala com a empresa — sem depender do seu WhatsApp pessoal." }
+        },
+        {
+          "@type": "Question",
+          "name": "Posso cancelar quando quiser?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Sim — o plano é mensal, sem multa e sem fidelidade. Se decidir sair, seus dados ficam disponíveis para exportação." }
+        },
+        {
+          "@type": "Question",
+          "name": "Meus dados e os dos motoristas ficam seguros?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Sim. Os dados trafegam criptografados e o acesso é individual por usuário, em conformidade com a LGPD. Cada motorista enxerga apenas o próprio contrato." }
+        }
+      ]
+    }
+  ]
+}
 </script>
 </body>
 </html>
