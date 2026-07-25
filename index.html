@@ -63,10 +63,45 @@
     return partes.length ? ' [' + partes.join(' · ') + ']' : '';
   };
 
-  /* Dispara evento no Pixel. Se não houver Pixel configurado, não faz nada. */
+  /* ── GOOGLE ADS / ANALYTICS ──────────────────────────────────
+     Preencha os dois primeiros para medir conversão no Google Ads.
+     O rótulo vem junto com o ID quando você cria a conversão lá. */
+  window.NOVU_GADS_ID    = '';   // ex.: 'AW-123456789'
+  window.NOVU_GADS_LABEL = '';   // ex.: 'AbC-D_efGhIjK'
+  window.NOVU_GA4_ID     = '';   // opcional, ex.: 'G-XXXXXXX'
+
+  /* Dispara o evento nas plataformas configuradas. Sem ID, não faz nada —
+     a página funciona igual e nenhum script externo é carregado. */
   window.novuTrack = function (evento, dados) {
-    try { if (window.fbq) window.fbq('track', evento, dados || {}); } catch (e) {}
+    dados = dados || {};
+    try { if (window.fbq) window.fbq('track', evento, dados); } catch (e) {}
+    try {
+      if (!window.gtag) return;
+      // conversão do Google Ads: assinou ou chamou no WhatsApp
+      if ((evento === 'Purchase' || evento === 'Contact') && window.NOVU_GADS_ID && window.NOVU_GADS_LABEL) {
+        window.gtag('event', 'conversion', {
+          send_to: window.NOVU_GADS_ID + '/' + window.NOVU_GADS_LABEL,
+          value: dados.value || 0, currency: 'BRL',
+        });
+      }
+      // e o mesmo evento no GA4, para você ver o funil inteiro
+      window.gtag('event', evento, dados);
+    } catch (e) {}
   };
+
+  (function () {
+    var tagId = window.NOVU_GADS_ID || window.NOVU_GA4_ID;
+    if (!tagId) return;
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + tagId;
+    document.head.appendChild(s);
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () { window.dataLayer.push(arguments); };
+    window.gtag('js', new Date());
+    if (window.NOVU_GADS_ID) window.gtag('config', window.NOVU_GADS_ID);
+    if (window.NOVU_GA4_ID)  window.gtag('config', window.NOVU_GA4_ID);
+  })();
 
   if (window.NOVU_META_PIXEL) {
     !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
