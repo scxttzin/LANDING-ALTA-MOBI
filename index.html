@@ -32,6 +32,53 @@
 <meta name="twitter:description" content="Cobrança semanal por Pix, contratos, motoristas e manutenção em um só lugar. A partir de R$ 19/mês.">
 <meta name="twitter:image" content="https://novu.flexdrivebsb.com/assets/og-novu.png">
 
+<!-- ============ MEDIÇÃO (Pixel do Meta + origem da visita) ============
+     Cole o ID do seu Pixel abaixo. Enquanto estiver vazio nada é
+     carregado — a página funciona igual e nenhum script externo entra. -->
+<script>
+  window.NOVU_META_PIXEL = '';   // ex.: '1234567890123456'
+
+  /* Guarda de onde a pessoa veio (utm_source/medium/campaign ou o site que
+     a indicou). Fica na sessão e viaja junto na mensagem do WhatsApp, para
+     você saber qual campanha gerou cada conversa. */
+  (function () {
+    try {
+      var p = new URLSearchParams(location.search);
+      var campos = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
+      var origem = {};
+      campos.forEach(function (k) { if (p.get(k)) origem[k] = p.get(k); });
+      if (!Object.keys(origem).length && document.referrer && !/novu\.flexdrivebsb|localhost/.test(document.referrer)) {
+        origem.referrer = document.referrer.slice(0, 120);
+      }
+      if (Object.keys(origem).length) sessionStorage.setItem('novu_origem', JSON.stringify(origem));
+    } catch (e) { /* navegador sem sessionStorage — segue normal */ }
+  })();
+
+  window.novuOrigem = function () {
+    try { return JSON.parse(sessionStorage.getItem('novu_origem') || '{}'); } catch (e) { return {}; }
+  };
+  window.novuOrigemTexto = function () {
+    var o = window.novuOrigem();
+    var partes = Object.keys(o).map(function (k) { return k.replace('utm_', '') + ':' + o[k]; });
+    return partes.length ? ' [' + partes.join(' · ') + ']' : '';
+  };
+
+  /* Dispara evento no Pixel. Se não houver Pixel configurado, não faz nada. */
+  window.novuTrack = function (evento, dados) {
+    try { if (window.fbq) window.fbq('track', evento, dados || {}); } catch (e) {}
+  };
+
+  if (window.NOVU_META_PIXEL) {
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}
+    (window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', window.NOVU_META_PIXEL);
+    fbq('track', 'PageView');
+  }
+</script>
+
 <style>
 /* ================= TOKENS ================= */
 :root{
@@ -1849,8 +1896,22 @@ const NOVU_MP_PUBLIC_KEY = 'APP_USR-f8f00351-371b-4d5d-a592-aaac1cdcb1ed';
   // >>> seletor de plano DENTRO do checkout (Padrão x PRO) <<<
   document.querySelectorAll('#nvck-seg button').forEach((b) => b.onclick = () => { selectedPlan = b.dataset.plan; renderPlan(); });
 
-  const setStep = (k) => { Object.keys(steps).forEach((n) => { if (steps[n]) steps[n].hidden = n !== k; }); };
-  const open = (e) => { if (e) e.preventDefault(); selectedPlan = pagePlan(); renderPlan(); setMethod('pix'); err.hidden = true; setStep('form'); ov.hidden = false; document.body.style.overflow = 'hidden'; };
+  const setStep = (k) => {
+    Object.keys(steps).forEach((n) => { if (steps[n]) steps[n].hidden = n !== k; });
+    // marcos do funil: gerou Pix / abriu cartão / assinou
+    if (k === 'pix')  window.novuTrack('AddToCart',      { content_name: 'Pix gerado', value: selectedPlan === 'pro' ? 45 : 19, currency: 'BRL' });
+    if (k === 'card') window.novuTrack('AddPaymentInfo', { content_name: 'Dados do cartão', value: selectedPlan === 'pro' ? 45 : 19, currency: 'BRL' });
+    if (k === 'ok')   window.novuTrack('Purchase',       { content_name: PLANS[selectedPlan].name, value: selectedPlan === 'pro' ? 45 : 19, currency: 'BRL' });
+  };
+  const open = (e) => {
+    if (e) e.preventDefault(); selectedPlan = pagePlan(); renderPlan(); setMethod('pix');
+    err.hidden = true; setStep('form'); ov.hidden = false; document.body.style.overflow = 'hidden';
+    // abriu o checkout = intenção de compra (é este o evento que o Meta otimiza)
+    window.novuTrack('InitiateCheckout', {
+      content_name: PLANS[selectedPlan].name,
+      value: selectedPlan === 'pro' ? 45 : 19, currency: 'BRL',
+    });
+  };
   const close = () => { ov.hidden = true; document.body.style.overflow = ''; };
   $('nvck-close').onclick = close;
   ov.addEventListener('click', (e) => { if (e.target === ov) close(); });
@@ -2594,6 +2655,43 @@ function qrSvg(size=118, n=25){
   els.forEach(el => obs.observe(el));
 })();
 </script>
+<!-- ============ FALAR NO WHATSAPP ============
+     Boa parte de quem chega por anúncio não compra na primeira visita, mas
+     tira dúvida. Sem esta saída, essa pessoa ia embora e sumia. A mensagem
+     leva a origem da visita (utm/referrer) para você saber de qual campanha
+     veio cada conversa. -->
+<style>
+  .wa-float{
+    position:fixed; right:18px; bottom:18px; z-index:9000;
+    display:inline-flex; align-items:center; gap:10px;
+    padding:13px 20px 13px 16px; border-radius:999px;
+    background:#25D366; color:#fff; text-decoration:none;
+    font-weight:700; font-size:.94rem; letter-spacing:-.2px;
+    box-shadow:0 8px 26px rgba(37,211,102,.42);
+    transition:transform .18s ease, box-shadow .18s ease;
+  }
+  .wa-float:hover{ transform:translateY(-2px); box-shadow:0 12px 30px rgba(37,211,102,.5); }
+  .wa-float svg{ flex:0 0 auto }
+  @media (max-width:560px){
+    .wa-float{ padding:14px; right:14px; bottom:14px }
+    .wa-float span{ display:none }          /* no celular fica só o ícone */
+  }
+  @media (prefers-reduced-motion:reduce){ .wa-float{ transition:none } }
+</style>
+<a class="wa-float" id="wa-float" href="#" target="_blank" rel="noopener" aria-label="Falar com a Novu no WhatsApp">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2m0 18.15c-1.53 0-3.03-.41-4.34-1.19l-.31-.18-3.12.82.83-3.04-.2-.32a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.23 8.24-8.23 2.2 0 4.27.86 5.82 2.42a8.18 8.18 0 0 1 2.41 5.82c0 4.54-3.7 8.28-8.07 8.28m4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.12-.17.25-.64.81-.78.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.14.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.23.25-.86.85-.86 2.07s.89 2.4 1.01 2.56c.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.08.15-1.18-.06-.11-.22-.17-.47-.29"/></svg>
+  <span>Falar com a gente</span>
+</a>
+<script>
+  (function () {
+    var el = document.getElementById('wa-float');
+    if (!el) return;
+    var base = 'Olá! Vi o Novu e quero entender melhor como funciona para a minha locadora.';
+    el.href = 'https://wa.me/5561999436453?text=' + encodeURIComponent(base + (window.novuOrigemTexto ? window.novuOrigemTexto() : ''));
+    el.addEventListener('click', function () { if (window.novuTrack) window.novuTrack('Contact', { content_name: 'WhatsApp' }); });
+  })();
+</script>
+
 <!-- ============ DADOS ESTRUTURADOS (Google) ============
      Descreve o produto, a empresa e o FAQ para o Google entender a página.
      O FAQ aqui repete as perguntas visíveis na seção "Dúvidas" — precisa ser
