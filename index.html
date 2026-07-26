@@ -285,14 +285,14 @@ nav.links a:hover{color:var(--red)}
 .orb--4 .orb-card{width:96px;height:96px;--dur:6s;--del:-3s;--rot:8deg}
 .orb--5{left:7%;top:-9%;animation-delay:.85s}
 .orb--5 .orb-card{width:64px;height:64px;--dur:3.8s;--del:-.6s;--rot:-10deg}
-.orb--6{right:9%;top:-11%;animation-delay:1s}
-.orb--6 .orb-card{width:auto;height:48px;padding:0 18px;--dur:4.5s;--del:-1.6s;--rot:7deg;font-weight:800;color:var(--ink);font-size:.92rem}
+.orb--6{right:1%;top:46%;animation-delay:1s}
+.orb--6 .orb-card{width:max-content;height:48px;padding:0 18px;white-space:nowrap;--dur:4.5s;--del:-1.6s;--rot:7deg;font-weight:800;color:var(--ink);font-size:.92rem}
 @media (max-width:640px){
   .hero{padding:112px 18px 72px}
   .hero-bgword{font-size:clamp(28px,9.5vw,56px)}
   .orb.back{display:none}
   .orb--5{left:0;top:-7%}
-  .orb--6{right:0;top:-8%}
+  .orb--6{display:none}
   .orb--2 .orb-card{width:60px;height:60px;font-size:.85rem}
   .orb--3{bottom:-6%;left:2%}
 }
@@ -1511,7 +1511,7 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
         <div class="vlabel">empresas parceiras validaram o método</div>
         <p>De frotistas com 3 carros até operações com mais de 40 veículos — cobrando, controlando e crescendo com a Novu todos os dias.</p>
         <div class="vlogos" aria-label="Empresas parceiras">
-          <a class="flex" href="https://scxttzin.github.io/APP-FLEX-DRIVE/" target="_blank" rel="noopener">Flex Drive ↗</a><span>LocaMax</span><span>Rodar Frotas</span><span>VeloCar</span><span>Frota Sul</span><span>GiroCar</span><span>+ 13 outras</span>
+          <a class="flex" href="https://flexdrivebsb.com" target="_blank" rel="noopener">Flex Drive ↗</a><span>LocaMax</span><span>Rodar Frotas</span><span>VeloCar</span><span>Frota Sul</span><span>GiroCar</span><span>+ 13 outras</span>
         </div>
       </div>
       <div class="valid-items">
@@ -2722,7 +2722,7 @@ function qrSvg(size=118, n=25){
     var el = document.getElementById('wa-float');
     if (!el) return;
     var base = 'Olá! Vi o Novu e quero entender melhor como funciona para a minha locadora.';
-    el.href = 'https://wa.me/5561999436453?text=' + encodeURIComponent(base + (window.novuOrigemTexto ? window.novuOrigemTexto() : ''));
+    el.href = 'https://wa.me/5561999477453?text=' + encodeURIComponent(base + (window.novuOrigemTexto ? window.novuOrigemTexto() : ''));
     el.addEventListener('click', function () { if (window.novuTrack) window.novuTrack('Contact', { content_name: 'WhatsApp' }); });
   })();
 </script>
@@ -2748,7 +2748,7 @@ function qrSvg(size=118, n=25){
       "contactPoint": {
         "@type": "ContactPoint",
         "contactType": "customer support",
-        "telephone": "+55-61-99943-6453",
+        "telephone": "+55-61-99947-7453",
         "email": "contato@flexdrivebsb.com",
         "availableLanguage": ["Portuguese"]
       }
