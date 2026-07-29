@@ -1997,6 +1997,8 @@ const NOVU_MP_PUBLIC_KEY = 'APP_USR-f8f00351-371b-4d5d-a592-aaac1cdcb1ed';
     cupomMsg.textContent = texto;
     cupomMsg.className = 'nvck-cupom-msg ' + tipo;
     cupomMsg.hidden = false;
+    // a caixa precisa estar aberta, senão o retorno (aplicado / inválido) fica escondido
+    $('cupom-box').hidden = false;
   };
   const limpaCupom = () => {
     cupom = null;
