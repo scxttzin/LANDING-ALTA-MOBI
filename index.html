@@ -285,7 +285,11 @@ nav.links a:hover{color:var(--red)}
 .orb--4 .orb-card{width:96px;height:96px;--dur:6s;--del:-3s;--rot:8deg}
 .orb--5{left:7%;top:-9%;animation-delay:.85s}
 .orb--5 .orb-card{width:64px;height:64px;--dur:3.8s;--del:-.6s;--rot:-10deg}
-.orb--6{right:1%;top:46%;animation-delay:1s}
+/* Ancorada pela BASE (como a orb--3/--4), não pelo topo. Com "top:46%" ela
+   caía sobre a última linha do parágrafo sempre que o título quebrava em
+   menos linhas — a altura do bloco de texto muda conforme a largura da tela.
+   Pela base, ela acompanha o mockup e nunca sobe até o texto. */
+.orb--6{right:1%;bottom:20%;animation-delay:1s}
 .orb--6 .orb-card{width:max-content;height:48px;padding:0 18px;white-space:nowrap;--dur:4.5s;--del:-1.6s;--rot:7deg;font-weight:800;color:var(--ink);font-size:.92rem}
 @media (max-width:640px){
   .hero{padding:112px 18px 72px}
@@ -1692,6 +1696,19 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
         <div class="nvck-plan-name" id="nvck-plan-name">Assinatura Padrão</div>
         <div class="nvck-plan-price"><span id="nvck-plan-price">R$ 19</span><small>/mês</small></div>
         <div class="nvck-plan-sub" id="nvck-plan-sub">Frotas de até 60 veículos</div>
+
+        <!-- CUPOM: o desconto é sempre calculado no servidor; aqui só exibimos -->
+        <div class="nvck-cupom" id="nvck-cupom">
+          <button type="button" class="nvck-cupom-abrir" id="cupom-abrir">Tenho um cupom</button>
+          <div class="nvck-cupom-box" id="cupom-box" hidden>
+            <div class="nvck-cupom-row">
+              <input class="nvck-cupom-input" id="cupom-input" placeholder="Digite ou cole o cupom"
+                     autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="40">
+              <button type="button" class="nvck-cupom-btn" id="cupom-aplicar">Aplicar</button>
+            </div>
+            <p class="nvck-cupom-msg" id="cupom-msg" hidden></p>
+          </div>
+        </div>
       </div>
       <ul class="nvck-incl">
         <li>Cobranças semanais por PIX</li>
@@ -1820,6 +1837,34 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
   .nvck-seg{display:inline-flex;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.26);border-radius:99px;padding:3px;gap:2px;width:max-content;margin-top:2px}
   .nvck-seg button{border:0;background:transparent;color:rgba(255,255,255,.85);font:800 .74rem/1 inherit;font-family:inherit;padding:.5em 1.15em;border-radius:99px;cursor:pointer;transition:background .18s,color .18s}
   .nvck-seg button.active{background:#fff;color:#B5121F}
+  /* ── cupom de desconto ── */
+  .nvck-cupom{margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.14)}
+  .nvck-cupom-abrir{
+    background:none;border:0;padding:0;cursor:pointer;font:inherit;
+    font-size:.82rem;font-weight:700;color:inherit;opacity:.85;
+    text-decoration:underline;text-underline-offset:3px;
+  }
+  .nvck-cupom-abrir:hover{opacity:1}
+  .nvck-cupom-row{display:flex;gap:8px;align-items:center}
+  .nvck-cupom-input{
+    flex:1 1 auto;min-width:0;               /* min-width:0 = deixa encolher no celular */
+    padding:10px 12px;border-radius:10px;
+    border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.10);
+    color:inherit;font:inherit;font-size:.88rem;font-weight:700;letter-spacing:.06em;
+    text-transform:uppercase;
+  }
+  .nvck-cupom-input::placeholder{color:currentColor;opacity:.55;letter-spacing:0;text-transform:none;font-weight:500}
+  .nvck-cupom-input:focus{outline:0;border-color:rgba(255,255,255,.6)}
+  .nvck-cupom-btn{
+    flex:0 0 auto;padding:10px 16px;border-radius:10px;border:0;cursor:pointer;
+    background:#fff;color:#17181C;font:inherit;font-size:.85rem;font-weight:800;
+  }
+  .nvck-cupom-btn:disabled{opacity:.6;cursor:default}
+  .nvck-cupom-msg{margin:8px 0 0;font-size:.8rem;line-height:1.45;font-weight:600}
+  .nvck-cupom-msg.ok{color:#7CF0A9}
+  .nvck-cupom-msg.erro{color:#FFC4C4}
+  .nvck-plan-price.riscado span{text-decoration:line-through;opacity:.5;font-size:1.4rem}
+
   .nvck-plan-name{font-size:1.12rem;font-weight:800;margin-top:8px}
   .nvck-plan-price{font-size:2.1rem;font-weight:800;letter-spacing:-.03em;margin-top:2px}
   .nvck-plan-price span{transition:opacity .2s}
@@ -1923,13 +1968,85 @@ const NOVU_MP_PUBLIC_KEY = 'APP_USR-f8f00351-371b-4d5d-a592-aaac1cdcb1ed';
   const renderPlan = () => {
     const p = PLANS[selectedPlan];
     $('nvck-plan-name').textContent = p.name;
-    $('nvck-plan-price').textContent = p.price;
     $('nvck-plan-sub').textContent = p.sub;
+    // com cupom, mostra o preço cheio riscado e o valor de hoje
+    const cup = (typeof cupom !== 'undefined') ? cupom : null;
+    const caixaPreco = $('nvck-plan-price').parentElement;
+    if (cup) {
+      const hoje = cup.total === 0 ? 'Grátis' : 'R$ ' + String(cup.total).replace('.', ',');
+      $('nvck-plan-price').textContent = p.price;
+      caixaPreco.classList.add('riscado');
+      caixaPreco.querySelector('small').textContent = '/mês · hoje ' + hoje;
+    } else {
+      $('nvck-plan-price').textContent = p.price;
+      caixaPreco.classList.remove('riscado');
+      caixaPreco.querySelector('small').textContent = '/mês';
+    }
     document.querySelectorAll('#nvck-seg button').forEach((b) => { const on = b.dataset.plan === selectedPlan; b.classList.toggle('active', on); b.setAttribute('aria-pressed', on); });
-    const t = $('nvck-cc-total'); if (t) t.textContent = p.price;
+    const t = $('nvck-cc-total'); if (t) t.textContent = cup && cup.total === 0 ? 'Grátis' : p.price;
   };
+  /* ── CUPOM ─────────────────────────────────────────────────
+     Guardamos só o código. Quem calcula o desconto — e quem decide se
+     ele vale — é o servidor, tanto na consulta quanto na compra. */
+  let cupom = null;          // { code, label, total, base }
+  const cupomInput = $('cupom-input');
+  const cupomMsg = $('cupom-msg');
+  const cupomBtn = $('cupom-aplicar');
+
+  const mostraMsg = (texto, tipo) => {
+    cupomMsg.textContent = texto;
+    cupomMsg.className = 'nvck-cupom-msg ' + tipo;
+    cupomMsg.hidden = false;
+  };
+  const limpaCupom = () => {
+    cupom = null;
+    cupomMsg.hidden = true;
+    $('nvck-plan-price').parentElement.classList.remove('riscado');
+    renderPlan();
+  };
+
+  $('cupom-abrir').onclick = () => {
+    const box = $('cupom-box');
+    box.hidden = !box.hidden;
+    if (!box.hidden) cupomInput.focus();
+  };
+
+  async function aplicarCupom() {
+    const codigo = (cupomInput.value || '').trim().toUpperCase();
+    if (!codigo) { limpaCupom(); return; }
+    cupomBtn.disabled = true; cupomBtn.textContent = '...';
+    try {
+      const r = await fetch(NOVU_SUPABASE_URL + '/functions/v1/saas-checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', apikey: NOVU_SUPABASE_ANON },
+        body: JSON.stringify({ action: 'coupon', coupon: codigo, plan: selectedPlan }),
+      });
+      const j = await r.json();
+      if (!j.valid) { cupom = null; mostraMsg(j.error || 'Cupom inválido.', 'erro'); renderPlan(); return; }
+      cupom = j;
+      renderPlan();
+      mostraMsg(
+        j.total === 0
+          ? `✓ Cupom ${j.code} aplicado — ${j.label || '1 mês grátis'}. Você não paga nada hoje.`
+          : `✓ Cupom ${j.code} aplicado — você paga R$ ${j.total.toFixed(2).replace('.', ',')} na 1ª mensalidade.`,
+        'ok',
+      );
+    } catch (e) {
+      mostraMsg('Não foi possível validar agora. Tente de novo.', 'erro');
+    } finally {
+      cupomBtn.disabled = false; cupomBtn.textContent = 'Aplicar';
+    }
+  }
+  cupomBtn.onclick = aplicarCupom;
+  cupomInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); aplicarCupom(); } });
+  cupomInput.addEventListener('input', () => { if (cupom) limpaCupom(); });
+
   // >>> seletor de plano DENTRO do checkout (Padrão x PRO) <<<
-  document.querySelectorAll('#nvck-seg button').forEach((b) => b.onclick = () => { selectedPlan = b.dataset.plan; renderPlan(); });
+  document.querySelectorAll('#nvck-seg button').forEach((b) => b.onclick = () => {
+    selectedPlan = b.dataset.plan;
+    if (cupom) limpaCupom();          // trocou de plano: revalida o desconto
+    renderPlan();
+  });
 
   const setStep = (k) => {
     Object.keys(steps).forEach((n) => { if (steps[n]) steps[n].hidden = n !== k; });
@@ -1969,6 +2086,8 @@ const NOVU_MP_PUBLIC_KEY = 'APP_USR-f8f00351-371b-4d5d-a592-aaac1cdcb1ed';
   const contact = () => ({ company_name: $('nvck-name').value.trim(), email: $('nvck-email').value.trim(), phone: $('nvck-phone').value.trim(), document: $('nvck-doc').value.trim() });
 
   const postCheckout = async (body) => {
+    // o cupom viaja só como código — o desconto quem aplica é o servidor
+    if (cupom && cupom.code) body = { ...body, coupon: cupom.code };
     const r = await fetch(NOVU_SUPABASE_URL + '/functions/v1/saas-checkout', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', apikey: NOVU_SUPABASE_ANON, Authorization: 'Bearer ' + NOVU_SUPABASE_ANON },
@@ -1984,11 +2103,19 @@ const NOVU_MP_PUBLIC_KEY = 'APP_USR-f8f00351-371b-4d5d-a592-aaac1cdcb1ed';
     err.hidden = true;
     const c = contact();
     if (!c.company_name || !/.+@.+\..+/.test(c.email)) { showErr(err, 'Preencha o nome da empresa e um e-mail válido — é nele que chega o acesso.'); return; }
-    if (method === 'card') { renderPlan(); setStep('card'); return; }   // cartão → formulário do cartão
+    // cupom que zera a 1ª mensalidade não passa por cartão nem por Pix: libera direto
+    const semCobranca = !!(cupom && cupom.total === 0);
+    if (method === 'card' && !semCobranca) { renderPlan(); setStep('card'); return; }
     if (!NOVU_SUPABASE_URL || !NOVU_SUPABASE_ANON) { showErr(err, 'Checkout em ativação. Fale com a gente: contato@flexdrivebsb.com'); return; }
-    goBtn.disabled = true; goBtn.textContent = 'Gerando PIX…';
+    goBtn.disabled = true; goBtn.textContent = semCobranca ? 'Liberando acesso…' : 'Gerando PIX…';
     try {
       const j = await postCheckout({ ...c, method: 'pix', plan: selectedPlan });
+      if (j.free) {                       // nada a pagar hoje — conta já criada
+        $('nvck-ok-email').textContent = c.email;
+        window.novuTrack && window.novuTrack('Purchase', { content_name: 'Cupom ' + (j.coupon || ''), value: 0, currency: 'BRL' });
+        setStep('ok');
+        return;
+      }
       setStep('pix');
       $('nvck-qr').innerHTML = j.pix?.qr_base64 ? `<img alt="QR Code Pix" src="data:image/png;base64,${j.pix.qr_base64}">` : '';
       $('nvck-code').value = j.pix?.copia_e_cola || '';
