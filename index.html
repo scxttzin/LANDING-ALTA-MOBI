@@ -696,6 +696,20 @@ tr.flash{animation:rowflash 1.4s ease}
     width:auto;max-width:100%;white-space:normal;line-height:1.5;
     border-radius:14px;text-align:left;padding:.5em 1.1em;
   }
+  /* demo do Novu Chat: janela de mensagens com ALTURA FIXA no celular.
+     Antes o card crescia ~164px conforme as bolhas apareciam (as respostas
+     longas quebram em mais linhas) e "pulava" a cada ciclo — agora as
+     mensagens rolam dentro de uma altura fixa (como um chat real) e o card
+     nunca sai da formatação. */
+  .chatcard{overflow:hidden}
+  /* #chat-msgs (id) p/ vencer o .msgs{min-height:288px} da base, que vem
+     depois no CSS — sem o id, o min-height voltava a crescer o card. */
+  #chat-msgs{
+    height:266px;min-height:0;overflow:hidden;padding-top:10px;
+    -webkit-mask:linear-gradient(180deg,transparent 0,#000 24px);
+    mask:linear-gradient(180deg,transparent 0,#000 24px);
+  }
+  .msg{font-size:.82rem;max-width:90%}
 }
 
 /* pontos de venda abaixo do palco */
