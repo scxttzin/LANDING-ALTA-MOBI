@@ -139,10 +139,12 @@
 /* ================= BASE ================= */
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
+/* trava qualquer rolagem horizontal (animações/órbitas não "passam da tela" no mobile) */
+html,body{overflow-x:hidden}
 body{
   margin:0;background:var(--white);color:var(--ink);
   font:400 16px/1.65 "Segoe UI",system-ui,-apple-system,sans-serif;
-  -webkit-font-smoothing:antialiased;
+  -webkit-font-smoothing:antialiased;max-width:100%;
 }
 a{color:inherit}
 .wrap{max-width:1140px;margin:0 auto;padding:0 24px}
@@ -292,13 +294,17 @@ nav.links a:hover{color:var(--red)}
 .orb--6{right:1%;bottom:20%;animation-delay:1s}
 .orb--6 .orb-card{width:max-content;height:48px;padding:0 18px;white-space:nowrap;--dur:4.5s;--del:-1.6s;--rot:7deg;font-weight:800;color:var(--ink);font-size:.92rem}
 @media (max-width:640px){
-  .hero{padding:112px 18px 72px}
+  .hero{padding:90px 18px 44px}
+  .hero-inner{gap:15px}
   .hero-bgword{font-size:clamp(28px,9.5vw,56px)}
   .orb.back{display:none}
   .orb--5{left:0;top:-7%}
   .orb--6{display:none}
   .orb--2 .orb-card{width:60px;height:60px;font-size:.85rem}
   .orb--3{bottom:-6%;left:2%}
+  /* mockup menor no celular → hero deixa de ficar tão longa */
+  .hero-stage{transform:scale(.86);transform-origin:top center;margin:2px auto -78px}
+  .hero-ctas{gap:10px;margin-top:2px}
 }
 
 /* ================= APP DEMO FRAME (shared) ================= */
@@ -942,6 +948,21 @@ details .a{padding:0 4px 22px;color:var(--gray-700);max-width:40em}
   border:1px solid rgba(224,33,46,.5);color:#FF8A93;border-radius:99px;
   padding:.5em 1.2em;font-size:.85rem;font-weight:700;
 }
+/* selos "em breve nas lojas" */
+.store-wrap{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin:2px 0}
+.store-badge{
+  display:inline-flex;align-items:center;gap:11px;background:#000;
+  border:1px solid #363E46;border-radius:13px;padding:9px 20px 9px 16px;
+  color:#fff;text-decoration:none;position:relative;transition:border-color .2s,transform .2s;
+}
+.store-badge:hover{border-color:#5A646E;transform:translateY(-2px)}
+.store-badge .glyph{width:26px;height:26px;flex:none;display:grid;place-items:center}
+.store-badge .txt{display:flex;flex-direction:column;line-height:1.15;text-align:left}
+.store-badge .txt small{font-size:.6rem;letter-spacing:.03em;color:#AEB9C0;text-transform:uppercase}
+.store-badge .txt b{font-size:1.02rem;font-weight:700;letter-spacing:.01em}
+.store-note{font-size:.82rem;color:#7E8A93;margin-top:2px}
+.cta-final-cta{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:6px}
+@media (max-width:520px){ .store-wrap{gap:10px} .store-badge{padding:8px 16px 8px 13px} }
 
 /* footer */
 footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gray-100);border-top:1px solid var(--gray-300)}
@@ -986,7 +1007,7 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
 <section class="hero" id="inicio">
   <div class="hero-bgword" aria-hidden="true">Novu&nbsp;Mobilidade</div>
   <div class="hero-inner">
-    <span class="badge-19"><span class="n" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 16 6.5 9h11L19 16"/><rect x="3" y="15" width="18" height="4" rx="1.5"/><circle cx="7.5" cy="19" r="1.4"/><circle cx="16.5" cy="19" r="1.4"/></svg></span> Aplicativo feito por frotista para frotista.</span>
+    <span class="badge-19"><span class="n" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 16 6.5 9h11L19 16"/><rect x="3" y="15" width="18" height="4" rx="1.5"/><circle cx="7.5" cy="19" r="1.4"/><circle cx="16.5" cy="19" r="1.4"/></svg></span> Painel digital feito por frotista para frotista.</span>
     <h1>Sua frota rende. <span class="hl">Sua gestão trava.</span> A Novu resolve a segunda parte.</h1>
     <p class="sub">Chega de perder horas administrando múltiplos contratos em planilhas e WhatsApp. O painel da Novu centraliza e automatiza o que hoje consome o seu dia.</p>
 
@@ -1002,7 +1023,7 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
       <div class="hero-app">
         <div class="hero-app-float">
     <div class="frame" id="frame-hero">
-      <div class="frame-top"><span class="b"></span><span class="b"></span><span class="b"></span><span class="addr">app.novuapp.com.br</span></div>
+      <div class="frame-top"><span class="b"></span><span class="b"></span><span class="b"></span><span class="addr">painel.novuapp.com.br</span></div>
       <span class="frame-live"><span class="dot"></span>Demo ao vivo</span>
       <div class="frame-body">
         <aside class="fnav" id="hero-nav">
@@ -1023,7 +1044,7 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
 
     <div class="hero-ctas">
       <a class="btn-pill" href="#planos">Começar agora — R$ 19/mês</a>
-      <a class="btn-pill ghost" href="#demo-cadastro">Ver o app funcionando ↓</a>
+      <a class="btn-pill ghost" href="#demo-cadastro">Ver o painel funcionando ↓</a>
     </div>
     <p class="hero-note">Sem fidelidade no plano mensal · Configuração no mesmo dia · Suporte em português</p>
     <p class="hero-group">Uma empresa do grupo <strong>Flex&nbsp;Drive</strong></p>
@@ -1073,15 +1094,15 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
     <div class="demo-copy reveal">
       <span class="live-tag"><span class="dot"></span>Sistema real operando agora</span>
       <h2>Cadastre um motorista em menos de um minuto.</h2>
-      <p>O que você está vendo ao lado não é um vídeo: é uma demonstração real do app operando ao vivo. Nome, CPF, Telefone, Anexo de contrato, Veículo locado — salvou, o motorista já aparece na frota com carro e contrato vinculado.</p>
+      <p>O que você está vendo ao lado não é um vídeo: é uma demonstração real do painel operando ao vivo. Nome, CPF, Telefone, Anexo de contrato, Veículo locado — salvou, o motorista já aparece na frota com carro e contrato vinculado.</p>
       <ul>
         <li>Ficha completa: documentos, contrato e histórico no mesmo lugar</li>
         <li>Suporte a conta conjunta (2º motorista no mesmo contrato)</li>
-        <li>O motorista recebe acesso ao próprio app, com os pagamentos dele</li>
+        <li>O motorista recebe acesso ao próprio painel, com os pagamentos dele</li>
       </ul>
     </div>
     <div class="frame reveal" id="frame-cad" aria-label="Demonstração ao vivo do cadastro de motorista">
-      <div class="frame-top"><span class="b"></span><span class="b"></span><span class="b"></span><span class="addr">app.novuapp.com.br/motoristas</span></div>
+      <div class="frame-top"><span class="b"></span><span class="b"></span><span class="b"></span><span class="addr">painel.novuapp.com.br/motoristas</span></div>
       <span class="frame-live"><span class="dot"></span>Demo ao vivo</span>
       <div class="frame-body">
         <aside class="fnav">
@@ -1130,7 +1151,7 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
 <section class="sec-gray" id="demo-pix">
   <div class="wrap">
     <div class="section-head reveal">
-      <span class="live-tag"><span class="dot"></span>Funcionalidade do aplicativo · veja a demonstração</span>
+      <span class="live-tag"><span class="dot"></span>Funcionalidade do painel · veja a demonstração</span>
       <h2>Sistema de Cobrança Semanal dinâmico.</h2>
       <p>Acompanhe o ciclo completo acontecendo abaixo: o motorista abre o painel dele, paga o semanal por QR Code PIX — e o pagamento cai em "Recebimentos" no seu painel, com baixa automática, na hora.</p>
     </div>
@@ -1189,7 +1210,7 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
       <div class="stage-side">
         <span class="stage-label"><span class="sw"></span>Seu painel — frotista</span>
         <div class="frame" style="box-shadow:var(--shadow);width:100%">
-          <div class="frame-top"><span class="b"></span><span class="b"></span><span class="b"></span><span class="addr">app.novuapp.com.br/recebimentos</span></div>
+          <div class="frame-top"><span class="b"></span><span class="b"></span><span class="b"></span><span class="addr">painel.novuapp.com.br/recebimentos</span></div>
           <span class="frame-live"><span class="dot"></span>Demo ao vivo</span>
           <div class="frame-body" style="min-height:352px">
             <aside class="fnav">
@@ -1236,9 +1257,9 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
 <section id="demo-manut">
   <div class="wrap">
     <div class="section-head reveal">
-      <span class="live-tag"><span class="dot"></span>Tudo dinâmico · veja a facilidade de utilizar o app</span>
+      <span class="live-tag"><span class="dot"></span>Tudo dinâmico · veja a facilidade de utilizar o painel</span>
       <h2>Manutenções Automáticas.</h2>
-      <p>O motorista solicita a manutenção pelo app, você agenda e direciona para a oficina parceira cadastrada — e acompanha tudo até o serviço concluído, sem WhatsApp no meio. Veja o ciclo completo rodando abaixo.</p>
+      <p>O motorista solicita a manutenção pelo painel, você agenda e direciona para a oficina parceira cadastrada — e acompanha tudo até o serviço concluído, sem WhatsApp no meio. Veja o ciclo completo rodando abaixo.</p>
     </div>
 
     <div class="pix-stage reveal" id="frame-manut" aria-label="Demonstração ao vivo do fluxo de manutenção entre motorista e frotista">
@@ -1305,7 +1326,7 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
       <div class="stage-side">
         <span class="stage-label"><span class="sw"></span>Seu painel — frotista</span>
         <div class="frame" style="box-shadow:var(--shadow);width:100%">
-          <div class="frame-top"><span class="b"></span><span class="b"></span><span class="b"></span><span class="addr">app.novuapp.com.br/manutencoes</span></div>
+          <div class="frame-top"><span class="b"></span><span class="b"></span><span class="b"></span><span class="addr">painel.novuapp.com.br/manutencoes</span></div>
           <span class="frame-live"><span class="dot"></span>Demo ao vivo</span>
           <div class="frame-body" style="min-height:352px">
             <aside class="fnav">
@@ -1372,15 +1393,15 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
 <section class="sec-gray" id="demo-marca">
   <div class="wrap">
     <div class="section-head reveal">
-      <span class="live-tag"><span class="dot"></span>Demonstração ao vivo · o app com a sua cara</span>
+      <span class="live-tag"><span class="dot"></span>Demonstração ao vivo · o painel com a sua cara</span>
       <h2>Sua Marca, seu estilo.</h2>
-      <p>Na aba Personalizar, você coloca a logo, o nome e a cor da sua empresa — e o app dos seus motoristas veste a sua marca na hora. Acompanhe: a empresa personaliza e salva, o motorista faz login num app com a cara da locadora.</p>
+      <p>Na aba Personalizar, você coloca a logo, o nome e a cor da sua empresa — e o painel dos seus motoristas veste a sua marca na hora. Acompanhe: a empresa personaliza e salva, o motorista acessa um painel com a cara da locadora.</p>
     </div>
 
-    <div class="pix-stage reveal" id="frame-marca" aria-label="Demonstração ao vivo da personalização de marca do app">
-      <!-- app do motorista -->
+    <div class="pix-stage reveal" id="frame-marca" aria-label="Demonstração ao vivo da personalização de marca do painel">
+      <!-- painel do motorista -->
       <div class="stage-side phone-side">
-        <span class="stage-label"><span class="sw"></span>App do motorista</span>
+        <span class="stage-label"><span class="sw"></span>Painel do motorista</span>
         <div class="phone">
           <span class="notch"></span>
           <div class="screen" id="mk-screen">
@@ -1456,7 +1477,7 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
       <div class="stage-side">
         <span class="stage-label"><span class="sw"></span>Seu painel — aba Personalizar</span>
         <div class="frame" style="box-shadow:var(--shadow);width:100%">
-          <div class="frame-top"><span class="b"></span><span class="b"></span><span class="b"></span><span class="addr">app.novuapp.com.br/personalizar</span></div>
+          <div class="frame-top"><span class="b"></span><span class="b"></span><span class="b"></span><span class="addr">painel.novuapp.com.br/personalizar</span></div>
           <span class="frame-live"><span class="dot"></span>Demo ao vivo</span>
           <div class="frame-body" style="min-height:352px">
             <aside class="fnav">
@@ -1469,7 +1490,7 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
             </aside>
             <div class="fmain">
               <div class="ptitle">Personalizar</div>
-              <div class="psub">Logo, nome e cor — o app dos motoristas usa a sua marca</div>
+              <div class="psub">Logo, nome e cor — o painel dos motoristas usa a sua marca</div>
               <div class="ffield"><label>Logo da empresa</label>
                 <div class="logo-tile" id="mk-logo-tile"><span class="lt-circle" id="mk-lt-circle">📷</span><span id="mk-logo-txt">Adicionar logo</span></div>
               </div>
@@ -1493,7 +1514,7 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
     </div>
 
     <ul class="pix-points reveal">
-      <li>Logo, nome e cor da sua empresa em todo o app — inclusive na tela de login do motorista</li>
+      <li>Logo, nome e cor da sua empresa em todo o painel — inclusive na tela de login do motorista</li>
       <li>Mudou? Salvou, aplicou: os motoristas veem o novo tema na hora</li>
       <li>Sua locadora com aparência profissional, sem contratar designer</li>
       <li>Disponível nas assinaturas Padrão e PRO</li>
@@ -1507,7 +1528,7 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
     <div class="section-head reveal">
       <span class="eyebrow">Método validado</span>
       <h2>Nossos parceiros aprovam, por que você não?</h2>
-      <p>Antes de chegar em você, o aplicativo da Novu já estava operando no dia a dia e se tornando realidade para algumas empresas que vivem de locação para motoristas de app.</p>
+      <p>Antes de chegar em você, o painel da Novu já estava operando no dia a dia e se tornando realidade para algumas empresas que vivem de locação para motoristas de app.</p>
     </div>
     <div class="valid-grid">
       <div class="valid-hero reveal">
@@ -1551,11 +1572,11 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
     <div class="demo-copy reveal">
       <span class="eyebrow">Você nunca fica na mão</span>
       <h2>Travou em algo? O Novu Chat resolve na hora.</h2>
-      <p>Dentro do app existe o <strong>Novu Chat</strong>: um assistente virtual que tira dúvidas e te ajuda a configurar a conta passo a passo — da chave PIX ao primeiro motorista cadastrado. E ele não trabalha só para você: o Novu Chat também está presente no app dos seus motoristas, como um <strong>funcionário extra da sua empresa</strong>.</p>
+      <p>Dentro do painel existe o <strong>Novu Chat</strong>, um assistente virtual que responde na hora — e ele trabalha nos dois lados: ajuda você a gerir e ajuda os seus motoristas no dia a dia, como um <strong>funcionário extra da sua empresa</strong>.</p>
       <ul>
-        <li><strong>No seu painel</strong> — responde na hora e guia a configuração da sua conta</li>
-        <li><strong>No app do motorista</strong> — auxilia os motoristas cadastrados, responde as perguntas deles e ensina a usar o aplicativo, sem ocupar o seu telefone</li>
-        <li><strong>Suporte humano via chat e WhatsApp</strong> — quando você preferir falar com a nossa equipe</li>
+        <li><strong>Para você</strong> — tira dúvidas e guia a configuração da conta passo a passo, da chave PIX ao primeiro motorista cadastrado</li>
+        <li><strong>Para o seu motorista</strong> — responde as perguntas dele e ensina a usar o painel, sem ocupar o seu telefone</li>
+        <li><strong>Suporte humano por chat e WhatsApp</strong> — quando você preferir falar com a nossa equipe</li>
         <li>Incluído no plano, sem custo extra</li>
       </ul>
     </div>
@@ -1563,7 +1584,7 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
       <div class="chat-head">
         <span class="chat-ava" style="background:transparent"><img src="assets/novu-icon.png" alt="" style="width:100%;height:100%;border-radius:50%;object-fit:cover"></span>
         <span class="t"><b>Novu Chat</b><small id="chat-status">● online agora</small></span>
-        <span class="inapp">No app</span>
+        <span class="inapp">No painel</span>
       </div>
       <div class="msgs" id="chat-msgs" aria-live="polite"></div>
       <div class="chat-inputbar" aria-hidden="true">
@@ -1642,14 +1663,14 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
       </details>
       <details>
         <summary>É difícil de configurar? Preciso de ajuda técnica?</summary>
-        <div class="a">Não. Você cria a conta, cadastra a chave PIX da empresa e começa a incluir motoristas e veículos — como você viu nas demonstrações desta página, cada cadastro leva menos de um minuto. E o <strong>Novu Chat</strong>, o assistente virtual dentro do app, te guia em cada passo da configuração. E se precisar, nosso time acompanha a migração da sua frota.</div>
+        <div class="a">Não. Você cria a conta, cadastra a chave PIX da empresa e começa a incluir motoristas e veículos — como você viu nas demonstrações desta página, cada cadastro leva menos de um minuto. E o <strong>Novu Chat</strong>, o assistente virtual dentro do painel, te guia em cada passo da configuração. E se precisar, nosso time acompanha a migração da sua frota.</div>
       </details>
       <details>
         <summary>Como funciona o suporte?</summary>
         <div class="a">Em três camadas, incluídas no plano: o <strong>Novu Chat</strong> (assistente virtual que responde na hora e ajuda a configurar a conta), o <strong>chat com a nossa equipe</strong> dentro da plataforma e o <strong>WhatsApp</strong> para quem prefere resolver por lá.</div>
       </details>
       <details>
-        <summary>O motorista também usa o app?</summary>
+        <summary>O motorista também usa o painel?</summary>
         <div class="a">Sim. Cada motorista locado tem acesso ao próprio painel, onde vê o contrato, as semanas pagas e pendentes, paga por QR Code e fala com a empresa — sem depender do seu WhatsApp pessoal.</div>
       </details>
       <details>
@@ -1668,14 +1689,25 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
 <!-- ============ CTA FINAL ============ -->
 <section class="cta-final" id="cta">
   <div class="inner">
-    <span class="urgency">⏳ Condição de lançamento — R$ 19/mês garantido para quem assinar este mês</span>
-    <h2>Toda semana sem a Novu é mais uma semana cobrando no braço.</h2>
-    <p>Você viu o app funcionando nesta página: cadastro em segundos, QR Code PIX na hora, manutenções automáticas — e o Novu Chat trabalhando para você e para os seus motoristas. Por <strong style="color:#fff">R$ 19/mês</strong> — R$ 45/mês apenas para frotas acima de 60 veículos — sua operação inteira cabe em um painel. O preço de lançamento vale para as assinaturas deste mês; depois, ele acompanha a tabela cheia.</p>
-    <div style="display:flex;gap:14px;flex-wrap:wrap;justify-content:center">
-      <a class="btn btn-primary" href="#planos">Garantir R$ 19/mês agora</a>
+    <span class="urgency">🚀 Estamos evoluindo</span>
+    <h2>Hoje um painel digital completo. Em breve, também um aplicativo.</h2>
+    <p>Você já gerencia toda a sua frota pelo painel Novu — cadastro em segundos, cobrança PIX na hora, manutenções automáticas. E estamos avançando: a Novu vai para o seu bolso com um <strong style="color:#fff">aplicativo nativo</strong>, disponível em breve para <strong style="color:#fff">Android</strong> e <strong style="color:#fff">iOS</strong>.</p>
+    <div class="store-wrap">
+      <a class="store-badge" href="#planos" aria-label="Em breve na Google Play">
+        <span class="glyph" aria-hidden="true"><svg width="22" height="24" viewBox="0 0 40 44"><path fill="#00D2FF" d="M2.2 1.3C1.5 1.7 1 2.5 1 3.6v36.8c0 1.1.5 1.9 1.2 2.3l20.6-20.7L2.2 1.3z"/><path fill="#00E676" d="M30.8 15 6.9.9C5.7.2 4.5.4 3.7 1L23 20.5 30.8 15z"/><path fill="#FF3A44" d="M23 20.5 3.7 40c.8.6 2 .8 3.2.1L30.8 26 23 20.5z"/><path fill="#FFCE00" d="M38 18.4 31 14.5l-8 6 8 6 7-3.9c1.7-1 1.7-3.3 0-4.2z"/></svg></span>
+        <span class="txt"><small>Em breve na</small><b>Google Play</b></span>
+      </a>
+      <a class="store-badge" href="#planos" aria-label="Em breve na App Store">
+        <span class="glyph" aria-hidden="true"><svg width="22" height="24" viewBox="0 0 24 24" fill="#fff"><path d="M16.37 1.43c0 1.13-.42 2.19-1.12 2.97-.8.86-2.09 1.53-3.14 1.44-.13-1.09.43-2.26 1.09-2.99.74-.82 2.06-1.44 3.17-1.42zM20.5 17.2c-.55 1.27-.82 1.83-1.53 2.95-.99 1.56-2.39 3.5-4.12 3.51-1.53.02-1.93-1-4.02-.99-2.09.01-2.53 1-4.06.99-1.73-.02-3.05-1.77-4.05-3.33-2.77-4.35-3.06-9.44-1.35-12.15 1.21-1.93 3.13-3.06 4.93-3.06 1.83 0 2.98 1 4.5 1 1.47 0 2.37-1 4.49-1 1.6 0 3.3.87 4.5 2.38-3.96 2.17-3.32 7.83.29 9.7z"/></svg></span>
+        <span class="txt"><small>Em breve na</small><b>App Store</b></span>
+      </a>
+    </div>
+    <p class="store-note">Enquanto isso, tudo já funciona 100% pelo painel — sem instalar nada.</p>
+    <div class="cta-final-cta">
+      <a class="btn btn-primary" href="#planos">Começar agora — R$ 19/mês</a>
       <a class="btn" style="border:1.5px solid #3A434B;color:#fff" href="mailto:contato@flexdrivebsb.com">Falar com a equipe</a>
     </div>
-    <p style="font-size:.85rem;color:#7E8A93">19+ empresas parceiras · Sem taxa de implantação · Cancele o mensal quando quiser</p>
+    <p style="font-size:.85rem;color:#7E8A93">19+ empresas parceiras · Sem taxa de implantação · Cancele quando quiser</p>
   </div>
 </section>
 
@@ -1930,11 +1962,14 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
   .cc-v{font-size:.76rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-transform:uppercase;letter-spacing:.03em}
   .nvck-okmark{width:56px;height:56px;border-radius:50%;background:#1E9E5A;color:#fff;display:grid;place-items:center;font-size:1.7rem;font-weight:800;box-shadow:0 0 0 10px rgba(30,158,90,.14)}
   @media (max-width:680px){
-    .nvck-card{grid-template-columns:1fr;max-width:440px}
-    .nvck-aside{padding:22px 22px 18px;gap:14px}
+    /* o overlay inteiro rola (em vez de scroll interno do card, que cortava no mobile) */
+    .nvck-overlay{align-items:flex-start;overflow-y:auto;padding:14px 12px}
+    .nvck-card{grid-template-columns:1fr;max-width:440px;max-height:none}
+    .nvck-aside{padding:20px 20px 16px;gap:12px}
     .nvck-incl{display:none}
     .nvck-tags{gap:6px}
-    .nvck-main{padding:22px 22px 20px}
+    .nvck-plan-price{font-size:1.85rem}
+    .nvck-main{padding:20px 20px 22px}
     .nvck-row{grid-template-columns:1fr}
     .nvck-methods{grid-template-columns:1fr}
   }
@@ -2694,7 +2729,7 @@ function qrSvg(size=118, n=25){
 
     // 4. salvar → tema viaja para o app do motorista
     await cur.moveTo(save); await cur.click(save);
-    toast(tst, '<span class="ck">✓</span> Tema salvo — aplicado no app dos motoristas');
+    toast(tst, '<span class="ck">✓</span> Tema salvo — aplicado no painel dos motoristas');
     flowGo(); await sleep(1000);
 
     // 5. motorista faz login no app com a marca da locadora
@@ -2939,7 +2974,7 @@ function qrSvg(size=118, n=25){
         {
           "@type": "Question",
           "name": "É difícil de configurar? Preciso de ajuda técnica?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Não. Você cria a conta, cadastra a chave PIX da empresa e começa a incluir motoristas e veículos — cada cadastro leva menos de um minuto. O Novu Chat, assistente virtual dentro do app, guia você em cada passo da configuração." }
+          "acceptedAnswer": { "@type": "Answer", "text": "Não. Você cria a conta, cadastra a chave PIX da empresa e começa a incluir motoristas e veículos — cada cadastro leva menos de um minuto. O Novu Chat, assistente virtual dentro do painel, guia você em cada passo da configuração." }
         },
         {
           "@type": "Question",
@@ -2948,7 +2983,7 @@ function qrSvg(size=118, n=25){
         },
         {
           "@type": "Question",
-          "name": "O motorista também usa o app?",
+          "name": "O motorista também usa o painel?",
           "acceptedAnswer": { "@type": "Answer", "text": "Sim. Cada motorista locado tem acesso ao próprio painel, onde vê o contrato, as semanas pagas e pendentes, paga por QR Code e fala com a empresa — sem depender do seu WhatsApp pessoal." }
         },
         {
