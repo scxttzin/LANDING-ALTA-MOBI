@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Novu — Gestão inteligente de frota para motoristas de app</title>
-<meta name="description" content="Centralize contratos, motoristas e veículos. Cobre por PIX com QR Code em segundos e receba na hora. Método validado por mais de 19 empresas parceiras.">
+<meta name="description" content="Centralize contratos, motoristas e veículos. Cobre por PIX com QR Code em segundos e receba na hora. Método validado por mais de 9 empresas parceiras.">
 
 <!-- ============ SEO ============ -->
 <!-- canonical: a página também é servida em novu-landing.pages.dev; sem isto
@@ -459,6 +459,10 @@ nav.links a:hover{color:var(--red)}
 .drev .mh,.dnext .mh{display:flex;align-items:center;gap:6px;font-size:.6rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--gray-500);margin-bottom:5px}
 .drev .mh svg{color:var(--red);flex:none}
 .drev .mh b{color:var(--green);letter-spacing:0}
+/* viewBox largo (440×66) mantém o gráfico baixo e preenchendo a largura toda,
+   sem crescer em telas largas nem deixar sobra nas laterais */
+.drev > svg{display:block;width:100%}
+.dnext .dli{padding:4px 0}
 .dli{display:flex;align-items:center;gap:8px;padding:5px 0;border-top:1px solid #E7EBEE}
 .dnext .dli:first-of-type{border-top:0;padding-top:0}
 .dava{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#4A545C,#23292F);color:#fff;display:grid;place-items:center;font-size:.58rem;font-weight:800;flex:none;letter-spacing:.02em}
@@ -1585,11 +1589,11 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
     </div>
     <div class="valid-grid">
       <div class="valid-hero reveal">
-        <div class="vnum mono"><span data-count="19" data-suffix="+">0</span></div>
+        <div class="vnum mono"><span data-count="9" data-suffix="+">0</span></div>
         <div class="vlabel">empresas parceiras validaram o método</div>
         <p>De frotistas com 3 carros até operações com mais de 40 veículos — cobrando, controlando e crescendo com a Novu todos os dias.</p>
         <div class="vlogos" aria-label="Empresas parceiras">
-          <a class="flex" href="https://flexdrivebsb.com" target="_blank" rel="noopener">Flex Drive ↗</a><span>LocaMax</span><span>Rodar Frotas</span><span>VeloCar</span><span>Frota Sul</span><span>GiroCar</span><span>+ 13 outras</span>
+          <a class="flex" href="https://flexdrivebsb.com" target="_blank" rel="noopener">Flex Drive ↗</a><span>LocaMax</span><span>Rodar Frotas</span><span>VeloCar</span><span>Frota Sul</span><span>GiroCar</span><span>+ 3 outras</span>
         </div>
       </div>
       <div class="valid-items">
@@ -1655,7 +1659,7 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
       <div class="mark" aria-hidden="true">“</div>
       <div>
         <blockquote>Eu administrava 10 contratos e meus motoristas tudo pelo WhatsApp. Hoje abro a Novu, vejo quem pagou, quem está pendente, se meus motoristas querem fazer manutenção no veículo, aceito as solicitações — o resto do dia é meu. A gestão da frota que levava horas agora são minutos.</blockquote>
-        <p class="who"><strong>Wilson Sutero (Flex Drive)</strong> — frotista parceiro, +12 veículos locados para motoristas de app Uber e 99</p>
+        <p class="who"><strong>Arthur Alves (Flex Drive)</strong> — frotista parceiro, +12 veículos locados para motoristas de app Uber e 99</p>
       </div>
     </div>
   </div>
@@ -1679,9 +1683,9 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
           <button data-mode="pro" aria-pressed="false">PRO</button>
         </div>
         <div class="price" id="plan-price-box"><span class="mono" id="plan-price">R$ 19</span><small>/mês</small></div>
-        <p class="per" id="plan-per">Sem fidelidade no plano, cancele quando quiser.</p>
+        <p class="per" id="plan-per">Painel constantemente atualizado.</p>
         <ul>
-          <li id="plan-li-faixa">Motoristas e veículos até 60. Acima disso, assine o PRO</li>
+          <li id="plan-li-faixa">Motoristas e veículos até 30. Acima disso, assine o PRO</li>
           <li>Cobranças semanais (PIX) com QR Code na sua chave</li>
           <li>Manutenções automatizadas com suas oficinas parceiras</li>
           <li>Gestão de frota personalizada</li>
@@ -1693,7 +1697,7 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
         <a class="btn btn-primary" href="#cta" id="plan-cta">Assinar por R$ 19/mês</a>
       </article>
     </div>
-    <p class="pro-note reveal">Acima de 60 veículos é necessária a <b>Assinatura PRO</b> — R$ 45/mês, mesmas funcionalidades, sem limite de frota.</p>
+    <p class="pro-note reveal">Acima de 30 veículos é necessária a <b>Assinatura PRO</b> — R$ 45/mês, mesmas funcionalidades, sem limite de frota.</p>
     <p class="plans-note reveal">Sem taxa de implantação · Sem cobrança por veículo · Seus recebimentos PIX caem 100% na sua conta</p>
   </div>
 </section>
@@ -1712,7 +1716,7 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
       </details>
       <details>
         <summary>Quantos motoristas e veículos posso cadastrar?</summary>
-        <div class="a">Quantos você tiver. O plano inclui motoristas, veículos e contratos sem limite — e o valor só muda quando a frota passa de 60 veículos (da Assinatura Padrão de R$ 19 para a PRO de R$ 45 por mês).</div>
+        <div class="a">Quantos você tiver. O plano inclui motoristas, veículos e contratos sem limite — e o valor só muda quando a frota passa de 30 veículos (da Assinatura Padrão de R$ 19 para a PRO de R$ 45 por mês).</div>
       </details>
       <details>
         <summary>É difícil de configurar? Preciso de ajuda técnica?</summary>
@@ -1758,9 +1762,9 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
     <p class="store-note">Enquanto isso, tudo já funciona 100% pelo painel — sem instalar nada.</p>
     <div class="cta-final-cta">
       <a class="btn btn-primary" href="#planos">Começar agora — R$ 19/mês</a>
-      <a class="btn" style="border:1.5px solid #3A434B;color:#fff" href="mailto:contato@flexdrivebsb.com">Falar com a equipe</a>
+      <a class="btn" style="border:1.5px solid #3A434B;color:#fff" href="https://wa.me/5561999477453?text=Ol%C3%A1!%20Quero%20falar%20com%20a%20equipe%20da%20Novu." target="_blank" rel="noopener">Falar com a equipe</a>
     </div>
-    <p style="font-size:.85rem;color:#7E8A93">19+ empresas parceiras · Sem taxa de implantação · Cancele quando quiser</p>
+    <p style="font-size:.85rem;color:#7E8A93">9+ empresas parceiras · Sem taxa de implantação · Cancele quando quiser</p>
   </div>
 </section>
 
@@ -1780,7 +1784,7 @@ footer{padding:52px 0;font-size:.88rem;color:var(--gray-500);background:var(--gr
         </div>
         <div class="nvck-plan-name" id="nvck-plan-name">Assinatura Padrão</div>
         <div class="nvck-plan-price"><span id="nvck-plan-price">R$ 19</span><small>/mês</small></div>
-        <div class="nvck-plan-sub" id="nvck-plan-sub">Frotas de até 60 veículos</div>
+        <div class="nvck-plan-sub" id="nvck-plan-sub">Frotas de até 30 veículos</div>
 
         <!-- CUPOM: o desconto é sempre calculado no servidor; aqui só exibimos -->
         <div class="nvck-cupom" id="nvck-cupom">
@@ -2048,8 +2052,8 @@ const NOVU_MP_PUBLIC_KEY = 'APP_USR-f8f00351-371b-4d5d-a592-aaac1cdcb1ed';
   let method = 'pix';
 
   const PLANS = {
-    padrao: { id: 'padrao', name: 'Assinatura Padrão', price: 'R$ 19', sub: 'Frotas de até 60 veículos' },
-    pro:    { id: 'pro',    name: 'Assinatura PRO',    price: 'R$ 45', sub: 'Frotas com mais de 60 veículos' },
+    padrao: { id: 'padrao', name: 'Assinatura Padrão', price: 'R$ 19', sub: 'Frotas de até 30 veículos' },
+    pro:    { id: 'pro',    name: 'Assinatura PRO',    price: 'R$ 45', sub: 'Frotas com mais de 30 veículos' },
   };
   let selectedPlan = 'padrao';
   const pagePlan = () => (document.getElementById('plan-seg')?.querySelector('button.active')?.dataset.mode === 'pro') ? 'pro' : 'padrao';
@@ -2408,15 +2412,15 @@ function qrSvg(size=118, n=25){
       </div>
       <div class="drev">
         <div class="mh"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg> Receita · últimos 7 dias <b>+18%</b> vs semana anterior</div>
-        <svg viewBox="0 0 220 66" width="100%" role="img" aria-label="Receita dos últimos 7 dias comparada à semana anterior">
+        <svg viewBox="0 0 440 66" width="100%" role="img" aria-label="Receita dos últimos 7 dias comparada à semana anterior">
           <defs><linearGradient id="rev" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#FF6570"/><stop offset="1" stop-color="#E0212E"/></linearGradient></defs>
-          <path d="M8 50 42 47 76 49 110 44 144 45 178 41 212 43" fill="none" stroke="#B6BEC4" stroke-width="2" stroke-dasharray="3 3.5" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M8 48 42 42 76 44 110 34 144 33 178 22 212 15" fill="none" stroke="url(#rev)" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
-          <circle cx="212" cy="15" r="3.6" fill="#E0212E" stroke="#fff" stroke-width="1.6"/>
-          <text x="212" y="8" text-anchor="end" font-size="8" font-weight="800" fill="#E0212E">R$ 3,9k</text>
-          <text x="8" y="63" font-size="7" fill="#9AA3AA">seg</text>
-          <text x="110" y="63" text-anchor="middle" font-size="7" fill="#9AA3AA">qui</text>
-          <text x="212" y="63" text-anchor="end" font-size="7" fill="#9AA3AA">hoje</text>
+          <path d="M16 50 84 47 152 49 220 44 288 45 356 41 424 43" fill="none" stroke="#B6BEC4" stroke-width="2" stroke-dasharray="3 3.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M16 48 84 42 152 44 220 34 288 33 356 22 424 15" fill="none" stroke="url(#rev)" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="424" cy="15" r="3.6" fill="#E0212E" stroke="#fff" stroke-width="1.6"/>
+          <text x="424" y="8" text-anchor="end" font-size="8" font-weight="800" fill="#E0212E">R$ 3,9k</text>
+          <text x="16" y="63" font-size="7" fill="#9AA3AA">seg</text>
+          <text x="220" y="63" text-anchor="middle" font-size="7" fill="#9AA3AA">qui</text>
+          <text x="424" y="63" text-anchor="end" font-size="7" fill="#9AA3AA">hoje</text>
         </svg>
       </div>
       <div class="dnext">
@@ -2852,11 +2856,11 @@ function qrSvg(size=118, n=25){
     name.textContent = pro ? 'Assinatura PRO' : 'Assinatura Padrão';
     cta.textContent = pro ? 'Assinar PRO por R$ 45/mês' : 'Assinar por R$ 19/mês';
     per.innerHTML = pro
-      ? 'Para frotas com <strong>mais de 60 veículos</strong> — sem fidelidade, cancele quando quiser.'
-      : 'Sem fidelidade no plano, cancele quando quiser.';
+      ? 'Para frotas com <strong>mais de 30 veículos</strong> · painel constantemente atualizado.'
+      : 'Painel constantemente atualizado.';
     faixa.textContent = pro
       ? 'Motoristas e veículos sem limite de frota'
-      : 'Motoristas e veículos até 60. Acima disso, assine o PRO';
+      : 'Motoristas e veículos até 30. Acima disso, assine o PRO';
     priceBox.classList.remove('bump'); void priceBox.offsetWidth; priceBox.classList.add('bump');
   });
 })();
@@ -2975,7 +2979,7 @@ function qrSvg(size=118, n=25){
         },
         {
           "@type": "Offer",
-          "name": "Assinatura PRO (acima de 60 veículos)",
+          "name": "Assinatura PRO (acima de 30 veículos)",
           "price": "45.00",
           "priceCurrency": "BRL",
           "category": "subscription",
@@ -2996,7 +3000,7 @@ function qrSvg(size=118, n=25){
         {
           "@type": "Question",
           "name": "Quantos motoristas e veículos posso cadastrar?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Quantos você tiver. O plano inclui motoristas, veículos e contratos sem limite — e o valor só muda quando a frota passa de 60 veículos, da Assinatura Padrão de R$ 19 para a PRO de R$ 45 por mês." }
+          "acceptedAnswer": { "@type": "Answer", "text": "Quantos você tiver. O plano inclui motoristas, veículos e contratos sem limite — e o valor só muda quando a frota passa de 30 veículos, da Assinatura Padrão de R$ 19 para a PRO de R$ 45 por mês." }
         },
         {
           "@type": "Question",
