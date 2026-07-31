@@ -438,6 +438,45 @@ nav.links a:hover{color:var(--red)}
 .vrow{display:flex;justify-content:space-between;align-items:baseline;gap:6px;margin-top:5px;font-size:.65rem;color:var(--gray-700);flex-wrap:wrap}
 .vrow .vprice{font-weight:800;font-size:.8rem;color:var(--ink)}
 .vrow .vprice small{font-weight:600;color:var(--gray-500);font-size:.62rem}
+/* filtro + botão "Cadastrar veículo" (aba Veículos, demo) */
+.vfilter{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:9px}
+.vseg{display:flex;background:var(--gray-100);border:1px solid var(--gray-300);border-radius:99px;padding:2px}
+.vseg span{font-size:.55rem;font-weight:700;padding:.32em .7em;border-radius:99px;color:var(--gray-500)}
+.vseg span.on{background:var(--red);color:#fff}
+.vadd-btn{margin-left:auto;display:inline-flex;align-items:center;gap:.3em;background:var(--red);color:#fff;border:0;border-radius:8px;font-size:.62rem;font-weight:800;padding:.55em .8em}
+.vcard.vadd{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;border:1.5px dashed #C4CBD1;background:#fff;color:var(--gray-500);font-size:.68rem;font-weight:700;text-align:center;padding:14px}
+.vcard.vadd .vadd-ico{width:32px;height:32px;border-radius:50%;background:var(--red-soft);color:var(--red);display:grid;place-items:center;font-size:1.2rem;line-height:1}
+
+/* Dashboard nova (dash2 do app): stat cards + receita + próximos ── */
+.dstats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+@media (max-width:560px){ .dstats{grid-template-columns:repeat(2,1fr)} }
+.dstat{background:var(--gray-100);border:1px solid var(--gray-300);border-radius:11px;padding:9px 10px}
+.dstat-ic{width:24px;height:24px;border-radius:7px;background:var(--red-soft);color:var(--red);display:grid;place-items:center;margin-bottom:6px}
+.dstat-ic svg{width:14px;height:14px}
+.dstat-v{font-size:1.02rem;font-weight:800;letter-spacing:-.02em;line-height:1}
+.dstat-l{font-size:.57rem;color:var(--gray-500);font-weight:600;margin-top:3px;line-height:1.25}
+.drev,.dnext{background:var(--gray-100);border:1px solid var(--gray-300);border-radius:11px;padding:9px 11px;margin-top:8px}
+.drev .mh,.dnext .mh{display:flex;align-items:center;gap:6px;font-size:.6rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--gray-500);margin-bottom:5px}
+.drev .mh svg{color:var(--red);flex:none}
+.drev .mh b{color:var(--green);letter-spacing:0}
+.dli{display:flex;align-items:center;gap:8px;padding:5px 0;border-top:1px solid #E7EBEE}
+.dnext .dli:first-of-type{border-top:0;padding-top:0}
+.dava{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#4A545C,#23292F);color:#fff;display:grid;place-items:center;font-size:.58rem;font-weight:800;flex:none;letter-spacing:.02em}
+.dli-t{flex:1;min-width:0}
+.dli-t b{display:block;font-size:.73rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dli-t span{font-size:.59rem;color:var(--gray-500)}
+.dli-v{font-size:.72rem;font-weight:800;flex:none}
+
+/* cards de motoristas (aba Motoristas, demo — antes eram linhas) */
+.dgrid{display:flex;flex-direction:column;gap:7px}
+.dcard{display:flex;align-items:center;gap:10px;background:var(--gray-100);border:1px solid var(--gray-300);border-radius:11px;padding:9px 11px}
+.dcard .dava{width:34px;height:34px;font-size:.72rem}
+.dcard-t{flex:1;min-width:0}
+.dcard-t b{display:block;font-size:.82rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dcard-t span{font-size:.62rem;color:var(--gray-500)}
+.dcard .chev{color:#B6BEC4;font-size:1.15rem;flex:none;line-height:1}
+.dcard.dadd{border-style:dashed;border-color:#C4CBD1;background:#fff;color:var(--gray-500);justify-content:center;gap:8px;font-weight:700;font-size:.75rem}
+.dcard.dadd .dadd-ico{width:28px;height:28px;border-radius:50%;background:var(--red-soft);color:var(--red);display:grid;place-items:center;font-size:1.05rem}
 
 /* card de solicitação de manutenção (painel da empresa, demo) */
 .mreq{
@@ -2360,63 +2399,31 @@ function qrSvg(size=118, n=25){
 
   const screens = {
     dashboard: `
-      <div class="ptitle">Dashboard</div><div class="psub">Visão geral · 18 de julho de 2026</div>
-      <div class="mk mk4">
-        <div class="k"><div class="l">Faturamento mensal</div><div class="v mono">R$ 12,4k<small>▲</small></div></div>
-        <div class="k"><div class="l">A receber</div><div class="v mono">R$ 1.910</div></div>
-        <div class="k"><div class="l">Motoristas</div><div class="v mono">12</div></div>
-        <div class="k"><div class="l">Manut. feitas</div><div class="v mono">2</div></div>
+      <div class="ptitle">Boa tarde, Novu! 👋</div><div class="psub">Aqui está o resumo da sua frota</div>
+      <div class="dstats">
+        <div class="dstat"><span class="dstat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.4"/></svg></span><div class="dstat-v">R$ 12,4k</div><div class="dstat-l">Faturamento do mês</div></div>
+        <div class="dstat"><span class="dstat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><div class="dstat-v">R$ 1.910</div><div class="dstat-l">A receber no mês</div></div>
+        <div class="dstat"><span class="dstat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-6 8-6s8 2 8 6"/></svg></span><div class="dstat-v">2</div><div class="dstat-l">Motoristas rodando</div></div>
+        <div class="dstat"><span class="dstat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></span><div class="dstat-v">R$ 740</div><div class="dstat-l">Gastos do mês</div></div>
       </div>
-      <div class="mini2">
-        <div class="mpanel">
-          <div class="mh">Faturamento x Gastos</div>
-          <div class="donut-wrap">
-            <svg viewBox="0 0 80 80" width="72" height="72" role="img" aria-label="Gráfico faturamento x gastos">
-              <defs>
-                <linearGradient id="dg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF5A64"/><stop offset="1" stop-color="#B5121F"/></linearGradient>
-                <linearGradient id="dg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4A545C"/><stop offset="1" stop-color="#23292F"/></linearGradient>
-                <linearGradient id="dg3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#D7DCE0"/><stop offset="1" stop-color="#9AA3AA"/></linearGradient>
-              </defs>
-              <g transform="rotate(-90 40 40)">
-                <circle cx="40" cy="40" r="30" fill="none" stroke="url(#dg1)" stroke-width="13" stroke-dasharray="117 188.5"/>
-                <circle cx="40" cy="40" r="30" fill="none" stroke="url(#dg2)" stroke-width="13" stroke-dasharray="41 188.5" stroke-dashoffset="-117"/>
-                <circle cx="40" cy="40" r="30" fill="none" stroke="url(#dg3)" stroke-width="13" stroke-dasharray="29.5 188.5" stroke-dashoffset="-158"/>
-              </g>
-            </svg>
-            <div class="dlegend">
-              <span><i style="background:#E0212E"></i>Faturamento</span>
-              <span><i style="background:#33393F"></i>Manutenção</span>
-              <span><i style="background:#B6BEC4"></i>Seguro</span>
-              <span class="dtotal">Líquido <b class="mono">R$ 9,6k</b></span>
-            </div>
-          </div>
-        </div>
-        <div class="mpanel">
-          <div class="mh">Trajeto de recebimentos</div>
-          <svg viewBox="0 0 210 92" width="100%" role="img" aria-label="Gráfico de recebimentos ao longo do mês">
-            <defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#6E7981"/><stop offset="1" stop-color="#E0212E"/></linearGradient></defs>
-            <path d="M14 68 C 40 68, 48 42, 72 44 C 96 46, 104 58, 128 50 C 152 42, 160 26, 192 22" fill="none" stroke="url(#rg)" stroke-width="3.5" stroke-linecap="round"/>
-            <circle cx="14" cy="68" r="5" fill="#23292F" stroke="#fff" stroke-width="2"/>
-            <circle cx="72" cy="44" r="3.4" fill="#fff" stroke="#6E7981" stroke-width="2"/>
-            <circle cx="128" cy="50" r="3.4" fill="#fff" stroke="#B5121F" stroke-width="2"/>
-            <circle cx="192" cy="22" r="9.5" fill="url(#rg)" stroke="#fff" stroke-width="2"/>
-            <g transform="translate(185.6,15.6) scale(.54)" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M5 13l1.5-4.5A2 2 0 0 1 8.4 7h7.2a2 2 0 0 1 1.9 1.5L19 13M5 13h14v4H5v-4Z"/>
-            </g>
-            <text x="72" y="32" text-anchor="middle" font-size="8.5" font-weight="700" fill="#4A545C">R$ 2,8k</text>
-            <text x="128" y="38" text-anchor="middle" font-size="8.5" font-weight="700" fill="#4A545C">R$ 2,1k</text>
-            <text x="192" y="9" text-anchor="middle" font-size="8.5" font-weight="700" fill="#E0212E">R$ 3,9k</text>
-            <text x="14" y="86" text-anchor="middle" font-size="7.5" fill="#6E7981">01/07</text>
-            <text x="72" y="86" text-anchor="middle" font-size="7.5" fill="#6E7981">08/07</text>
-            <text x="128" y="86" text-anchor="middle" font-size="7.5" fill="#6E7981">15/07</text>
-            <text x="192" y="86" text-anchor="middle" font-size="7.5" fill="#6E7981">hoje</text>
-          </svg>
-        </div>
+      <div class="drev">
+        <div class="mh"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg> Receita · últimos 7 dias <b>+18%</b> vs semana anterior</div>
+        <svg viewBox="0 0 220 66" width="100%" role="img" aria-label="Receita dos últimos 7 dias comparada à semana anterior">
+          <defs><linearGradient id="rev" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#FF6570"/><stop offset="1" stop-color="#E0212E"/></linearGradient></defs>
+          <path d="M8 50 42 47 76 49 110 44 144 45 178 41 212 43" fill="none" stroke="#B6BEC4" stroke-width="2" stroke-dasharray="3 3.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M8 48 42 42 76 44 110 34 144 33 178 22 212 15" fill="none" stroke="url(#rev)" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="212" cy="15" r="3.6" fill="#E0212E" stroke="#fff" stroke-width="1.6"/>
+          <text x="212" y="8" text-anchor="end" font-size="8" font-weight="800" fill="#E0212E">R$ 3,9k</text>
+          <text x="8" y="63" font-size="7" fill="#9AA3AA">seg</text>
+          <text x="110" y="63" text-anchor="middle" font-size="7" fill="#9AA3AA">qui</text>
+          <text x="212" y="63" text-anchor="end" font-size="7" fill="#9AA3AA">hoje</text>
+        </svg>
       </div>
-      <div class="mnotif">
-        <div class="mh">Notificações <span class="mnotif-badge">2</span></div>
-        <div class="mnotif-item"><span class="mi">💰</span> Semanal de Carlos Menezes vence hoje</div>
-        <div class="mnotif-item"><span class="mi">🔧</span> Manutenção agendada qui, 16/07 — Oficina do Zé</div>
+      <div class="dnext">
+        <div class="mh">Próximos Semanais</div>
+        <div class="dli"><span class="dava">CM</span><div class="dli-t"><b>Carlos Menezes</b><span>BYD Dolphin GS · TQZ-4E25</span></div><div class="dli-v mono">R$ 700</div><span class="pill pend">Pendente</span></div>
+        <div class="dli"><span class="dava">JS</span><div class="dli-t"><b>Juliana Soares</b><span>BYD Dolphin GS · TQZ-9B26</span></div><div class="dli-v mono">R$ 750</div><span class="pill ok">Pago</span></div>
+        <div class="dli"><span class="dava">RN</span><div class="dli-t"><b>Rafael Nunes</b><span>HB20 Sense · RTC-7F55</span></div><div class="dli-v mono">R$ 560</div><span class="pill red">Atrasado</span></div>
       </div>`,
     recebimentos: `
       <div class="ptitle">Pagamentos</div><div class="psub">Pagamentos dos motoristas</div>
@@ -2436,7 +2443,11 @@ function qrSvg(size=118, n=25){
       </tbody></table>
       <div class="sumbar"><span>Esperado <b>R$ 2.610</b></span><span class="ok">Recebido <b>R$ 1.350</b></span><span>A receber <b>R$ 1.260</b></span></div>`,
     veiculos: `
-      <div class="ptitle">Veículos</div><div class="psub">Frota · Todos (2) · Locados (2) · Disponíveis (0)</div>
+      <div class="ptitle">Veículos</div><div class="psub">Frota cadastrada</div>
+      <div class="vfilter">
+        <div class="vseg"><span class="on">Todos (2)</span><span>Locados (2)</span><span>Disponíveis (0)</span></div>
+        <button class="vadd-btn">+ Cadastrar veículo</button>
+      </div>
       <div class="vgrid">
         <div class="vcard">
           <div class="vthumb">
@@ -2464,14 +2475,16 @@ function qrSvg(size=118, n=25){
             <div class="vrow"><span>👤 Juliana Soares</span><span class="vprice mono">R$ 750<small>/sem</small></span></div>
           </div>
         </div>
+        <div class="vcard vadd"><span class="vadd-ico">+</span>Cadastrar veículo</div>
       </div>`,
     motoristas: `
-      <div class="ptitle">Motoristas</div><div class="psub">Contratos ativos</div>
-      <table class="mt"><thead><tr><th>Nome</th><th>Veículo</th><th>Desde</th><th>Status</th></tr></thead><tbody>
-        <tr><td>Juliana Soares</td><td>HB20 · RTC-7F55</td><td>mar/2026</td><td><span class="pill ok">Ativo</span></td></tr>
-        <tr><td>Edson Prado</td><td>Argo · QWE-9A02</td><td>jan/2026</td><td><span class="pill ok">Ativo</span></td></tr>
-        <tr><td>Carlos Menezes</td><td>Onix · PLK-4D21</td><td>jun/2026</td><td><span class="pill ok">Ativo</span></td></tr>
-      </tbody></table>`
+      <div class="ptitle">Motoristas</div><div class="psub">Cadastre, gerencie e personalize o painel deles</div>
+      <div class="dgrid">
+        <div class="dcard"><span class="dava">CM</span><div class="dcard-t"><b>Carlos Menezes</b><span>BYD Dolphin GS · TQZ-4E25</span></div><span class="chev">›</span></div>
+        <div class="dcard"><span class="dava">JS</span><div class="dcard-t"><b>Juliana Soares</b><span>BYD Dolphin GS · TQZ-9B26</span></div><span class="chev">›</span></div>
+        <div class="dcard"><span class="dava">RN</span><div class="dcard-t"><b>Rafael Nunes</b><span>HB20 Sense · RTC-7F55</span></div><span class="chev">›</span></div>
+        <div class="dcard dadd"><span class="dadd-ico">+</span>Cadastrar novo motorista</div>
+      </div>`
   };
 
   function show(tab){
